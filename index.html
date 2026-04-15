@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Dhanam – Office Inventory Portal</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<style>
+:root{--dark:#1a3c6e;--gold:#e8a020;--sb:278px}
+*{box-sizing:border-box}body{font-family:'Segoe UI',sans-serif;background:#eef1f7;margin:0}
+#lp-wrap{min-height:100vh;background:linear-gradient(135deg,#1a3c6e,#2d6aa0);display:flex;align-items:center;justify-content:center}
+.lcard{background:#fff;border-radius:18px;padding:44px 40px;width:420px;box-shadow:0 28px 80px rgba(0,0,0,.28)}
+.llogo{text-align:center;margin-bottom:28px}.llogo i{font-size:3rem;color:var(--dark)}
+.llogo h4{font-weight:800;color:var(--dark);margin:8px 0 2px}.llogo small{color:#aaa;font-size:.82rem}
+#app{display:none}
+.sb{width:var(--sb);background:var(--dark);min-height:100vh;position:fixed;top:0;left:0;z-index:200;display:flex;flex-direction:column}
+.sb-top{padding:16px 15px 12px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:9px;flex-shrink:0}
+.sb-top i.li{font-size:1.5rem;color:var(--gold)}
+.sb-top h6{color:#fff;font-weight:800;font-size:.86rem;margin:0}.sb-top span{color:rgba(255,255,255,.4);font-size:.68rem}
+.sb-user{padding:10px 15px;background:rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.09);flex-shrink:0}
+.av{width:32px;height:32px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.86rem;flex-shrink:0}
+.sb-user .nm{color:#fff;font-size:.82rem;font-weight:700;margin-left:8px}
+.sb-user .rl{color:rgba(255,255,255,.4);font-size:.68rem;margin-left:8px}
+.rt{display:inline-block;font-size:.61rem;padding:1px 7px;border-radius:20px;font-weight:700;margin-left:8px;margin-top:2px}
+.rt-a{background:var(--gold);color:#fff}.rt-u{background:rgba(255,255,255,.18);color:#fff}
+.sb-nav{flex:1;padding:6px 0;overflow-y:auto;min-height:0;scroll-behavior:smooth}
+.sb-nav::-webkit-scrollbar{width:4px}
+.sb-nav::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:4px}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:4px;transition:.2s}
+.sb-nav::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.4)}
+.ns{padding:7px 15px 2px;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.26);margin-top:4px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;user-select:none;transition:.14s color}
+.ns:hover{color:rgba(255,255,255,.5)}
+.ns .ns-arrow{font-size:.55rem;transition:.2s transform}
+.ns.collapsed .ns-arrow{transform:rotate(-90deg)}
+.ns-group{overflow:hidden;transition:max-height .28s ease,opacity .2s ease;max-height:800px;opacity:1}
+.ns-group.collapsed{max-height:0;opacity:0}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 15px;color:rgba(255,255,255,.6);cursor:pointer;font-size:.81rem;border-left:3px solid transparent;transition:.14s all;line-height:1.2}
+.ni:hover,.ni.active{background:rgba(255,255,255,.09);color:#fff;border-left-color:var(--gold)}
+.ni i{width:15px;text-align:center;font-size:.78rem;flex-shrink:0}
+.ni .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.pr-badge{background:#e8a020;color:#fff;font-size:.6rem;padding:1px 5px;border-radius:20px;font-weight:700;margin-left:auto}
+.sb-foot{padding:10px 15px;border-top:1px solid rgba(255,255,255,.1);flex-shrink:0}
+.sb-foot button{width:100%;background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.6);padding:7px;border-radius:7px;font-size:.81rem;cursor:pointer}
+.sb-foot button:hover{background:rgba(220,50,50,.28);color:#fff}
+.main{margin-left:var(--sb);padding:20px;min-height:100vh}
+.topbar{background:#fff;border-radius:12px;padding:11px 17px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.06);flex-wrap:wrap;gap:8px}
+.topbar h5{margin:0;font-weight:800;color:var(--dark);font-size:.94rem}
+.sc{background:#fff;border-radius:13px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;align-items:center;gap:13px}
+.si{width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.sv{font-size:1.7rem;font-weight:900;line-height:1}.sl{color:#999;font-size:.73rem;margin-top:2px}
+.panel{background:#fff;border-radius:13px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.ph{padding:12px 17px;border-bottom:1px solid #eef0f5;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.ph h6{margin:0;font-weight:700;color:var(--dark);font-size:.87rem}
+table{font-size:.79rem}
+th{background:#f8f9fc;font-weight:700;color:#666;border-bottom:2px solid #eef0f5!important;white-space:nowrap;padding:7px 9px!important}
+td{vertical-align:middle;padding:6px 9px!important}
+.bt{font-size:.67rem;padding:2px 7px;border-radius:20px;font-weight:600;white-space:nowrap;display:inline-block}
+.g-it{background:#dbeafe;color:#1d4ed8}.g-cm{background:#dcfce7;color:#15803d}
+.g-sc{background:#fde8e8;color:#b91c1c}.g-oa{background:#f5e9f7;color:#7e22ce}
+.g-fa{background:#fef3c7;color:#b45309}.g-wr{background:#ccfbf1;color:#0f766e}
+.g-pr{background:#e0f2fe;color:#0369a1}.g-fi{background:#fce7f3;color:#be185d}
+.g-bf{background:#ede9fe;color:#6d28d9}.g-cc{background:#fff7ed;color:#c2410c}
+.g-de{background:#ecfdf5;color:#065f46}.g-ml{background:#fdf4ff;color:#7e22ce}
+.g-pc{background:#fff1f2;color:#be123c}.g-pm{background:#f0fdf4;color:#15803d}
+.g-pa{background:#faf5ff;color:#7c3aed}
+.st-available{background:#d4edda;color:#155724}.st-assigned{background:#cce5ff;color:#004085}
+.st-maintenance{background:#fff3cd;color:#856404}.st-retired{background:#f8d7da;color:#721c24}
+.st-transferred{background:#e2e3e5;color:#383d41}
+.st-pending{background:#fff3cd;color:#856404}.st-approved{background:#d4edda;color:#155724}
+.st-rejected{background:#f8d7da;color:#721c24}
+.badge-br{display:inline-block;background:#e8f0fc;color:#1a4080;font-size:.66rem;padding:2px 7px;border-radius:20px;font-weight:600}
+.btn-a{padding:3px 7px;font-size:.72rem;border-radius:5px;border:none;cursor:pointer;margin:1px;transition:.13s}
+.btn-e{background:#e3f0ff;color:#1a5fb4}.btn-e:hover{background:#1a5fb4;color:#fff}
+.btn-d{background:#fde8e8;color:#c0392b}.btn-d:hover{background:#c0392b;color:#fff}
+.btn-g{background:#d4edda;color:#155724}.btn-g:hover{background:#155724;color:#fff}
+.btn-y{background:#fff3cd;color:#856404}.btn-y:hover{background:#856404;color:#fff}
+.btn-t{background:#e8f4f8;color:#0369a1}.btn-t:hover{background:#0369a1;color:#fff}
+.sw{position:relative}.sw i{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#bbb;font-size:.77rem}
+.sw input{padding-left:30px;border-radius:7px;font-size:.79rem;border:1px solid #dde0e8;width:196px;height:30px}
+.modal-header{background:var(--dark);color:#fff;border-radius:12px 12px 0 0}
+.modal-header .btn-close{filter:invert(1)}.modal-content{border-radius:12px;border:none}
+.form-label{font-size:.78rem;font-weight:600;color:#444;margin-bottom:2px}
+.page{display:none}.page.active{display:block}
+#toast{position:fixed;bottom:18px;right:18px;background:var(--dark);color:#fff;padding:10px 17px;border-radius:9px;font-size:.82rem;display:none;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.24)}
+.es{text-align:center;padding:44px;color:#ccc}.es i{font-size:2.6rem;margin-bottom:10px;display:block}
+.chip-a{background:#1a3c6e;color:#fff;font-size:.66rem;padding:2px 8px;border-radius:20px;font-weight:700;display:inline-block}
+.chip-u{background:#6c757d;color:#fff;font-size:.66rem;padding:2px 8px;border-radius:20px;font-weight:700;display:inline-block}
+.pr-item-row td{padding:4px 6px!important}
+.move-arrow{color:#ccc;font-size:.7rem;margin:0 4px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="lp-wrap">
+<div class="lcard">
+  <div class="llogo"><i class="fa-solid fa-boxes-stacked"></i><h4>Dhanam Inventory Portal</h4><small>Dhanam Investment &amp; Finance Pvt. Ltd.</small></div>
+  <div id="lerr" class="alert alert-danger d-none py-2 mb-3" style="font-size:.82rem"></div>
+  <div class="mb-3"><label class="form-label">Username</label>
+    <div class="input-group input-group-sm"><span class="input-group-text"><i class="fa-solid fa-user fa-xs"></i></span>
+    <input type="text" id="lu" class="form-control" placeholder="Username" onkeydown="if(event.key==='Enter')login()"/></div>
+  </div>
+  <div class="mb-4"><label class="form-label">Password</label>
+    <div class="input-group input-group-sm"><span class="input-group-text"><i class="fa-solid fa-lock fa-xs"></i></span>
+    <input type="password" id="lp" class="form-control" placeholder="Password" onkeydown="if(event.key==='Enter')login()"/></div>
+  </div>
+  <button class="btn w-100 fw-bold py-2 text-white" style="background:var(--dark);border-radius:8px" onclick="login()"><i class="fa-solid fa-right-to-bracket me-2"></i>Sign In</button>
+</div>
+</div>
+
+<!-- APP -->
+<div id="app">
+<div class="sb">
+  <div class="sb-top"><i class="fa-solid fa-boxes-stacked li"></i><div><h6>Inventory Portal</h6><span>Dhanam Finance</span></div></div>
+  <div class="sb-user">
+    <div class="d-flex align-items-start">
+      <div class="av mt-1" id="sbAv">A</div>
+      <div><div class="nm" id="sbNm"></div><div class="rl" id="sbRl"></div><div id="sbTag"></div></div>
+    </div>
+  </div>
+  <div class="sb-nav">
+    <div class="ns">Main</div>
+    <div class="ni active" id="nav-dash" onclick="go('dash')"><i class="fa-solid fa-gauge-high"></i>Dashboard</div>
+    <div class="ni" id="nav-inv" onclick="go('inv');resetFilters()"><i class="fa-solid fa-table-list"></i>All Inventory</div>
+    <div class="ni" id="nav-pr" onclick="go('pr')"><i class="fa-solid fa-cart-plus"></i>Purchase Requests<span class="pr-badge d-none" id="pr-pending-badge">0</span></div>
+
+    <div class="ns">💻 IT Equipment</div>
+    <div class="ni" onclick="ft('Laptops / Desktops')">        <span class="dot" style="background:#1d4ed8"></span>Laptops / Desktops</div>
+    <div class="ni" onclick="ft('Monitors')">                  <span class="dot" style="background:#1d4ed8"></span>Monitors</div>
+    <div class="ni" onclick="ft('Keyboards &amp; Mouse')">     <span class="dot" style="background:#1d4ed8"></span>Keyboards &amp; Mouse</div>
+    <div class="ni" onclick="ft('Docking Stations')">          <span class="dot" style="background:#1d4ed8"></span>Docking Stations</div>
+    <div class="ni" onclick="ft('Servers')">                   <span class="dot" style="background:#1d4ed8"></span>Servers</div>
+    <div class="ni" onclick="ft('Printers &amp; Scanners')">   <span class="dot" style="background:#1d4ed8"></span>Printers &amp; Scanners</div>
+    <div class="ni" onclick="ft('Routers &amp; Switches')">    <span class="dot" style="background:#1d4ed8"></span>Routers &amp; Switches</div>
+    <div class="ni" onclick="ft('External Hard Drives / SSDs')"><span class="dot" style="background:#1d4ed8"></span>Hard Drives / SSDs</div>
+    <div class="ni" onclick="ft('UPS (Power Backup)')">        <span class="dot" style="background:#1d4ed8"></span>UPS (Power Backup)</div>
+
+    <div class="ns">📡 Communication &amp; AV</div>
+    <div class="ni" onclick="ft('Projectors / TVs')">          <span class="dot" style="background:#15803d"></span>Projectors / TVs</div>
+    <div class="ni" onclick="ft('Headsets / Earphones')">      <span class="dot" style="background:#15803d"></span>Headsets / Earphones</div>
+    <div class="ni" onclick="ft('Official Mobile Phones')">    <span class="dot" style="background:#15803d"></span>Mobile Phones</div>
+    <div class="ni" onclick="ft('SIM Cards')">                 <span class="dot" style="background:#15803d"></span>SIM Cards</div>
+
+    <div class="ns">🔐 Security &amp; Access</div>
+    <div class="ni" onclick="ft('Employee ID Cards')">         <span class="dot" style="background:#b91c1c"></span>Employee ID Cards</div>
+    <div class="ni" onclick="ft('Access Cards / Biometric Devices')"><span class="dot" style="background:#b91c1c"></span>Access / Biometric</div>
+    <div class="ni" onclick="ft('CCTV Cameras')">              <span class="dot" style="background:#b91c1c"></span>CCTV Cameras</div>
+    <div class="ni" onclick="ft('Visitor Log Register')">      <span class="dot" style="background:#b91c1c"></span>Visitor Log Register</div>
+
+    <div class="ns">🎒 Office Accessories</div>
+    <div class="ni" onclick="ft('Laptop Bags')">               <span class="dot" style="background:#7e22ce"></span>Laptop Bags</div>
+    <div class="ni" onclick="ft('Extension Boards')">          <span class="dot" style="background:#7e22ce"></span>Extension Boards</div>
+    <div class="ni" onclick="ft('Power Cables')">              <span class="dot" style="background:#7e22ce"></span>Power Cables</div>
+    <div class="ni" onclick="ft('Batteries')">                 <span class="dot" style="background:#7e22ce"></span>Batteries</div>
+    <div class="ni" onclick="ft('First Aid Kits')">            <span class="dot" style="background:#7e22ce"></span>First Aid Kits</div>
+
+    <div class="ns">🏢 Facility &amp; Safety</div>
+    <div class="ni" onclick="ft('LED Lights')">                <span class="dot" style="background:#b45309"></span>LED Lights</div>
+    <div class="ni" onclick="ft('Air Conditioners')">          <span class="dot" style="background:#b45309"></span>Air Conditioners</div>
+    <div class="ni" onclick="ft('Fans')">                      <span class="dot" style="background:#b45309"></span>Fans</div>
+    <div class="ni" onclick="ft('Fire Extinguishers')">        <span class="dot" style="background:#b45309"></span>Fire Extinguishers</div>
+    <div class="ni" onclick="ft('Smoke Detectors')">           <span class="dot" style="background:#b45309"></span>Smoke Detectors</div>
+
+    <div class="ns">✏️ Writing Instruments</div>
+    <div class="ni" onclick="ft('Ball Pens (Blue, Black, Red)')"><span class="dot" style="background:#0f766e"></span>Ball Pens</div>
+    <div class="ni" onclick="ft('Gel Pens')">                  <span class="dot" style="background:#0f766e"></span>Gel Pens</div>
+    <div class="ni" onclick="ft('Pencils')">                   <span class="dot" style="background:#0f766e"></span>Pencils</div>
+    <div class="ni" onclick="ft('Highlighters')">              <span class="dot" style="background:#0f766e"></span>Highlighters</div>
+    <div class="ni" onclick="ft('Permanent Markers')">         <span class="dot" style="background:#0f766e"></span>Permanent Markers</div>
+    <div class="ni" onclick="ft('Whiteboard Markers')">        <span class="dot" style="background:#0f766e"></span>Whiteboard Markers</div>
+
+    <div class="ns">📄 Paper &amp; Registers</div>
+    <div class="ni" onclick="ft('A4 Paper (70/75/80 GSM)')">  <span class="dot" style="background:#0369a1"></span>A4 Paper</div>
+    <div class="ni" onclick="ft('Legal Size Paper')">          <span class="dot" style="background:#0369a1"></span>Legal Size Paper</div>
+    <div class="ni" onclick="ft('Letterhead Paper')">          <span class="dot" style="background:#0369a1"></span>Letterhead Paper</div>
+    <div class="ni" onclick="ft('Notebooks / Registers')">     <span class="dot" style="background:#0369a1"></span>Notebooks / Registers</div>
+    <div class="ni" onclick="ft('Sticky Notes (Post-its)')">   <span class="dot" style="background:#0369a1"></span>Sticky Notes</div>
+    <div class="ni" onclick="ft('Notepads')">                  <span class="dot" style="background:#0369a1"></span>Notepads</div>
+
+    <div class="ns">🗂️ Filing &amp; Organization</div>
+    <div class="ni" onclick="ft('Files &amp; Folders')">       <span class="dot" style="background:#be185d"></span>Files &amp; Folders</div>
+    <div class="ni" onclick="ft('Lever Arch Files')">          <span class="dot" style="background:#be185d"></span>Lever Arch Files</div>
+    <div class="ni" onclick="ft('Expanding Files')">           <span class="dot" style="background:#be185d"></span>Expanding Files</div>
+    <div class="ni" onclick="ft('Document Trays')">            <span class="dot" style="background:#be185d"></span>Document Trays</div>
+    <div class="ni" onclick="ft('Clipboards')">                <span class="dot" style="background:#be185d"></span>Clipboards</div>
+    <div class="ni" onclick="ft('Sheet Protectors')">          <span class="dot" style="background:#be185d"></span>Sheet Protectors</div>
+
+    <div class="ns">📎 Binding &amp; Fastening</div>
+    <div class="ni" onclick="ft('Staplers')">                  <span class="dot" style="background:#6d28d9"></span>Staplers</div>
+    <div class="ni" onclick="ft('Stapler Pins')">              <span class="dot" style="background:#6d28d9"></span>Stapler Pins</div>
+    <div class="ni" onclick="ft('Paper Clips')">               <span class="dot" style="background:#6d28d9"></span>Paper Clips</div>
+    <div class="ni" onclick="ft('Binder Clips')">              <span class="dot" style="background:#6d28d9"></span>Binder Clips</div>
+    <div class="ni" onclick="ft('Rubber Bands')">              <span class="dot" style="background:#6d28d9"></span>Rubber Bands</div>
+    <div class="ni" onclick="ft('Punching Machine')">          <span class="dot" style="background:#6d28d9"></span>Punching Machine</div>
+
+    <div class="ns">✂️ Cutting &amp; Correction</div>
+    <div class="ni" onclick="ft('Scissors')">                  <span class="dot" style="background:#c2410c"></span>Scissors</div>
+    <div class="ni" onclick="ft('Cutter / Paper Knife')">      <span class="dot" style="background:#c2410c"></span>Cutter / Paper Knife</div>
+    <div class="ni" onclick="ft('Correction Pen / Fluid')">    <span class="dot" style="background:#c2410c"></span>Correction Pen / Fluid</div>
+    <div class="ni" onclick="ft('Erasers')">                   <span class="dot" style="background:#c2410c"></span>Erasers</div>
+    <div class="ni" onclick="ft('Sharpeners')">                <span class="dot" style="background:#c2410c"></span>Sharpeners</div>
+
+    <div class="ns">🗃️ Desk Essentials</div>
+    <div class="ni" onclick="ft('Tape Dispenser')">            <span class="dot" style="background:#065f46"></span>Tape Dispenser</div>
+    <div class="ni" onclick="ft('Adhesive Tape')">             <span class="dot" style="background:#065f46"></span>Adhesive Tape</div>
+    <div class="ni" onclick="ft('Glue Stick / Liquid Glue')"> <span class="dot" style="background:#065f46"></span>Glue Stick / Glue</div>
+    <div class="ni" onclick="ft('Desk Organizers')">           <span class="dot" style="background:#065f46"></span>Desk Organizers</div>
+    <div class="ni" onclick="ft('Pen Holders')">               <span class="dot" style="background:#065f46"></span>Pen Holders</div>
+
+    <div class="ns">🧾 Mailing &amp; Labels</div>
+    <div class="ni" onclick="ft('Envelopes (Small, A4, Courier)')"><span class="dot" style="background:#7e22ce"></span>Envelopes</div>
+    <div class="ni" onclick="ft('Labels / Stickers')">         <span class="dot" style="background:#7e22ce"></span>Labels / Stickers</div>
+    <div class="ni" onclick="ft('Name Tags')">                 <span class="dot" style="background:#7e22ce"></span>Name Tags</div>
+    <div class="ni" onclick="ft('Visiting Card Holders')">     <span class="dot" style="background:#7e22ce"></span>Visiting Card Holders</div>
+
+    <div class="ns">🖨️ Printer Consumables</div>
+    <div class="ni" onclick="ft('Ink Cartridges (Black &amp; Color)')"><span class="dot" style="background:#be123c"></span>Ink Cartridges</div>
+    <div class="ni" onclick="ft('Toner Cartridges (Laser Printers)')"><span class="dot" style="background:#be123c"></span>Toner Cartridges</div>
+    <div class="ni" onclick="ft('Ink Bottles (Ink Tank Printers)')">  <span class="dot" style="background:#be123c"></span>Ink Bottles</div>
+    <div class="ni" onclick="ft('Drum Units (Laser Printers)')">       <span class="dot" style="background:#be123c"></span>Drum Units</div>
+    <div class="ni" onclick="ft('Maintenance Kits')">                  <span class="dot" style="background:#be123c"></span>Maintenance Kits</div>
+
+    <div class="ns">📄 Printing Materials</div>
+    <div class="ni" onclick="ft('A4 Printing Paper')">             <span class="dot" style="background:#15803d"></span>A4 Printing Paper</div>
+    <div class="ni" onclick="ft('Photo Paper (Glossy / Matte)')">  <span class="dot" style="background:#15803d"></span>Photo Paper</div>
+    <div class="ni" onclick="ft('Label Sheets (Barcode / Address)')"><span class="dot" style="background:#15803d"></span>Label Sheets</div>
+    <div class="ni" onclick="ft('Pre-printed Stationery')">        <span class="dot" style="background:#15803d"></span>Pre-printed Stationery</div>
+
+    <div class="ns">⚙️ Printer Accessories</div>
+    <div class="ni" onclick="ft('USB Printer Cables')">            <span class="dot" style="background:#7c3aed"></span>USB Printer Cables</div>
+    <div class="ni" onclick="ft('Network Cables (LAN)')">          <span class="dot" style="background:#7c3aed"></span>Network Cables (LAN)</div>
+    <div class="ni" onclick="ft('Printer Power Cords')">           <span class="dot" style="background:#7c3aed"></span>Printer Power Cords</div>
+    <div class="ni" onclick="ft('Printer Stand / Table')">         <span class="dot" style="background:#7c3aed"></span>Printer Stand / Table</div>
+    <div class="ni" onclick="ft('Cleaning Kits (Printer Heads)')"> <span class="dot" style="background:#7c3aed"></span>Cleaning Kits</div>
+    <div class="ni" onclick="ft('Lint-free Cloth')">               <span class="dot" style="background:#7c3aed"></span>Lint-free Cloth</div>
+    <div class="ni" onclick="ft('Compressed Air Spray')">          <span class="dot" style="background:#7c3aed"></span>Compressed Air Spray</div>
+    <div class="ni" onclick="ft('Isopropyl Alcohol (Cleaning)')">  <span class="dot" style="background:#7c3aed"></span>Isopropyl Alcohol</div>
+    <div class="ni" onclick="ft('Spare Cartridges / Toners')">     <span class="dot" style="background:#7c3aed"></span>Spare Cartridges</div>
+    <div class="ni" onclick="ft('Cartridge Storage Boxes')">       <span class="dot" style="background:#7c3aed"></span>Cartridge Storage Boxes</div>
+    <div class="ni" onclick="ft('Waste Toner Bottles')">           <span class="dot" style="background:#7c3aed"></span>Waste Toner Bottles</div>
+
+    <div class="ns" id="adminSec">Admin</div>
+    <div class="ni" id="nav-transfer" onclick="go('transfer')"><i class="fa-solid fa-right-left"></i>Transfer Items (HO)</div>
+    <div class="ni" id="nav-history" onclick="go('history')"><i class="fa-solid fa-clock-rotate-left"></i>Movement History</div>
+    <div class="ni" id="nav-users" onclick="go('users')"><i class="fa-solid fa-users-gear"></i>Manage Users</div>
+    <div class="ns">Info</div>
+    <div class="ni" id="nav-branches" onclick="go('branches')"><i class="fa-solid fa-code-branch"></i>All Branches (49)</div>
+  </div>
+  <div class="sb-foot">
+    <button onclick="scrollSbTop()" style="width:100%;background:rgba(255,255,255,.04);border:none;color:rgba(255,255,255,.3);padding:5px;border-radius:5px;font-size:.72rem;cursor:pointer;margin-bottom:5px" title="Scroll to top"><i class="fa-solid fa-chevron-up me-1"></i>Scroll to top</button>
+    <button onclick="logout()"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <h5 id="pt"><i class="fa-solid fa-gauge-high me-2 text-warning"></i>Dashboard</h5>
+    <div class="d-flex gap-2" id="ta">
+      <button class="btn btn-sm text-white" id="btn-add-asset" style="background:var(--dark);border-radius:7px;display:none" onclick="openAdd()"><i class="fa-solid fa-plus me-1"></i>Add Asset</button>
+      <button class="btn btn-sm btn-outline-secondary" id="btn-export-csv" style="border-radius:7px;display:none" onclick="exportCSV()"><i class="fa-solid fa-download me-1"></i>Export CSV</button>
+      <button class="btn btn-sm text-white" id="btn-raise-pr" style="background:#e8a020;border-radius:7px;display:none" onclick="openPRModal()"><i class="fa-solid fa-cart-plus me-1"></i>Raise Request</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="pg-dash">
+    <div class="row g-3 mb-3" id="kpi-row"></div>
+    <div class="row g-3">
+      <div class="col-md-7"><div class="panel"><div class="ph"><h6><i class="fa-solid fa-chart-bar me-2 text-warning"></i>Assets by Group</h6></div><div class="p-3" id="cat-chart"></div></div></div>
+      <div class="col-md-5"><div class="panel"><div class="ph"><h6><i class="fa-solid fa-clock-rotate-left me-2 text-warning"></i>Recently Added</h6></div><div id="recent-list"></div></div></div>
+    </div>
+  </div>
+
+  <!-- INVENTORY -->
+  <div class="page" id="pg-inv">
+    <div class="panel">
+      <div class="ph">
+        <h6><i class="fa-solid fa-table-list me-2 text-warning"></i>Asset Inventory</h6>
+        <div class="d-flex gap-2 flex-wrap">
+          <div class="sw"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="search-q" placeholder="Search…" oninput="renderInv()"/></div>
+          <select class="form-select form-select-sm" id="fil-branch" onchange="renderInv()" style="width:138px;font-size:.78rem;border-radius:7px"></select>
+          <select class="form-select form-select-sm" id="fil-group" onchange="onGrpChange()" style="width:168px;font-size:.78rem;border-radius:7px"></select>
+          <select class="form-select form-select-sm" id="fil-type" onchange="renderInv()" style="width:185px;font-size:.78rem;border-radius:7px"></select>
+          <select class="form-select form-select-sm" id="fil-status" onchange="renderInv()" style="width:120px;font-size:.78rem;border-radius:7px">
+            <option value="">All Status</option><option>Available</option><option>Assigned</option><option>Maintenance</option><option>Retired</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead><tr><th>#</th><th>Asset / Item Name</th><th>Branch</th><th>Type</th><th>Brand / Model</th><th>Serial / Code</th><th>Assigned To</th><th>Dept</th><th>Qty</th><th>Cond.</th><th>Status</th><th>By</th><th>Actions</th></tr></thead>
+          <tbody id="inv-body"></tbody>
+        </table>
+      </div>
+      <div id="inv-empty" class="es d-none"><i class="fa-solid fa-box-open"></i>No assets found.</div>
+      <div class="px-3 py-2 border-top d-flex justify-content-between align-items-center" style="font-size:.76rem;color:#999">
+        <span id="inv-count"></span>
+        <span id="user-note" class="d-none" style="color:var(--gold);font-size:.74rem"><i class="fa-solid fa-circle-info me-1"></i>You can add &amp; edit — only admins can delete.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PURCHASE REQUESTS -->
+  <div class="page" id="pg-pr">
+    <div class="panel">
+      <div class="ph">
+        <h6><i class="fa-solid fa-cart-plus me-2 text-warning"></i>Purchase Requests</h6>
+        <div class="d-flex gap-2 flex-wrap align-items-center">
+          <select class="form-select form-select-sm" id="pr-fil-status" onchange="renderPR()" style="width:130px;font-size:.78rem;border-radius:7px">
+            <option value="">All Status</option><option>Pending</option><option>Approved</option><option>Rejected</option>
+          </select>
+          <small id="pr-admin-note" class="text-muted d-none"><i class="fa-solid fa-circle-info me-1"></i>Showing all branches</small>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead><tr><th>PR #</th><th>Requesting Branch</th><th>Items</th><th>Requested By</th><th>Date</th><th>Status</th><th>Admin Note</th><th>Actions</th></tr></thead>
+          <tbody id="pr-body"></tbody>
+        </table>
+      </div>
+      <div id="pr-empty" class="es d-none"><i class="fa-solid fa-inbox"></i>No purchase requests yet.<br/><small style="font-size:.8rem">Click <strong>Raise Request</strong> to create one.</small></div>
+    </div>
+  </div>
+
+  <!-- TRANSFER (ADMIN) -->
+  <div class="page" id="pg-transfer">
+    <div class="row g-3 mb-3" id="ho-kpi-row"></div>
+    <div class="panel">
+      <div class="ph">
+        <h6><i class="fa-solid fa-right-left me-2 text-warning"></i>Head Office Inventory — Transfer to Branch</h6>
+        <div class="sw"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="tr-search" placeholder="Search HO items…" oninput="renderTransfer()"/></div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead><tr><th>#</th><th>Item Name</th><th>Type</th><th>Brand</th><th>Qty at HO</th><th>Condition</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="transfer-body"></tbody>
+        </table>
+      </div>
+      <div id="transfer-empty" class="es d-none"><i class="fa-solid fa-warehouse"></i>No items at Head Office to transfer.</div>
+    </div>
+  </div>
+
+  <!-- MOVEMENT HISTORY (ADMIN) -->
+  <div class="page" id="pg-history">
+    <div class="panel">
+      <div class="ph">
+        <h6><i class="fa-solid fa-clock-rotate-left me-2 text-warning"></i>Item Movement History</h6>
+        <div class="d-flex gap-2 flex-wrap">
+          <select class="form-select form-select-sm" id="hist-fil-action" onchange="renderHistory()" style="width:160px;font-size:.78rem;border-radius:7px">
+            <option value="">All Actions</option><option>Transfer</option><option>Purchase Receipt</option>
+          </select>
+          <select class="form-select form-select-sm" id="hist-fil-branch" onchange="renderHistory()" style="width:160px;font-size:.78rem;border-radius:7px"><option value="">All Branches</option></select>
+          <button class="btn btn-sm btn-outline-secondary" style="border-radius:7px;font-size:.75rem" onclick="exportHistoryCSV()"><i class="fa-solid fa-download me-1"></i>Export</button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead><tr><th>#</th><th>Action</th><th>Item</th><th>Qty</th><th>Movement</th><th>Done By / Ref</th><th>Date &amp; Time</th></tr></thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+      <div id="history-empty" class="es d-none"><i class="fa-solid fa-route"></i>No movement records yet.</div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div class="page" id="pg-users">
+    <div class="row g-3">
+      <div class="col-lg-7">
+        <div class="panel"><div class="ph"><h6><i class="fa-solid fa-users me-2 text-warning"></i>All Users</h6></div>
+          <div class="table-responsive"><table class="table table-hover mb-0">
+            <thead><tr><th>#</th><th>Name</th><th>Username</th><th>Role</th><th>Branch</th><th></th></tr></thead>
+            <tbody id="usr-body"></tbody></table></div>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="panel"><div class="ph"><h6><i class="fa-solid fa-user-plus me-2 text-warning"></i>Create User</h6></div>
+          <div class="p-3">
+            <div class="mb-2"><label class="form-label">Full Name</label><input type="text" id="u-name" class="form-control form-control-sm"/></div>
+            <div class="mb-2"><label class="form-label">Username</label><input type="text" id="u-user" class="form-control form-control-sm"/></div>
+            <div class="mb-2"><label class="form-label">Password</label><input type="password" id="u-pass" class="form-control form-control-sm" placeholder="Min 6 chars"/></div>
+            <div class="mb-2"><label class="form-label">Role</label>
+              <select class="form-select form-select-sm" id="u-role">
+                <option value="Admin">Admin — Full access (add, edit, delete, approve)</option>
+                <option value="User" selected>User — Add, edit &amp; raise requests</option>
+              </select>
+            </div>
+            <div class="mb-3"><label class="form-label">Home Branch</label><select class="form-select form-select-sm" id="u-branch"></select></div>
+            <button class="btn btn-sm w-100 text-white" style="background:var(--dark);border-radius:7px" onclick="createUser()"><i class="fa-solid fa-plus me-1"></i>Create Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRANCHES -->
+  <div class="page" id="pg-branches">
+    <div class="panel"><div class="ph"><h6><i class="fa-solid fa-code-branch me-2 text-warning"></i>All Branch Locations — 49 Branches</h6></div>
+      <div class="p-3"><div class="row g-2" id="branch-grid"></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ADD/EDIT ASSET MODAL -->
+<div class="modal fade" id="asset-modal" tabindex="-1">
+<div class="modal-dialog modal-lg"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title" id="modal-title"><i class="fa-solid fa-plus me-2"></i>Add New Asset</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body">
+    <input type="hidden" id="edit-id"/>
+    <div class="row g-3">
+      <div class="col-md-6"><label class="form-label">Asset / Item Name <span class="text-danger">*</span></label><input type="text" id="f-name" class="form-control form-control-sm" placeholder="e.g. Dell Laptop – Finance Team"/></div>
+      <div class="col-md-6"><label class="form-label">Branch (Where this asset is located) <span class="text-danger">*</span></label><select id="f-branch" class="form-select form-select-sm"></select></div>
+      <div class="col-md-6">
+        <label class="form-label">Asset Type <span class="text-danger">*</span></label>
+        <select id="f-type" class="form-select form-select-sm">
+          <option value="">— Select asset type —</option>
+          <optgroup label="💻 IT Equipment">
+            <option>Laptops / Desktops</option><option>Monitors</option><option>Keyboards &amp; Mouse</option>
+            <option>Docking Stations</option><option>Servers</option><option>Printers &amp; Scanners</option>
+            <option>Routers &amp; Switches</option><option>External Hard Drives / SSDs</option><option>UPS (Power Backup)</option>
+          </optgroup>
+          <optgroup label="📡 Communication &amp; AV">
+            <option>Projectors / TVs</option><option>Headsets / Earphones</option>
+            <option>Official Mobile Phones</option><option>SIM Cards</option>
+          </optgroup>
+          <optgroup label="🔐 Security &amp; Access">
+            <option>Employee ID Cards</option><option>Access Cards / Biometric Devices</option>
+            <option>CCTV Cameras</option><option>Visitor Log Register</option>
+          </optgroup>
+          <optgroup label="🎒 Office Accessories">
+            <option>Laptop Bags</option><option>Extension Boards</option><option>Power Cables</option>
+            <option>Batteries</option><option>First Aid Kits</option>
+          </optgroup>
+          <optgroup label="🏢 Facility &amp; Safety">
+            <option>LED Lights</option><option>Air Conditioners</option><option>Fans</option>
+            <option>Fire Extinguishers</option><option>Smoke Detectors</option>
+          </optgroup>
+          <optgroup label="✏️ Writing Instruments">
+            <option>Ball Pens (Blue, Black, Red)</option><option>Gel Pens</option><option>Pencils</option>
+            <option>Highlighters</option><option>Permanent Markers</option><option>Whiteboard Markers</option>
+          </optgroup>
+          <optgroup label="📄 Paper &amp; Registers">
+            <option>A4 Paper (70/75/80 GSM)</option><option>Legal Size Paper</option><option>Letterhead Paper</option>
+            <option>Notebooks / Registers</option><option>Sticky Notes (Post-its)</option><option>Notepads</option>
+          </optgroup>
+          <optgroup label="🗂️ Filing &amp; Organization">
+            <option>Files &amp; Folders</option><option>Lever Arch Files</option><option>Expanding Files</option>
+            <option>Document Trays</option><option>Clipboards</option><option>Sheet Protectors</option>
+          </optgroup>
+          <optgroup label="📎 Binding &amp; Fastening">
+            <option>Staplers</option><option>Stapler Pins</option><option>Paper Clips</option>
+            <option>Binder Clips</option><option>Rubber Bands</option><option>Punching Machine</option>
+          </optgroup>
+          <optgroup label="✂️ Cutting &amp; Correction">
+            <option>Scissors</option><option>Cutter / Paper Knife</option><option>Correction Pen / Fluid</option>
+            <option>Erasers</option><option>Sharpeners</option>
+          </optgroup>
+          <optgroup label="🗃️ Desk Essentials">
+            <option>Tape Dispenser</option><option>Adhesive Tape</option><option>Glue Stick / Liquid Glue</option>
+            <option>Desk Organizers</option><option>Pen Holders</option>
+          </optgroup>
+          <optgroup label="🧾 Mailing &amp; Labels">
+            <option>Envelopes (Small, A4, Courier)</option><option>Labels / Stickers</option>
+            <option>Name Tags</option><option>Visiting Card Holders</option>
+          </optgroup>
+          <optgroup label="🖨️ Printer Consumables">
+            <option>Ink Cartridges (Black &amp; Color)</option><option>Toner Cartridges (Laser Printers)</option>
+            <option>Ink Bottles (Ink Tank Printers)</option><option>Drum Units (Laser Printers)</option>
+            <option>Maintenance Kits</option>
+          </optgroup>
+          <optgroup label="📄 Printing Materials">
+            <option>A4 Printing Paper</option><option>Photo Paper (Glossy / Matte)</option>
+            <option>Label Sheets (Barcode / Address)</option><option>Pre-printed Stationery</option>
+          </optgroup>
+          <optgroup label="⚙️ Printer Accessories">
+            <option>USB Printer Cables</option><option>Network Cables (LAN)</option>
+            <option>Printer Power Cords</option><option>Printer Stand / Table</option>
+            <option>Cleaning Kits (Printer Heads)</option><option>Lint-free Cloth</option>
+            <option>Compressed Air Spray</option><option>Isopropyl Alcohol (Cleaning)</option>
+            <option>Spare Cartridges / Toners</option><option>Cartridge Storage Boxes</option>
+            <option>Waste Toner Bottles</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="col-md-3"><label class="form-label">Quantity <span class="text-danger">*</span></label><input type="number" id="f-qty" class="form-control form-control-sm" value="1" min="1"/></div>
+      <div class="col-md-3"><label class="form-label">Condition</label><select id="f-condition" class="form-select form-select-sm"><option>New</option><option>Good</option><option>Fair</option><option>Poor</option></select></div>
+      <div class="col-md-6"><label class="form-label">Brand / Model / Specification</label><input type="text" id="f-brand" class="form-control form-control-sm" placeholder="e.g. Dell, HP, Camlin, ITC…"/></div>
+      <div class="col-md-6"><label class="form-label">Serial / Asset / Batch Number</label><input type="text" id="f-serial" class="form-control form-control-sm" placeholder="e.g. DL-2024-001, Batch-Q1-24"/></div>
+      <div class="col-md-6"><label class="form-label">Assigned To / Issued To</label><input type="text" id="f-assigned" class="form-control form-control-sm" placeholder="Employee name or Department"/></div>
+      <div class="col-md-6"><label class="form-label">Department</label><input type="text" id="f-dept" class="form-control form-control-sm" placeholder="e.g. Finance, HR, IT, Admin"/></div>
+      <div class="col-md-4"><label class="form-label">Purchase / Received Date</label><input type="date" id="f-date" class="form-control form-control-sm"/></div>
+      <div class="col-md-4"><label class="form-label">Status</label><select id="f-status" class="form-select form-select-sm"><option>Available</option><option>Assigned</option><option>Maintenance</option><option>Retired</option></select></div>
+      <div class="col-md-4"><label class="form-label">Warranty / Expiry Date</label><input type="date" id="f-warranty" class="form-control form-control-sm"/></div>
+      <div class="col-12"><label class="form-label">Notes / Remarks</label><textarea id="f-notes" class="form-control form-control-sm" rows="2" placeholder="Any additional info…"></textarea></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button class="btn btn-sm text-white" style="background:var(--dark);border-radius:7px" onclick="saveAsset()"><i class="fa-solid fa-floppy-disk me-1"></i><span id="save-lbl">Save Asset</span></button>
+  </div>
+</div></div></div>
+
+<!-- PURCHASE REQUEST MODAL -->
+<div class="modal fade" id="pr-modal" tabindex="-1">
+<div class="modal-dialog modal-xl"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="fa-solid fa-cart-plus me-2"></i>Raise Purchase Request</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body">
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Requesting Branch <span class="text-danger">*</span></label>
+        <select id="pr-branch" class="form-select form-select-sm"></select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Priority</label>
+        <select id="pr-priority" class="form-select form-select-sm">
+          <option value="Normal">Normal</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Low">Low Priority</option>
+        </select>
+      </div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <label class="form-label mb-0"><strong>Items to Request</strong></label>
+      <button class="btn btn-sm" style="background:#e8f0fc;color:#1a5fb4;border-radius:6px;font-size:.75rem" onclick="addPRLine()"><i class="fa-solid fa-plus me-1"></i>Add Item</button>
+    </div>
+    <div class="table-responsive" style="max-height:320px;overflow-y:auto">
+      <table class="table table-bordered mb-0" style="font-size:.78rem">
+        <thead style="position:sticky;top:0;z-index:1">
+          <tr><th style="width:30px">#</th><th>Item Type <span class="text-danger">*</span></th><th style="width:150px">Brand / Spec</th><th style="width:80px">Qty <span class="text-danger">*</span></th><th>Reason / Purpose</th><th style="width:36px"></th></tr>
+        </thead>
+        <tbody id="pr-items-body"></tbody>
+      </table>
+    </div>
+    <div id="pr-no-items" class="text-center text-muted py-3" style="font-size:.82rem;display:none"><i class="fa-solid fa-circle-info me-1"></i>Click <strong>Add Item</strong> to start building your request.</div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button class="btn btn-sm text-white" style="background:#e8a020;border-radius:7px" onclick="submitPR()"><i class="fa-solid fa-paper-plane me-1"></i>Submit Request to Admin</button>
+  </div>
+</div></div></div>
+
+<!-- TRANSFER MODAL -->
+<div class="modal fade" id="transfer-modal" tabindex="-1">
+<div class="modal-dialog"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title"><i class="fa-solid fa-right-left me-2"></i>Transfer Item to Branch</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body">
+    <div class="alert" style="background:#e8f0fc;border:none;border-left:4px solid var(--dark);border-radius:8px;font-size:.82rem;padding:10px 14px">
+      <strong id="tr-item-name"></strong>
+      <div style="color:#666;margin-top:2px">Available at Head Office: <strong id="tr-qty-max" style="color:var(--dark)">0</strong> unit(s)</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Quantity to Transfer <span class="text-danger">*</span></label>
+      <input type="number" id="tr-qty" class="form-control form-control-sm" value="1" min="1"/>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Transfer to Branch <span class="text-danger">*</span></label>
+      <select id="tr-branch" class="form-select form-select-sm"></select>
+    </div>
+    <div class="mb-2">
+      <label class="form-label">Notes / Reference</label>
+      <input type="text" id="tr-notes" class="form-control form-control-sm" placeholder="e.g. For new joining, PR reference…"/>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <button class="btn btn-sm text-white" style="background:var(--dark);border-radius:7px" onclick="doTransfer()"><i class="fa-solid fa-right-left me-1"></i>Confirm Transfer</button>
+  </div>
+</div></div></div>
+
+<!-- VIEW PR DETAIL MODAL -->
+<div class="modal fade" id="pr-view-modal" tabindex="-1">
+<div class="modal-dialog modal-lg"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title" id="prv-title"><i class="fa-solid fa-file-lines me-2"></i>Purchase Request Details</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+  <div class="modal-body" id="prv-body"></div>
+  <div class="modal-footer" id="prv-footer"></div>
+</div></div></div>
+
+<div id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+const BRANCHES=["Head Office","Ambasamudram","Annur","Anthiyur","Athavathur","Bargur","Chekkanoorani","Chinnamanur","Denkanikottai","Dharapuram","Dindigul","Eral","Erode","Ganapathy","Gandhipuram","Gobichettipalayam","Harur","Hosur","Irugur","Karanampettai","Kariyapatti","Kattuputhur","Kinathukadavu","Kondalampatti","Kulithalai","Mallumichampatty","Musiri","Nambiyur","Ooty","Palacode","Palayamkottai","Palladam","Paramathivelur","Periyakulam","Rajapalayam","Rasipuram","RR Nagar","Salem","Sankarankovil","Sankari","Sevaipettai","Somarasampettai","Srivilliputhur","Surandai","Tenkasi","Thirupuvanam","Thondamuthur","Tiruchengode","Tuticorin"];
+
+const GROUPS={
+  "IT Equipment":         ["Laptops / Desktops","Monitors","Keyboards & Mouse","Docking Stations","Servers","Printers & Scanners","Routers & Switches","External Hard Drives / SSDs","UPS (Power Backup)"],
+  "Communication & AV":  ["Projectors / TVs","Headsets / Earphones","Official Mobile Phones","SIM Cards"],
+  "Security & Access":   ["Employee ID Cards","Access Cards / Biometric Devices","CCTV Cameras","Visitor Log Register"],
+  "Office Accessories":  ["Laptop Bags","Extension Boards","Power Cables","Batteries","First Aid Kits"],
+  "Facility & Safety":   ["LED Lights","Air Conditioners","Fans","Fire Extinguishers","Smoke Detectors"],
+  "Writing Instruments": ["Ball Pens (Blue, Black, Red)","Gel Pens","Pencils","Highlighters","Permanent Markers","Whiteboard Markers"],
+  "Paper & Registers":   ["A4 Paper (70/75/80 GSM)","Legal Size Paper","Letterhead Paper","Notebooks / Registers","Sticky Notes (Post-its)","Notepads"],
+  "Filing & Organization":["Files & Folders","Lever Arch Files","Expanding Files","Document Trays","Clipboards","Sheet Protectors"],
+  "Binding & Fastening": ["Staplers","Stapler Pins","Paper Clips","Binder Clips","Rubber Bands","Punching Machine"],
+  "Cutting & Correction":["Scissors","Cutter / Paper Knife","Correction Pen / Fluid","Erasers","Sharpeners"],
+  "Desk Essentials":     ["Tape Dispenser","Adhesive Tape","Glue Stick / Liquid Glue","Desk Organizers","Pen Holders"],
+  "Mailing & Labels":    ["Envelopes (Small, A4, Courier)","Labels / Stickers","Name Tags","Visiting Card Holders"],
+  "Printer Consumables": ["Ink Cartridges (Black & Color)","Toner Cartridges (Laser Printers)","Ink Bottles (Ink Tank Printers)","Drum Units (Laser Printers)","Maintenance Kits"],
+  "Printing Materials":  ["A4 Printing Paper","Photo Paper (Glossy / Matte)","Label Sheets (Barcode / Address)","Pre-printed Stationery"],
+  "Printer Accessories": ["USB Printer Cables","Network Cables (LAN)","Printer Power Cords","Printer Stand / Table","Cleaning Kits (Printer Heads)","Lint-free Cloth","Compressed Air Spray","Isopropyl Alcohol (Cleaning)","Spare Cartridges / Toners","Cartridge Storage Boxes","Waste Toner Bottles"],
+};
+
+const ALL_TYPES=Object.values(GROUPS).flat();
+const T2G=Object.fromEntries(Object.entries(GROUPS).flatMap(([g,ts])=>ts.map(t=>[t,g])));
+
+const GS={
+  "IT Equipment":        {cls:"g-it",bg:"#dbeafe",fg:"#1d4ed8"},
+  "Communication & AV": {cls:"g-cm",bg:"#dcfce7",fg:"#15803d"},
+  "Security & Access":  {cls:"g-sc",bg:"#fde8e8",fg:"#b91c1c"},
+  "Office Accessories": {cls:"g-oa",bg:"#f5e9f7",fg:"#7e22ce"},
+  "Facility & Safety":  {cls:"g-fa",bg:"#fef3c7",fg:"#b45309"},
+  "Writing Instruments":{cls:"g-wr",bg:"#ccfbf1",fg:"#0f766e"},
+  "Paper & Registers":  {cls:"g-pr",bg:"#e0f2fe",fg:"#0369a1"},
+  "Filing & Organization":{cls:"g-fi",bg:"#fce7f3",fg:"#be185d"},
+  "Binding & Fastening":{cls:"g-bf",bg:"#ede9fe",fg:"#6d28d9"},
+  "Cutting & Correction":{cls:"g-cc",bg:"#fff7ed",fg:"#c2410c"},
+  "Desk Essentials":    {cls:"g-de",bg:"#ecfdf5",fg:"#065f46"},
+  "Mailing & Labels":   {cls:"g-ml",bg:"#fdf4ff",fg:"#7e22ce"},
+  "Printer Consumables":{cls:"g-pc",bg:"#fff1f2",fg:"#be123c"},
+  "Printing Materials": {cls:"g-pm",bg:"#f0fdf4",fg:"#15803d"},
+  "Printer Accessories":{cls:"g-pa",bg:"#faf5ff",fg:"#7c3aed"},
+};
+
+const KU='dfi_u6',KI='dfi_i6',KPR='dfi_pr1',KMV='dfi_mv1';
+const now=()=>new Date().toISOString();
+const fmtDate=iso=>{if(!iso)return'—';const d=new Date(iso);return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});};
+const fmtDT=iso=>{if(!iso)return'—';const d=new Date(iso);return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});};
+
+function getUsers(){
+  const d=localStorage.getItem(KU);if(d)return JSON.parse(d);
+  const def=[
+    {id:1,name:'Administrator',username:'admin',password:'admin123',role:'Admin',branch:'Head Office'},
+    {id:2,name:'Hema',username:'hema',password:'dhanam123',role:'Admin',branch:'Head Office'},
+    {id:3,name:'Suresh Kumar',username:'user1',password:'user123',role:'User',branch:'Erode'},
+    {id:4,name:'Priya Nair',username:'user2',password:'user123',role:'User',branch:'Salem'},
+  ];
+  localStorage.setItem(KU,JSON.stringify(def));return def;
+}
+function saveUsers(v){localStorage.setItem(KU,JSON.stringify(v));}
+
+function getItems(){
+  const d=localStorage.getItem(KI);if(d)return JSON.parse(d);
+  const s=[
+    {id:1, name:'Dell Laptop – Finance Dept',    branch:'Erode',       type:'Laptops / Desktops',              brand:'Dell Inspiron 15',    serial:'DL-001',  assigned:'Meena R',    dept:'Finance',qty:1, date:'2023-06-10',condition:'Good',status:'Assigned',   warranty:'2026-06-10',notes:'i5 11th Gen 8GB',by:'admin',at:now()},
+    {id:2, name:'HP LaserJet Printer',            branch:'Head Office', type:'Printers & Scanners',             brand:'HP LaserJet M404dn',  serial:'HP-012',  assigned:'Unassigned', dept:'Admin',  qty:2, date:'2022-01-15',condition:'Good',status:'Available',  warranty:'2025-01-15',notes:'Duplex Network',by:'admin',at:now()},
+    {id:3, name:'Epson Projector',                branch:'Head Office', type:'Projectors / TVs',                brand:'Epson EB-X51',        serial:'EP-033',  assigned:'Unassigned', dept:'Admin',  qty:1, date:'2023-09-01',condition:'Good',status:'Available',  warranty:'2026-09-01',notes:'',by:'admin',at:now()},
+    {id:4, name:'UPS Battery Backup',             branch:'Head Office', type:'UPS (Power Backup)',              brand:'APC 600VA',           serial:'APC-006', assigned:'Server Room',dept:'IT',     qty:5, date:'2021-08-15',condition:'Good',status:'Available',  warranty:'',          notes:'',by:'admin',at:now()},
+    {id:5, name:'Ball Pens – Stock',              branch:'Head Office', type:'Ball Pens (Blue, Black, Red)',    brand:'Cello Butterflow',    serial:'',        assigned:'Unassigned', dept:'Admin',  qty:200,date:'2024-01-10',condition:'New', status:'Available',  warranty:'',          notes:'Blue 100, Black 80, Red 20',by:'admin',at:now()},
+    {id:6, name:'A4 Paper 75 GSM',                branch:'Head Office', type:'A4 Paper (70/75/80 GSM)',         brand:'Double A',            serial:'',        assigned:'Unassigned', dept:'Admin',  qty:20, date:'2024-02-01',condition:'New', status:'Available',  warranty:'',          notes:'20 reams',by:'admin',at:now()},
+    {id:7, name:'HP Toner Cartridge',             branch:'Head Office', type:'Toner Cartridges (Laser Printers)',brand:'HP CF217A',          serial:'',        assigned:'Unassigned', dept:'IT',     qty:6,  date:'2024-01-20',condition:'New', status:'Available',  warranty:'',          notes:'For HP M130a',by:'admin',at:now()},
+    {id:8, name:'CCTV Camera – Entrance',         branch:'Head Office', type:'CCTV Cameras',                   brand:'Hikvision DS-2CD',    serial:'HK-021',  assigned:'Security',   dept:'Admin',  qty:4,  date:'2022-05-10',condition:'Good',status:'Assigned',   warranty:'2025-05-10',notes:'',by:'admin',at:now()},
+    {id:9, name:'Fire Extinguisher – ABC 5kg',    branch:'Head Office', type:'Fire Extinguishers',             brand:'Safex',               serial:'FE-01',   assigned:'Unassigned', dept:'Admin',  qty:5,  date:'2023-01-01',condition:'Good',status:'Available',  warranty:'2025-01-01',notes:'',by:'admin',at:now()},
+    {id:10,name:'Sticky Notes Post-its',          branch:'Head Office', type:'Sticky Notes (Post-its)',         brand:'3M Post-it',          serial:'',        assigned:'Unassigned', dept:'Admin',  qty:50, date:'2024-03-01',condition:'New', status:'Available',  warranty:'',          notes:'76x76mm yellow',by:'admin',at:now()},
+    {id:11,name:'Laptop Bags – HP',               branch:'Head Office', type:'Laptop Bags',                    brand:'HP Essential',        serial:'',        assigned:'Unassigned', dept:'IT',     qty:10, date:'2024-02-15',condition:'New', status:'Available',  warranty:'',          notes:'15.6 inch',by:'admin',at:now()},
+    {id:12,name:'Ink Bottles – Epson L3150',      branch:'Erode',       type:'Ink Bottles (Ink Tank Printers)', brand:'Epson Genuine 664',  serial:'',        assigned:'Unassigned', dept:'IT',     qty:8,  date:'2024-01-05',condition:'New', status:'Available',  warranty:'',          notes:'BK+C+M+Y combo',by:'admin',at:now()},
+  ];
+  localStorage.setItem(KI,JSON.stringify(s));return s;
+}
+function saveItems(v){localStorage.setItem(KI,JSON.stringify(v));}
+
+function getPRs(){const d=localStorage.getItem(KPR);return d?JSON.parse(d):[];}
+function savePRs(v){localStorage.setItem(KPR,JSON.stringify(v));}
+function getMoves(){const d=localStorage.getItem(KMV);return d?JSON.parse(d):[];}
+function saveMoves(v){localStorage.setItem(KMV,JSON.stringify(v));}
+
+let CU=null;
+
+function login(){
+  const u=document.getElementById('lu').value.trim(),p=document.getElementById('lp').value;
+  const f=getUsers().find(x=>x.username===u&&x.password===p);
+  if(!f){const e=document.getElementById('lerr');e.textContent='Invalid username or password.';e.classList.remove('d-none');return;}
+  CU=f;
+  document.getElementById('lerr').classList.add('d-none');
+  document.getElementById('lp-wrap').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('sbAv').textContent=f.name[0].toUpperCase();
+  document.getElementById('sbNm').textContent=f.name;
+  document.getElementById('sbRl').textContent=f.role+' · '+f.branch;
+  document.getElementById('sbTag').innerHTML=`<span class="rt ${f.role==='Admin'?'rt-a':'rt-u'}">${f.role}</span>`;
+  const isA=CU.role==='Admin';
+  document.getElementById('adminSec').style.display=isA?'':'none';
+  document.getElementById('nav-users').style.display=isA?'':'none';
+  document.getElementById('nav-transfer').style.display=isA?'':'none';
+  document.getElementById('nav-history').style.display=isA?'':'none';
+  document.getElementById('user-note').classList.toggle('d-none',isA);
+  if(isA) document.getElementById('pr-admin-note').classList.remove('d-none');
+  setupDD();updatePRBadge();go('dash');initSidebar();
+}
+function logout(){CU=null;document.getElementById('lp-wrap').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('lu').value='';document.getElementById('lp').value='';}
+
+function setupDD(){
+  document.getElementById('fil-branch').innerHTML='<option value="">All Branches</option>'+BRANCHES.map(b=>`<option>${b}</option>`).join('');
+  document.getElementById('f-branch').innerHTML=BRANCHES.map(b=>`<option>${b}</option>`).join('');
+  document.getElementById('f-branch').value=CU.branch;
+  document.getElementById('u-branch').innerHTML=BRANCHES.map(b=>`<option>${b}</option>`).join('');
+  document.getElementById('pr-branch').innerHTML=BRANCHES.map(b=>`<option>${b}</option>`).join('');
+  document.getElementById('pr-branch').value=CU.branch;
+  document.getElementById('fil-group').innerHTML='<option value="">All Groups</option>'+Object.keys(GROUPS).map(g=>`<option>${g}</option>`).join('');
+  buildTypeDD('');
+  document.getElementById('hist-fil-branch').innerHTML='<option value="">All Branches</option>'+BRANCHES.map(b=>`<option>${b}</option>`).join('');
+  document.getElementById('branch-grid').innerHTML=BRANCHES.map((b,i)=>`<div class="col-6 col-md-4 col-lg-3"><div class="d-flex align-items-center gap-2 p-2 rounded border" style="background:#f8f9fc;font-size:.78rem"><span style="color:var(--dark);font-weight:800;font-size:.67rem;width:20px">${String(i+1).padStart(2,'0')}</span><span>${b}</span>${b==='Head Office'?'<span class="ms-auto" style="background:var(--dark);color:#fff;font-size:.6rem;padding:1px 5px;border-radius:20px;font-weight:700">HO</span>':''}</div></div>`).join('');
+}
+
+function buildTypeDD(grp){
+  const sel=document.getElementById('fil-type');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">All Types</option>';
+  const grps=grp?{[grp]:GROUPS[grp]}:GROUPS;
+  for(const[g,ts]of Object.entries(grps)){
+    const og=document.createElement('optgroup');og.label=g;
+    ts.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;og.appendChild(o);});
+    sel.appendChild(og);
+  }
+  if(cur&&[...sel.options].find(o=>o.value===cur)) sel.value=cur;
+}
+function onGrpChange(){buildTypeDD(document.getElementById('fil-group').value);renderInv();}
+
+function buildPRTypeHTML(){
+  let html='<option value="">— Select type —</option>';
+  for(const[g,ts]of Object.entries(GROUPS)){
+    html+=`<optgroup label="${g}">`;
+    ts.forEach(t=>{html+=`<option value="${t}">${t}</option>`;});
+    html+='</optgroup>';
+  }
+  return html;
+}
+
+const PTITLES={
+  dash:'<i class="fa-solid fa-gauge-high me-2 text-warning"></i>Dashboard',
+  inv:'<i class="fa-solid fa-table-list me-2 text-warning"></i>Asset Inventory',
+  pr:'<i class="fa-solid fa-cart-plus me-2 text-warning"></i>Purchase Requests',
+  transfer:'<i class="fa-solid fa-right-left me-2 text-warning"></i>Transfer Items (Head Office)',
+  history:'<i class="fa-solid fa-clock-rotate-left me-2 text-warning"></i>Movement History',
+  users:'<i class="fa-solid fa-users-gear me-2 text-warning"></i>Manage Users',
+  branches:'<i class="fa-solid fa-code-branch me-2 text-warning"></i>All Branches'
+};
+
+function go(pg){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-'+pg).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  const ni=document.getElementById('nav-'+pg);if(ni)ni.classList.add('active');
+  document.getElementById('pt').innerHTML=PTITLES[pg]||pg;
+  // topbar buttons
+  document.getElementById('btn-add-asset').style.display=(pg==='dash'||pg==='inv')?'':'none';
+  document.getElementById('btn-export-csv').style.display=(pg==='inv')?'':'none';
+  document.getElementById('btn-raise-pr').style.display=(pg==='pr')?'':'none';
+  if(pg==='dash')renderDash();
+  if(pg==='inv')renderInv();
+  if(pg==='pr'){renderPR();updatePRBadge();}
+  if(pg==='transfer')renderTransfer();
+  if(pg==='history')renderHistory();
+  if(pg==='users')renderUsers();
+}
+
+function ft(type){
+  go('inv');
+  document.getElementById('search-q').value='';
+  document.getElementById('fil-branch').value='';
+  document.getElementById('fil-status').value='';
+  const grp=T2G[type]||'';
+  document.getElementById('fil-group').value=grp;
+  buildTypeDD(grp);
+  document.getElementById('fil-type').value=type;
+  renderInv();
+}
+function resetFilters(){
+  document.getElementById('search-q').value='';
+  document.getElementById('fil-branch').value='';
+  document.getElementById('fil-group').value='';
+  buildTypeDD('');
+  document.getElementById('fil-type').value='';
+  document.getElementById('fil-status').value='';
+}
+
+// ─── DASHBOARD ───
+function renderDash(){
+  const items=getItems();
+  const prs=getPRs();
+  const pendingPR=prs.filter(p=>p.status==='Pending').length;
+  const isA=CU.role==='Admin';
+  const kpis=[
+    {l:'Total Records',v:items.length,ic:'fa-boxes-stacked',bg:'#dbeafe',fg:'#1d4ed8'},
+    {l:'Total Qty',v:items.reduce((s,i)=>s+(parseInt(i.qty)||1),0),ic:'fa-cubes',bg:'#dcfce7',fg:'#15803d'},
+    {l:'Available',v:items.filter(i=>i.status==='Available').length,ic:'fa-circle-check',bg:'#d4edda',fg:'#155724'},
+    {l:'Assigned',v:items.filter(i=>i.status==='Assigned').length,ic:'fa-user-check',bg:'#cce5ff',fg:'#004085'},
+    {l:'Maintenance',v:items.filter(i=>i.status==='Maintenance').length,ic:'fa-screwdriver-wrench',bg:'#fff3cd',fg:'#856404'},
+    isA?{l:'Pending Requests',v:pendingPR,ic:'fa-cart-plus',bg:'#fff3cd',fg:'#b45309',click:"go('pr')"}:{l:'Branches Active',v:[...new Set(items.map(i=>i.branch))].length,ic:'fa-code-branch',bg:'#f5e9f7',fg:'#7b2f8e'},
+  ];
+  document.getElementById('kpi-row').innerHTML=kpis.map(k=>`<div class="col-6 col-xl-2"><div class="sc" style="cursor:${k.click?'pointer':'default'}" ${k.click?`onclick="${k.click}"`:''}><div class="si" style="background:${k.bg}"><i class="fa-solid ${k.ic}" style="color:${k.fg}"></i></div><div><div class="sv" style="color:${k.fg}">${k.v}</div><div class="sl">${k.l}</div></div></div></div>`).join('');
+  const grpData=Object.keys(GROUPS).map(g=>{
+    const cnt=items.filter(i=>T2G[i.type]===g).length;
+    const {bg,fg}=GS[g]||{bg:'#eee',fg:'#555'};
+    return{g,cnt,bg,fg};
+  }).filter(x=>x.cnt>0).sort((a,b)=>b.cnt-a.cnt);
+  const mx=Math.max(...grpData.map(x=>x.cnt),1);
+  document.getElementById('cat-chart').innerHTML=grpData.map(({g,cnt,bg,fg})=>{
+    const pct=Math.round(cnt/items.length*100)||0;
+    return `<div class="mb-2"><div class="d-flex justify-content-between mb-1" style="font-size:.77rem"><span style="color:${fg};font-weight:700">${g}</span><span style="color:#aaa">${cnt} records (${pct}%)</span></div><div class="progress" style="height:8px;background:${bg};border-radius:4px"><div class="progress-bar" style="width:${Math.round(cnt/mx*100)}%;background:${fg};border-radius:4px"></div></div></div>`;
+  }).join('');
+  const rec=[...items].sort((a,b)=>new Date(b.at)-new Date(a.at)).slice(0,8);
+  document.getElementById('recent-list').innerHTML=rec.map(r=>{
+    const gs=GS[T2G[r.type]]||{bg:'#eee',fg:'#555'};
+    return `<div class="d-flex align-items-center gap-2 px-3 py-2 border-bottom" style="font-size:.79rem">
+      <div style="width:7px;height:7px;border-radius:50%;background:${gs.fg};flex-shrink:0"></div>
+      <div class="flex-grow-1 overflow-hidden"><div class="fw-semibold text-truncate" style="color:#222">${r.name}</div><div style="color:#bbb;font-size:.71rem">${r.branch} · ${r.type}</div></div>
+      <div style="text-align:right;flex-shrink:0"><div class="bt" style="background:${gs.bg};color:${gs.fg}">${r.qty||1} pcs</div></div>
+    </div>`;
+  }).join('')||'<div class="p-4 text-center text-muted" style="font-size:.81rem">No assets yet</div>';
+}
+
+// ─── INVENTORY ───
+function renderInv(){
+  let items=getItems();
+  const q=(document.getElementById('search-q')?.value||'').toLowerCase();
+  const br=document.getElementById('fil-branch')?.value||'';
+  const grp=document.getElementById('fil-group')?.value||'';
+  const tp=document.getElementById('fil-type')?.value||'';
+  const st=document.getElementById('fil-status')?.value||'';
+  if(q) items=items.filter(i=>[i.name,i.type,i.brand,i.serial,i.assigned,i.dept,i.branch,i.notes].join('|').toLowerCase().includes(q));
+  if(br) items=items.filter(i=>i.branch===br);
+  if(grp) items=items.filter(i=>T2G[i.type]===grp);
+  if(tp) items=items.filter(i=>i.type===tp);
+  if(st) items=items.filter(i=>i.status===st);
+  const isA=CU.role==='Admin';
+  document.getElementById('inv-empty').classList.toggle('d-none',items.length>0);
+  const totalQty=items.reduce((s,i)=>s+(parseInt(i.qty)||1),0);
+  document.getElementById('inv-count').textContent=`${items.length} record${items.length!==1?'s':''} · ${totalQty} total items`;
+  document.getElementById('inv-body').innerHTML=items.map((it,idx)=>{
+    const gs=GS[T2G[it.type]]||{cls:'g-it',bg:'#eee',fg:'#555'};
+    return `<tr>
+      <td style="color:#ccc;font-size:.71rem">${idx+1}</td>
+      <td><strong style="color:#222">${it.name}</strong>${it.notes?`<br/><small style="color:#bbb;font-size:.68rem">${it.notes.substring(0,40)}${it.notes.length>40?'…':''}</small>`:''}</td>
+      <td><span class="badge-br">${it.branch}</span></td>
+      <td><span class="bt ${gs.cls}" style="max-width:150px;overflow:hidden;text-overflow:ellipsis" title="${it.type}">${it.type.length>18?it.type.substring(0,17)+'…':it.type}</span></td>
+      <td style="color:#555;font-size:.77rem">${it.brand||'—'}</td>
+      <td style="font-family:monospace;font-size:.73rem;color:#777">${it.serial||'—'}</td>
+      <td style="font-size:.77rem">${it.assigned||'—'}</td>
+      <td style="color:#999;font-size:.76rem">${it.dept||'—'}</td>
+      <td style="text-align:center;font-weight:700;color:#333;font-size:.82rem">${it.qty||1}</td>
+      <td style="font-size:.73rem">${it.condition}</td>
+      <td><span class="bt st-${(it.status||'available').toLowerCase().replace(' ','-')}">${it.status}</span></td>
+      <td style="font-size:.7rem;color:#ccc">@${it.by||'—'}</td>
+      <td>
+        <button class="btn-a btn-e" onclick="openEdit(${it.id})" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+        ${isA?`<button class="btn-a btn-d" onclick="delItem(${it.id})" title="Delete"><i class="fa-solid fa-trash"></i></button>`:`<i class="fa-solid fa-lock" style="color:#e0e0e0;font-size:.7rem" title="Admin only"></i>`}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── PURCHASE REQUESTS ───
+let prLines=[];
+
+function updatePRBadge(){
+  const prs=getPRs();
+  const isA=CU&&CU.role==='Admin';
+  const cnt=isA?prs.filter(p=>p.status==='Pending').length:prs.filter(p=>p.requestedBy===CU.username&&p.status==='Pending').length;
+  const badge=document.getElementById('pr-pending-badge');
+  if(cnt>0){badge.textContent=cnt;badge.classList.remove('d-none');}
+  else{badge.classList.add('d-none');}
+}
+
+function renderPR(){
+  const prs=getPRs();
+  const isA=CU.role==='Admin';
+  const stFil=document.getElementById('pr-fil-status')?.value||'';
+  let list=isA?prs:prs.filter(p=>p.requestedBy===CU.username);
+  if(stFil) list=list.filter(p=>p.status===stFil);
+  list=[...list].reverse();
+  document.getElementById('pr-empty').classList.toggle('d-none',list.length>0);
+  document.getElementById('pr-body').innerHTML=list.map(pr=>{
+    const st=pr.status.toLowerCase();
+    const priColor=pr.priority==='Urgent'?'#c0392b':pr.priority==='Low'?'#aaa':'#1d4ed8';
+    const actions=isA&&pr.status==='Pending'
+      ?`<button class="btn-a btn-g" onclick="approvePR(${pr.id})" title="Approve & Add to HO Inventory"><i class="fa-solid fa-check me-1"></i>Approve</button><button class="btn-a btn-d" onclick="rejectPR(${pr.id})" title="Reject"><i class="fa-solid fa-times me-1"></i>Reject</button>`
+      :`<button class="btn-a btn-e" onclick="viewPR(${pr.id})" title="View Details"><i class="fa-solid fa-eye"></i></button>`;
+    return `<tr>
+      <td><strong style="color:var(--dark)">${pr.prNo}</strong>${pr.priority?`<br/><span style="font-size:.64rem;color:${priColor};font-weight:700">${pr.priority}</span>`:''}</td>
+      <td><span class="badge-br">${pr.branch}</span></td>
+      <td><span style="font-weight:700;color:#333">${pr.items.length}</span> item${pr.items.length>1?'s':''}<br/><small style="color:#bbb;font-size:.68rem">${pr.items.map(i=>i.type).join(', ').substring(0,50)}${pr.items.map(i=>i.type).join(', ').length>50?'…':''}</small></td>
+      <td style="font-size:.77rem">${pr.requestedByName}<br/><small style="color:#bbb">@${pr.requestedBy}</small></td>
+      <td style="font-size:.75rem;color:#999">${fmtDate(pr.requestedAt)}</td>
+      <td><span class="bt st-${st}">${pr.status}</span></td>
+      <td style="font-size:.74rem;color:#888">${pr.adminNote||pr.reviewedBy?`${pr.adminNote||''}<br/><small style="color:#bbb">${pr.reviewedBy?'by @'+pr.reviewedBy:''}</small>`:''}</td>
+      <td>${actions}</td>
+    </tr>`;
+  }).join('');
+  updatePRBadge();
+}
+
+function openPRModal(){
+  prLines=[];
+  document.getElementById('pr-branch').value=CU.branch;
+  document.getElementById('pr-priority').value='Normal';
+  renderPRLines();
+  addPRLine();
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('pr-modal')).show();
+}
+
+function buildPRTypeSelect(lineId){
+  return `<select class="form-select form-select-sm" id="prl-type-${lineId}" style="font-size:.74rem">${buildPRTypeHTML()}</select>`;
+}
+
+function addPRLine(){
+  const id=Date.now()+Math.floor(Math.random()*1000);
+  prLines.push({id});
+  renderPRLines();
+}
+
+function removePRLine(id){
+  prLines=prLines.filter(l=>l.id!==id);
+  renderPRLines();
+}
+
+function renderPRLines(){
+  const body=document.getElementById('pr-items-body');
+  const noItems=document.getElementById('pr-no-items');
+  if(!prLines.length){body.innerHTML='';noItems.style.display='';return;}
+  noItems.style.display='none';
+  body.innerHTML=prLines.map((l,i)=>`<tr class="pr-item-row">
+    <td style="color:#ccc;font-size:.71rem">${i+1}</td>
+    <td>${buildPRTypeSelect(l.id)}</td>
+    <td><input type="text" class="form-control form-control-sm" id="prl-brand-${l.id}" placeholder="Brand / Spec" style="font-size:.74rem"/></td>
+    <td><input type="number" class="form-control form-control-sm" id="prl-qty-${l.id}" value="1" min="1" style="font-size:.74rem"/></td>
+    <td><input type="text" class="form-control form-control-sm" id="prl-reason-${l.id}" placeholder="Purpose / reason" style="font-size:.74rem"/></td>
+    <td><button class="btn-a btn-d" onclick="removePRLine(${l.id})" style="padding:2px 5px"><i class="fa-solid fa-times"></i></button></td>
+  </tr>`).join('');
+}
+
+function submitPR(){
+  const branch=document.getElementById('pr-branch').value;
+  const priority=document.getElementById('pr-priority').value;
+  if(!prLines.length){toast('Add at least one item.',true);return;}
+  const items=prLines.map(l=>({
+    type:document.getElementById(`prl-type-${l.id}`)?.value||'',
+    brand:document.getElementById(`prl-brand-${l.id}`)?.value.trim()||'',
+    qty:parseInt(document.getElementById(`prl-qty-${l.id}`)?.value)||1,
+    reason:document.getElementById(`prl-reason-${l.id}`)?.value.trim()||''
+  })).filter(i=>i.type);
+  if(!items.length){toast('Select a type for at least one item.',true);return;}
+  const prs=getPRs();
+  const prNo='PR-'+String(prs.length+1).padStart(3,'0');
+  prs.push({id:Date.now(),prNo,branch,priority,items,requestedBy:CU.username,requestedByName:CU.name,requestedAt:now(),status:'Pending',adminNote:'',reviewedBy:'',reviewedAt:''});
+  savePRs(prs);
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('pr-modal')).hide();
+  renderPR();updatePRBadge();renderDash();
+  toast(prNo+' submitted to admin!');
+}
+
+function approvePR(id){
+  const prs=getPRs();
+  const pr=prs.find(p=>p.id===id);if(!pr)return;
+  const items=getItems();
+  const moves=getMoves();
+  pr.items.forEach(item=>{
+    const nm=item.brand?`${item.type} – ${item.brand}`:item.type;
+    items.push({id:Date.now()+Math.floor(Math.random()*9999),name:nm,branch:'Head Office',type:item.type,brand:item.brand||'',serial:'',assigned:'Unassigned',dept:'',qty:item.qty,date:new Date().toISOString().slice(0,10),condition:'New',status:'Available',warranty:'',notes:`From ${pr.prNo}. ${item.reason||''}`.trim(),by:CU.username,at:now()});
+    moves.push({id:Date.now()+Math.floor(Math.random()*9999),action:'Purchase Receipt',itemName:nm,itemType:item.type,qty:item.qty,fromBranch:'Purchase / Vendor',toBranch:'Head Office',doneBy:CU.username,doneAt:now(),ref:pr.prNo});
+  });
+  saveItems(items);saveMoves(moves);
+  pr.status='Approved';pr.reviewedBy=CU.username;pr.reviewedAt=now();
+  savePRs(prs);
+  renderPR();renderDash();updatePRBadge();
+  toast(pr.prNo+' approved! Items added to HO inventory.');
+}
+
+function rejectPR(id){
+  const note=prompt('Reason for rejection (optional):');
+  if(note===null)return;
+  const prs=getPRs();
+  const pr=prs.find(p=>p.id===id);if(!pr)return;
+  pr.status='Rejected';pr.adminNote=note||'';pr.reviewedBy=CU.username;pr.reviewedAt=now();
+  savePRs(prs);renderPR();updatePRBadge();renderDash();
+  toast(pr.prNo+' rejected.');
+}
+
+function viewPR(id){
+  const pr=getPRs().find(p=>p.id===id);if(!pr)return;
+  document.getElementById('prv-title').innerHTML=`<i class="fa-solid fa-file-lines me-2"></i>${pr.prNo} — ${pr.branch}`;
+  const st=pr.status.toLowerCase();
+  document.getElementById('prv-body').innerHTML=`
+    <div class="row g-2 mb-3">
+      <div class="col-6"><small class="text-muted">Requested By</small><div><strong>${pr.requestedByName}</strong> <small class="text-muted">@${pr.requestedBy}</small></div></div>
+      <div class="col-6"><small class="text-muted">Date</small><div>${fmtDT(pr.requestedAt)}</div></div>
+      <div class="col-4"><small class="text-muted">Status</small><div><span class="bt st-${st}">${pr.status}</span></div></div>
+      <div class="col-4"><small class="text-muted">Priority</small><div>${pr.priority||'Normal'}</div></div>
+      ${pr.reviewedBy?`<div class="col-4"><small class="text-muted">Reviewed By</small><div>@${pr.reviewedBy} · ${fmtDate(pr.reviewedAt)}</div></div>`:''}
+      ${pr.adminNote?`<div class="col-12"><small class="text-muted">Admin Note</small><div class="text-danger">${pr.adminNote}</div></div>`:''}
+    </div>
+    <table class="table table-bordered" style="font-size:.79rem">
+      <thead><tr><th>#</th><th>Item Type</th><th>Brand</th><th>Qty</th><th>Reason</th></tr></thead>
+      <tbody>${pr.items.map((it,i)=>`<tr><td>${i+1}</td><td>${it.type}</td><td>${it.brand||'—'}</td><td style="text-align:center;font-weight:700">${it.qty}</td><td style="color:#666">${it.reason||'—'}</td></tr>`).join('')}</tbody>
+    </table>`;
+  document.getElementById('prv-footer').innerHTML=`<button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>`;
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('pr-view-modal')).show();
+}
+
+// ─── TRANSFER ───
+let _trItemId=null;
+
+function renderTransfer(){
+  const q=(document.getElementById('tr-search')?.value||'').toLowerCase();
+  let items=getItems().filter(i=>i.branch==='Head Office'&&i.status!=='Retired'&&i.status!=='Transferred');
+  if(q) items=items.filter(i=>[i.name,i.type,i.brand].join('|').toLowerCase().includes(q));
+  const hoQty=items.reduce((s,i)=>s+(parseInt(i.qty)||0),0);
+  document.getElementById('ho-kpi-row').innerHTML=`
+    <div class="col-6 col-md-3"><div class="sc"><div class="si" style="background:#dbeafe"><i class="fa-solid fa-warehouse" style="color:#1d4ed8"></i></div><div><div class="sv" style="color:#1d4ed8">${items.length}</div><div class="sl">HO Item Records</div></div></div></div>
+    <div class="col-6 col-md-3"><div class="sc"><div class="si" style="background:#dcfce7"><i class="fa-solid fa-cubes" style="color:#15803d"></i></div><div><div class="sv" style="color:#15803d">${hoQty}</div><div class="sl">Total HO Qty</div></div></div></div>
+    <div class="col-6 col-md-3"><div class="sc"><div class="si" style="background:#fff3cd"><i class="fa-solid fa-right-left" style="color:#b45309"></i></div><div><div class="sv" style="color:#b45309">${getMoves().filter(m=>m.action==='Transfer').length}</div><div class="sl">Total Transfers</div></div></div></div>
+    <div class="col-6 col-md-3"><div class="sc"><div class="si" style="background:#d4edda"><i class="fa-solid fa-cart-shopping" style="color:#155724"></i></div><div><div class="sv" style="color:#155724">${getMoves().filter(m=>m.action==='Purchase Receipt').length}</div><div class="sl">Purchases Received</div></div></div></div>`;
+  document.getElementById('transfer-empty').classList.toggle('d-none',items.length>0);
+  document.getElementById('transfer-body').innerHTML=items.map((it,idx)=>{
+    const gs=GS[T2G[it.type]]||{cls:'g-it',bg:'#eee',fg:'#555'};
+    return `<tr>
+      <td style="color:#ccc;font-size:.71rem">${idx+1}</td>
+      <td><strong style="color:#222">${it.name}</strong>${it.notes?`<br/><small style="color:#bbb;font-size:.68rem">${it.notes.substring(0,40)}${it.notes.length>40?'…':''}</small>`:''}</td>
+      <td><span class="bt ${gs.cls}">${it.type.length>20?it.type.substring(0,19)+'…':it.type}</span></td>
+      <td style="color:#555;font-size:.77rem">${it.brand||'—'}</td>
+      <td style="text-align:center;font-weight:800;color:var(--dark);font-size:.9rem">${it.qty}</td>
+      <td style="font-size:.73rem">${it.condition}</td>
+      <td><span class="bt st-${(it.status||'available').toLowerCase().replace(' ','-')}">${it.status}</span></td>
+      <td><button class="btn btn-sm text-white" style="background:var(--dark);border-radius:6px;font-size:.71rem;padding:3px 9px" onclick="openTransfer(${it.id})"><i class="fa-solid fa-right-left me-1"></i>Transfer</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function openTransfer(id){
+  _trItemId=id;
+  const it=getItems().find(i=>i.id===id);if(!it)return;
+  document.getElementById('tr-item-name').textContent=it.name;
+  document.getElementById('tr-qty-max').textContent=it.qty;
+  const qInput=document.getElementById('tr-qty');
+  qInput.max=it.qty;qInput.value=1;
+  document.getElementById('tr-branch').innerHTML=BRANCHES.filter(b=>b!=='Head Office').map(b=>`<option>${b}</option>`).join('');
+  document.getElementById('tr-notes').value='';
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('transfer-modal')).show();
+}
+
+function doTransfer(){
+  const it=getItems().find(i=>i.id===_trItemId);if(!it)return;
+  const qty=parseInt(document.getElementById('tr-qty').value)||1;
+  const toBranch=document.getElementById('tr-branch').value;
+  const notes=document.getElementById('tr-notes').value.trim();
+  if(qty<1||qty>it.qty){toast('Invalid quantity.',true);return;}
+  if(!toBranch){toast('Select target branch.',true);return;}
+  const items=getItems();
+  const idx=items.findIndex(i=>i.id===_trItemId);
+  items[idx].qty-=qty;
+  if(items[idx].qty<=0){items[idx].qty=0;items[idx].status='Transferred';}
+  // add to target branch (merge if same name+type exists)
+  const exist=items.find(i=>i.branch===toBranch&&i.name===it.name&&i.type===it.type);
+  if(exist){exist.qty+=qty;exist.status='Available';}
+  else{items.push({id:Date.now(),name:it.name,branch:toBranch,type:it.type,brand:it.brand||'',serial:'',assigned:'Unassigned',dept:it.dept||'',qty,date:new Date().toISOString().slice(0,10),condition:it.condition||'Good',status:'Available',warranty:it.warranty||'',notes:notes||`Transferred from Head Office`,by:CU.username,at:now()});}
+  saveItems(items);
+  const moves=getMoves();
+  moves.push({id:Date.now(),action:'Transfer',itemName:it.name,itemType:it.type,qty,fromBranch:'Head Office',toBranch,doneBy:CU.username,doneAt:now(),ref:notes||''});
+  saveMoves(moves);
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('transfer-modal')).hide();
+  renderTransfer();renderDash();
+  toast(`Transferred ${qty} × "${it.name}" to ${toBranch}!`);
+}
+
+// ─── MOVEMENT HISTORY ───
+function renderHistory(){
+  let moves=getMoves();
+  const actFil=document.getElementById('hist-fil-action')?.value||'';
+  const brFil=document.getElementById('hist-fil-branch')?.value||'';
+  if(actFil) moves=moves.filter(m=>m.action===actFil);
+  if(brFil) moves=moves.filter(m=>m.fromBranch===brFil||m.toBranch===brFil);
+  moves=[...moves].reverse();
+  document.getElementById('history-empty').classList.toggle('d-none',moves.length>0);
+  document.getElementById('history-body').innerHTML=moves.map((m,i)=>{
+    const isTransfer=m.action==='Transfer';
+    const aBg=isTransfer?'#cce5ff':'#d4edda';
+    const aFg=isTransfer?'#004085':'#155724';
+    return `<tr>
+      <td style="color:#ccc;font-size:.71rem">${moves.length-i}</td>
+      <td><span class="bt" style="background:${aBg};color:${aFg}">${m.action}</span></td>
+      <td><strong style="color:#222">${m.itemName}</strong><br/><small style="color:#bbb;font-size:.68rem">${m.itemType}</small></td>
+      <td style="text-align:center;font-weight:700;color:var(--dark)">${m.qty}</td>
+      <td><span class="badge-br">${m.fromBranch}</span><i class="fa-solid fa-arrow-right move-arrow"></i><span class="badge-br">${m.toBranch}</span></td>
+      <td style="font-size:.73rem">@${m.doneBy}${m.ref?`<br/><small style="color:#bbb">${m.ref}</small>`:''}</td>
+      <td style="font-size:.72rem;color:#aaa;white-space:nowrap">${fmtDT(m.doneAt)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function exportHistoryCSV(){
+  const moves=getMoves();
+  const h=['#','Action','Item Name','Type','Qty','From Branch','To Branch','Done By','Reference','Date'];
+  const rows=moves.map((m,i)=>[i+1,m.action,`"${m.itemName}"`,`"${m.itemType}"`,m.qty,m.fromBranch,m.toBranch,m.doneBy,`"${m.ref||''}"`,fmtDT(m.doneAt)]);
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([h.join(','),...rows.map(r=>r.join(','))].join('\n'));a.download='dhanam_movements_'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('History exported!');
+}
+
+// ─── ASSET MODAL ───
+const GM=()=>bootstrap.Modal.getOrCreateInstance(document.getElementById('asset-modal'));
+function openAdd(){
+  document.getElementById('edit-id').value='';
+  document.getElementById('modal-title').innerHTML='<i class="fa-solid fa-plus me-2"></i>Add New Asset / Item';
+  document.getElementById('save-lbl').textContent='Save Asset';
+  ['f-name','f-brand','f-serial','f-assigned','f-dept','f-notes','f-warranty'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-type').value='';document.getElementById('f-date').value='';
+  document.getElementById('f-qty').value='1';document.getElementById('f-condition').value='New';
+  document.getElementById('f-status').value='Available';document.getElementById('f-branch').value=CU.branch;
+  GM().show();
+}
+function openEdit(id){
+  const it=getItems().find(i=>i.id===id);if(!it)return;
+  document.getElementById('edit-id').value=it.id;
+  document.getElementById('modal-title').innerHTML='<i class="fa-solid fa-pen-to-square me-2"></i>Edit Asset';
+  document.getElementById('save-lbl').textContent='Save Changes';
+  document.getElementById('f-name').value=it.name;document.getElementById('f-branch').value=it.branch;
+  document.getElementById('f-type').value=it.type;document.getElementById('f-brand').value=it.brand||'';
+  document.getElementById('f-serial').value=it.serial||'';document.getElementById('f-assigned').value=it.assigned||'';
+  document.getElementById('f-dept').value=it.dept||'';document.getElementById('f-qty').value=it.qty||1;
+  document.getElementById('f-date').value=it.date||'';document.getElementById('f-condition').value=it.condition||'Good';
+  document.getElementById('f-status').value=it.status||'Available';document.getElementById('f-warranty').value=it.warranty||'';
+  document.getElementById('f-notes').value=it.notes||'';
+  GM().show();
+}
+function saveAsset(){
+  const name=document.getElementById('f-name').value.trim();
+  const type=document.getElementById('f-type').value;
+  const branch=document.getElementById('f-branch').value;
+  if(!name||!type||!branch){toast('Fill in Name, Asset Type and Branch.',true);return;}
+  const data={name,branch,type,brand:document.getElementById('f-brand').value.trim(),serial:document.getElementById('f-serial').value.trim(),assigned:document.getElementById('f-assigned').value.trim()||'Unassigned',dept:document.getElementById('f-dept').value.trim(),qty:parseInt(document.getElementById('f-qty').value)||1,date:document.getElementById('f-date').value,condition:document.getElementById('f-condition').value,status:document.getElementById('f-status').value,warranty:document.getElementById('f-warranty').value,notes:document.getElementById('f-notes').value.trim()};
+  const eid=document.getElementById('edit-id').value;
+  const items=getItems();
+  if(eid){const idx=items.findIndex(i=>i.id===parseInt(eid));if(idx>-1)items[idx]={...items[idx],...data};toast('Asset updated!');}
+  else{items.push({id:Date.now(),...data,by:CU.username,at:now()});toast('Asset added!');}
+  saveItems(items);GM().hide();renderInv();renderDash();
+}
+function delItem(id){
+  if(CU.role!=='Admin'){toast('Only admins can delete.',true);return;}
+  if(!confirm('Delete this asset permanently?'))return;
+  saveItems(getItems().filter(i=>i.id!==id));renderInv();renderDash();toast('Deleted.');
+}
+
+// ─── USERS ───
+function renderUsers(){
+  document.getElementById('usr-body').innerHTML=getUsers().map((u,i)=>`<tr><td style="color:#ccc;font-size:.71rem">${i+1}</td><td><strong>${u.name}</strong>${u.id===CU.id?' <span class="badge bg-warning text-dark" style="font-size:.61rem">You</span>':''}</td><td style="font-family:monospace;font-size:.77rem">@${u.username}</td><td><span class="${u.role==='Admin'?'chip-a':'chip-u'}">${u.role}</span></td><td><span class="badge-br">${u.branch}</span></td><td>${u.id!==CU.id?`<button class="btn-a btn-d" onclick="delUser(${u.id})"><i class="fa-solid fa-trash"></i></button>`:'—'}</td></tr>`).join('');
+}
+function createUser(){
+  const nm=document.getElementById('u-name').value.trim(),un=document.getElementById('u-user').value.trim(),pw=document.getElementById('u-pass').value,rl=document.getElementById('u-role').value,br=document.getElementById('u-branch').value;
+  if(!nm||!un||!pw){toast('Fill all fields.',true);return;}
+  if(pw.length<6){toast('Password min 6 chars.',true);return;}
+  const users=getUsers();if(users.find(u=>u.username===un)){toast('Username exists.',true);return;}
+  users.push({id:Date.now(),name:nm,username:un,password:pw,role:rl,branch:br});saveUsers(users);
+  ['u-name','u-user','u-pass'].forEach(id=>document.getElementById(id).value='');renderUsers();toast('User created!');
+}
+function delUser(id){if(!confirm('Remove user?'))return;saveUsers(getUsers().filter(u=>u.id!==id));renderUsers();toast('User removed.');}
+
+// ─── CSV EXPORT ───
+function exportCSV(){
+  const items=getItems();
+  const h=['ID','Name','Branch','Type','Group','Brand','Serial/Code','Assigned To','Dept','Qty','Date','Condition','Status','Warranty','Notes','By'];
+  const rows=items.map(i=>[i.id,`"${i.name}"`,i.branch,`"${i.type}"`,`"${T2G[i.type]||''}"`,`"${i.brand||''}"`,`"${i.serial||''}"`,`"${i.assigned||''}"`,`"${i.dept||''}"`,i.qty||1,i.date||'',i.condition,i.status,i.warranty||'',`"${i.notes||''}"`,i.by||'']);
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent([h.join(','),...rows.map(r=>r.join(','))].join('\n'));a.download='dhanam_inventory_'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('Exported!');
+}
+
+// ─── TOAST ───
+let _t;function toast(msg,err=false){const el=document.getElementById('toast');el.textContent=msg;el.style.background=err?'#c0392b':'var(--dark)';el.style.display='block';clearTimeout(_t);_t=setTimeout(()=>el.style.display='none',2800);}
+document.getElementById('lu').focus();
+
+// ─── SIDEBAR COLLAPSE ───
+function initSidebar(){
+  const nav=document.querySelector('.sb-nav');
+  const sections=nav.querySelectorAll('.ns');
+  sections.forEach(ns=>{
+    // add arrow icon
+    ns.innerHTML=ns.innerHTML+' <i class="fa-solid fa-chevron-down ns-arrow"></i>';
+    // wrap following siblings until next .ns in a group div
+    const group=document.createElement('div');
+    group.className='ns-group';
+    let next=ns.nextElementSibling;
+    while(next&&!next.classList.contains('ns')){
+      const tmp=next.nextElementSibling;
+      group.appendChild(next);
+      next=tmp;
+    }
+    ns.parentNode.insertBefore(group,ns.nextElementSibling);
+    // click to toggle
+    ns.addEventListener('click',()=>{
+      ns.classList.toggle('collapsed');
+      group.classList.toggle('collapsed');
+    });
+  });
+}
+
+function scrollSbTop(){
+  document.querySelector('.sb-nav').scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
