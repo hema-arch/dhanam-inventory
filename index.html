@@ -602,7 +602,7 @@ td{vertical-align:middle;padding:6px 9px!important}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js">
 
 // ── BRANCH MANAGEMENT ──────────────────────────────────────────
-function renderBranches(){
+function renderBranches(){if(!CU)return;
   const isA=CU&&CU.role==='admin';
   const grid=document.getElementById('branch-grid');
   const countEl=document.getElementById('branch-count');
@@ -789,7 +789,7 @@ function login(){
   document.getElementById('user-note').classList.toggle('d-none',isA);
   if(isA) document.getElementById('pr-admin-note').classList.remove('d-none');
   setupDD();updatePRBadge();go('dash');initSidebar();
-  document.getElementById('nav-branches').style.display=isA?'':'none';
+  const nbEl=document.getElementById('nav-branches');if(nbEl)nbEl.style.display=isA?'':'none';
 }
 function logout(){CU=null;document.getElementById('lp-wrap').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('lu').value='';document.getElementById('lp').value='';}
 
@@ -858,7 +858,7 @@ function go(pg){
   if(pg==='users')renderUsers();
   if(pg==='branches')renderBranches();
   const isA2=CU&&CU.role==='admin';
-  document.getElementById('btn-add-branch').style.display=(pg==='branches'&&isA2)?'':'none';
+  const btnAB=document.getElementById('btn-add-branch');if(btnAB)btnAB.style.display=(pg==='branches'&&isA2)?'':'none';
 }
 
 function ft(type){
