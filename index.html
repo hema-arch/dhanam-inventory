@@ -243,8 +243,8 @@ td{vertical-align:middle;padding:6px 9px!important}
     <div class="ni" id="nav-transfer" onclick="go('transfer')"><i class="fa-solid fa-right-left"></i>Transfer Items (HO)</div>
     <div class="ni" id="nav-history" onclick="go('history')"><i class="fa-solid fa-clock-rotate-left"></i>Movement History</div>
     <div class="ni" id="nav-users" onclick="go('users')"><i class="fa-solid fa-users-gear"></i>Manage Users</div>
+    <div class="ni" id="nav-branches" onclick="go('branches')"><i class="fa-solid fa-code-branch"></i>Manage Branches</div>
     <div class="ns">Info</div>
-    <div class="ni" id="nav-branches" onclick="go('branches')"><i class="fa-solid fa-code-branch"></i>All Branches (49)</div>
   </div>
   <div class="sb-foot">
     
@@ -395,8 +395,30 @@ td{vertical-align:middle;padding:6px 9px!important}
 
   <!-- BRANCHES -->
   <div class="page" id="pg-branches">
-    <div class="panel"><div class="ph"><h6><i class="fa-solid fa-code-branch me-2 text-warning"></i>All Branch Locations — 49 Branches</h6></div>
+    <div class="panel">
+      <div class="ph">
+        <h6><i class="fa-solid fa-code-branch me-2 text-warning"></i>All Branch Locations — <span id="branch-count">49</span> Branches</h6>
+        <button id="btn-add-branch" class="btn btn-sm text-white" style="background:var(--dark);border-radius:7px;display:none" onclick="openAddBranch()"><i class="fa-solid fa-plus me-1"></i>Add Branch</button>
+      </div>
       <div class="p-3"><div class="row g-2" id="branch-grid"></div></div>
+    </div>
+  </div>
+
+  <!-- ADD BRANCH MODAL -->
+  <div class="modal fade" id="add-branch-modal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header"><h6 class="modal-title mb-0"><i class="fa-solid fa-code-branch me-2"></i>Add New Branch</h6><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <label class="form-label">Branch Name</label>
+          <input type="text" class="form-control form-control-sm" id="new-branch-name" placeholder="e.g. Coimbatore" maxlength="50"/>
+          <div id="branch-err" class="text-danger mt-1" style="font-size:.75rem;display:none"></div>
+        </div>
+        <div class="modal-footer py-2">
+          <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-sm text-white" style="background:var(--dark)" onclick="addBranch()">Add Branch</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -578,6 +600,50 @@ td{vertical-align:middle;padding:6px 9px!important}
 
 <div id="toast"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js">
+
+// ── BRANCH MANAGEMENT ──────────────────────────────────────────
+function renderBranches(){
+  const isA=CU&&CU.role==='admin';
+  const grid=document.getElementById('branch-grid');
+  const countEl=document.getElementById('branch-count');
+  if(countEl)countEl.textContent=BRANCHES.length;
+  if(!grid)return;
+  grid.innerHTML=BRANCHES.map((b,i)=>{
+    const isHO=b==='Head Office';
+    const delBtn=isA&&!isHO
+      ? `<button class="btn-a btn-d ms-auto" onclick="deleteBranch(${i})" title="Delete"><i class="fa-solid fa-trash fa-xs"></i></button>`
+      : '';
+    const badge=isHO?`<span class="chip-a ms-1" style="font-size:.58rem">HO</span>`:'';
+    return `<div class="col-6 col-md-4 col-lg-3"><div style="background:#f4f7fc;border-radius:9px;padding:8px 10px;font-size:.78rem;font-weight:600;color:#1a3c6e;display:flex;align-items:center;gap:4px"><i class="fa-solid fa-location-dot text-warning" style="font-size:.7rem;flex-shrink:0"></i>${b}${badge}${delBtn}</div></div>`;
+  }).join('');
+}
+function openAddBranch(){
+  document.getElementById('new-branch-name').value='';
+  document.getElementById('branch-err').style.display='none';
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('add-branch-modal')).show();
+  setTimeout(()=>document.getElementById('new-branch-name').focus(),400);
+}
+function addBranch(){
+  const nameEl=document.getElementById('new-branch-name');
+  const errEl=document.getElementById('branch-err');
+  const name=nameEl.value.trim();
+  if(!name){errEl.textContent='Please enter a branch name.';errEl.style.display='block';return;}
+  if(BRANCHES.some(b=>b.toLowerCase()===name.toLowerCase())){errEl.textContent='Branch already exists.';errEl.style.display='block';return;}
+  BRANCHES.push(name);
+  BRANCHES.sort((a,b)=>a==='Head Office'?-1:b==='Head Office'?1:a.localeCompare(b));
+  saveBranches();setupDD();renderBranches();
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('add-branch-modal')).hide();
+  toast('Branch "'+name+'" added');
+}
+function deleteBranch(idx){
+  const name=BRANCHES[idx];
+  if(name==='Head Office'){toast('Head Office cannot be deleted');return;}
+  if(!confirm('Delete branch "'+name+'"?'))return;
+  BRANCHES.splice(idx,1);
+  saveBranches();setupDD();renderBranches();
+  toast('Branch "'+name+'" deleted');
+}
+
 // ── Sidebar drag-to-scroll ──────────────────────────────────────
 (function(){
   const handle = document.getElementById('sbDragHandle');
@@ -615,7 +681,10 @@ td{vertical-align:middle;padding:6px 9px!important}
 
 </script>
 <script>
-const BRANCHES=["Head Office","Ambasamudram","Annur","Anthiyur","Athavathur","Bargur","Chekkanoorani","Chinnamanur","Denkanikottai","Dharapuram","Dindigul","Eral","Erode","Ganapathy","Gandhipuram","Gobichettipalayam","Harur","Hosur","Irugur","Karanampettai","Kariyapatti","Kattuputhur","Kinathukadavu","Kondalampatti","Kulithalai","Mallumichampatty","Musiri","Nambiyur","Ooty","Palacode","Palayamkottai","Palladam","Paramathivelur","Periyakulam","Rajapalayam","Rasipuram","RR Nagar","Salem","Sankarankovil","Sankari","Sevaipettai","Somarasampettai","Srivilliputhur","Surandai","Tenkasi","Thirupuvanam","Thondamuthur","Tiruchengode","Tuticorin"];
+const KB='dfi_br1';
+const DEFAULT_BRANCHES=["Head Office","Ambasamudram","Annur","Anthiyur","Athavathur","Bargur","Chekkanoorani","Chinnamanur","Denkanikottai","Dharapuram","Dindigul","Eral","Erode","Ganapathy","Gandhipuram","Gobichettipalayam","Harur","Hosur","Irugur","Karanampettai","Kariyapatti","Kattuputhur","Kinathukadavu","Kondalampatti","Kulithalai","Mallumichampatty","Musiri","Nambiyur","Ooty","Palacode","Palayamkottai","Palladam","Paramathivelur","Periyakulam","Rajapalayam","Rasipuram","RR Nagar","Salem","Sankarankovil","Sankari","Sevaipettai","Somarasampettai","Srivilliputhur","Surandai","Tenkasi","Thirupuvanam","Thondamuthur","Tiruchengode","Tuticorin"];
+let BRANCHES=JSON.parse(localStorage.getItem(KB)||'null')||[...DEFAULT_BRANCHES];
+function saveBranches(){localStorage.setItem(KB,JSON.stringify(BRANCHES));}
 
 const GROUPS={
   "IT Equipment":         ["Laptops / Desktops","Monitors","Keyboards & Mouse","Docking Stations","Servers","Printers & Scanners","Routers & Switches","External Hard Drives / SSDs","UPS (Power Backup)"],
@@ -720,6 +789,7 @@ function login(){
   document.getElementById('user-note').classList.toggle('d-none',isA);
   if(isA) document.getElementById('pr-admin-note').classList.remove('d-none');
   setupDD();updatePRBadge();go('dash');initSidebar();
+  document.getElementById('nav-branches').style.display=isA?'':'none';
 }
 function logout(){CU=null;document.getElementById('lp-wrap').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('lu').value='';document.getElementById('lp').value='';}
 
@@ -767,7 +837,7 @@ const PTITLES={
   transfer:'<i class="fa-solid fa-right-left me-2 text-warning"></i>Transfer Items (Head Office)',
   history:'<i class="fa-solid fa-clock-rotate-left me-2 text-warning"></i>Movement History',
   users:'<i class="fa-solid fa-users-gear me-2 text-warning"></i>Manage Users',
-  branches:'<i class="fa-solid fa-code-branch me-2 text-warning"></i>All Branches'
+  branches:'<i class="fa-solid fa-code-branch me-2 text-warning"></i>Manage Branches'
 };
 
 function go(pg){
@@ -786,6 +856,9 @@ function go(pg){
   if(pg==='transfer')renderTransfer();
   if(pg==='history')renderHistory();
   if(pg==='users')renderUsers();
+  if(pg==='branches')renderBranches();
+  const isA2=CU&&CU.role==='admin';
+  document.getElementById('btn-add-branch').style.display=(pg==='branches'&&isA2)?'':'none';
 }
 
 function ft(type){
@@ -877,8 +950,7 @@ function renderInv(){
       <td><span class="bt st-${(it.status||'available').toLowerCase().replace(' ','-')}">${it.status}</span></td>
       <td style="font-size:.7rem;color:#ccc">@${it.by||'—'}</td>
       <td>
-        <button class="btn-a btn-e" onclick="openEdit(${it.id})" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-        ${isA?`<button class="btn-a btn-d" onclick="delItem(${it.id})" title="Delete"><i class="fa-solid fa-trash"></i></button>`:`<i class="fa-solid fa-lock" style="color:#e0e0e0;font-size:.7rem" title="Admin only"></i>`}
+        ${isA?`<button class="btn-a btn-e" onclick="openEdit(${it.id})" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button><button class="btn-a btn-d" onclick="delItem(${it.id})" title="Delete"><i class="fa-solid fa-trash"></i></button>`:''}
       </td>
     </tr>`;
   }).join('');
