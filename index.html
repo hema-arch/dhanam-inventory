@@ -599,88 +599,7 @@ td{vertical-align:middle;padding:6px 9px!important}
 </div></div></div>
 
 <div id="toast"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js">
-
-
-
-// ── BRANCH MANAGEMENT ──────────────────────────────────────────
-function renderBranches(){
-  if(!CU)return;
-  const isA=CU.role==='admin';
-  const grid=document.getElementById('branch-grid');
-  const countEl=document.getElementById('branch-count');
-  if(countEl)countEl.textContent=BRANCHES.length;
-  if(!grid)return;
-  grid.innerHTML=BRANCHES.map((b,i)=>{
-    const isHO=b==='Head Office';
-    const delBtn=isA&&!isHO?'<button class="btn-a btn-d ms-auto" onclick="deleteBranch('+i+')" title="Delete"><i class="fa-solid fa-trash fa-xs"></i></button>':'';
-    const badge=isHO?'<span class="chip-a ms-1" style="font-size:.58rem">HO</span>':'';
-    return '<div class="col-6 col-md-4 col-lg-3"><div style="background:#f4f7fc;border-radius:9px;padding:8px 10px;font-size:.78rem;font-weight:600;color:#1a3c6e;display:flex;align-items:center;gap:4px"><i class="fa-solid fa-location-dot text-warning" style="font-size:.7rem;flex-shrink:0"></i>'+b+badge+delBtn+'</div></div>';
-  }).join('');
-}
-function openAddBranch(){
-  document.getElementById('new-branch-name').value='';
-  document.getElementById('branch-err').style.display='none';
-  bootstrap.Modal.getOrCreateInstance(document.getElementById('add-branch-modal')).show();
-  setTimeout(()=>document.getElementById('new-branch-name').focus(),400);
-}
-function addBranch(){
-  const nameEl=document.getElementById('new-branch-name');
-  const errEl=document.getElementById('branch-err');
-  const name=nameEl.value.trim();
-  if(!name){errEl.textContent='Enter a branch name.';errEl.style.display='block';return;}
-  if(BRANCHES.some(b=>b.toLowerCase()===name.toLowerCase())){errEl.textContent='Branch already exists.';errEl.style.display='block';return;}
-  BRANCHES.push(name);
-  BRANCHES.sort((a,b)=>a==='Head Office'?-1:b==='Head Office'?1:a.localeCompare(b));
-  saveBranches();setupDD();renderBranches();
-  bootstrap.Modal.getOrCreateInstance(document.getElementById('add-branch-modal')).hide();
-  toast('Branch "'+name+'" added');
-}
-function deleteBranch(idx){
-  const name=BRANCHES[idx];
-  if(name==='Head Office'){toast('Head Office cannot be deleted');return;}
-  if(!confirm('Delete branch "'+name+'"?'))return;
-  BRANCHES.splice(idx,1);
-  saveBranches();setupDD();renderBranches();
-  toast('Branch "'+name+'" deleted');
-}
-
-// ── Sidebar drag-to-scroll ──────────────────────────────────────
-(function(){
-  const handle = document.getElementById('sbDragHandle');
-  const nav = document.querySelector('.sb-nav');
-  if(!handle || !nav) return;
-  let dragging=false, startY=0, startScroll=0;
-  handle.addEventListener('mousedown', e=>{
-    dragging=true; startY=e.clientY; startScroll=nav.scrollTop;
-    document.body.style.cursor='ns-resize';
-    e.preventDefault();
-  });
-  document.addEventListener('mousemove', e=>{
-    if(!dragging) return;
-    const dy = e.clientY - startY;
-    const ratio = nav.scrollHeight / nav.clientHeight;
-    nav.scrollTop = startScroll + dy * ratio;
-  });
-  document.addEventListener('mouseup', ()=>{
-    dragging=false; document.body.style.cursor='';
-  });
-  // Touch support
-  handle.addEventListener('touchstart', e=>{
-    dragging=true; startY=e.touches[0].clientY; startScroll=nav.scrollTop;
-    e.preventDefault();
-  },{passive:false});
-  handle.addEventListener('touchmove', e=>{
-    if(!dragging) return;
-    const dy = e.touches[0].clientY - startY;
-    const ratio = nav.scrollHeight / nav.clientHeight;
-    nav.scrollTop = startScroll + dy * ratio;
-    e.preventDefault();
-  },{passive:false});
-  handle.addEventListener('touchend', ()=>{ dragging=false; });
-})();
-
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 <script>
 const KB='dfi_br1';
 const DEFAULT_BRANCHES=["Head Office","Ambasamudram","Annur","Anthiyur","Athavathur","Bargur","Chekkanoorani","Chinnamanur","Denkanikottai","Dharapuram","Dindigul","Eral","Erode","Ganapathy","Gandhipuram","Gobichettipalayam","Harur","Hosur","Irugur","Karanampettai","Kariyapatti","Kattuputhur","Kinathukadavu","Kondalampatti","Kulithalai","Mallumichampatty","Musiri","Nambiyur","Ooty","Palacode","Palayamkottai","Palladam","Paramathivelur","Periyakulam","Rajapalayam","Rasipuram","RR Nagar","Salem","Sankarankovil","Sankari","Sevaipettai","Somarasampettai","Srivilliputhur","Surandai","Tenkasi","Thirupuvanam","Thondamuthur","Tiruchengode","Tuticorin"];
@@ -1299,6 +1218,50 @@ function initSidebar(){
 function scrollSbTop(){
   document.querySelector('.sb-nav').scrollTo({top:0,behavior:'smooth'});
 }
+
+// ── BRANCH MANAGEMENT ──────────────────────────────────────────
+function renderBranches(){
+  if(!CU)return;
+  const isA=CU.role==='admin';
+  const grid=document.getElementById('branch-grid');
+  const countEl=document.getElementById('branch-count');
+  if(countEl)countEl.textContent=BRANCHES.length;
+  if(!grid)return;
+  grid.innerHTML=BRANCHES.map((b,i)=>{
+    const isHO=b==='Head Office';
+    const delBtn=isA&&!isHO?'<button class="btn-a btn-d ms-auto" onclick="deleteBranch('+i+')" title="Delete"><i class="fa-solid fa-trash fa-xs"></i></button>':'';
+    const badge=isHO?'<span class="chip-a ms-1" style="font-size:.58rem">HO</span>':'';
+    return '<div class="col-6 col-md-4 col-lg-3"><div style="background:#f4f7fc;border-radius:9px;padding:8px 10px;font-size:.78rem;font-weight:600;color:#1a3c6e;display:flex;align-items:center;gap:4px"><i class="fa-solid fa-location-dot text-warning" style="font-size:.7rem;flex-shrink:0"></i>'+b+badge+delBtn+'</div></div>';
+  }).join('');
+}
+function openAddBranch(){
+  document.getElementById('new-branch-name').value='';
+  document.getElementById('branch-err').style.display='none';
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('add-branch-modal')).show();
+  setTimeout(()=>document.getElementById('new-branch-name').focus(),400);
+}
+function addBranch(){
+  const nameEl=document.getElementById('new-branch-name');
+  const errEl=document.getElementById('branch-err');
+  const name=nameEl.value.trim();
+  if(!name){errEl.textContent='Enter a branch name.';errEl.style.display='block';return;}
+  if(BRANCHES.some(b=>b.toLowerCase()===name.toLowerCase())){errEl.textContent='Branch already exists.';errEl.style.display='block';return;}
+  BRANCHES.push(name);
+  BRANCHES.sort((a,b)=>a==='Head Office'?-1:b==='Head Office'?1:a.localeCompare(b));
+  saveBranches();setupDD();renderBranches();
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('add-branch-modal')).hide();
+  toast('Branch "'+name+'" added');
+}
+function deleteBranch(idx){
+  const name=BRANCHES[idx];
+  if(name==='Head Office'){toast('Head Office cannot be deleted');return;}
+  if(!confirm('Delete branch "'+name+'"?'))return;
+  BRANCHES.splice(idx,1);
+  saveBranches();setupDD();renderBranches();
+  toast('Branch "'+name+'" deleted');
+}
+
+
 </script>
 </body>
 </html>
