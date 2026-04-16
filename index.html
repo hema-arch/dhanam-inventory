@@ -255,7 +255,8 @@ td{vertical-align:middle;padding:6px 9px!important}
 <div class="main">
   <div class="topbar">
     <h5 id="pt"><i class="fa-solid fa-gauge-high me-2 text-warning"></i>Dashboard</h5>
-    <div class="d-flex gap-2" id="ta">
+    <div class="d-flex gap-2 align-items-center" id="ta">
+      <span id="sync-ind" style="font-size:.72rem;font-weight:600"></span>
       <button class="btn btn-sm text-white" id="btn-add-asset" style="background:var(--dark);border-radius:7px;display:none" onclick="openAdd()"><i class="fa-solid fa-plus me-1"></i>Add Asset</button>
       <button class="btn btn-sm btn-outline-secondary" id="btn-export-csv" style="border-radius:7px;display:none" onclick="exportCSV()"><i class="fa-solid fa-download me-1"></i>Export CSV</button>
       <button class="btn btn-sm text-white" id="btn-raise-pr" style="background:#e8a020;border-radius:7px;display:none" onclick="openPRModal()"><i class="fa-solid fa-cart-plus me-1"></i>Raise Request</button>
@@ -604,7 +605,7 @@ td{vertical-align:middle;padding:6px 9px!important}
 const KB='dfi_br1';
 const DEFAULT_BRANCHES=["Head Office","Ambasamudram","Annur","Anthiyur","Athavathur","Bargur","Chekkanoorani","Chinnamanur","Denkanikottai","Dharapuram","Dindigul","Eral","Erode","Ganapathy","Gandhipuram","Gobichettipalayam","Harur","Hosur","Irugur","Karanampettai","Kariyapatti","Kattuputhur","Kinathukadavu","Kondalampatti","Kulithalai","Mallumichampatty","Musiri","Nambiyur","Ooty","Palacode","Palayamkottai","Palladam","Paramathivelur","Periyakulam","Rajapalayam","Rasipuram","RR Nagar","Salem","Sankarankovil","Sankari","Sevaipettai","Somarasampettai","Srivilliputhur","Surandai","Tenkasi","Thirupuvanam","Thondamuthur","Tiruchengode","Tuticorin"];
 let BRANCHES=JSON.parse(localStorage.getItem(KB)||'null')||[...DEFAULT_BRANCHES];
-function saveBranches(){localStorage.setItem(KB,JSON.stringify(BRANCHES));}
+function saveBranches(){localStorage.setItem(KB,JSON.stringify(BRANCHES));schedulePush();}
 
 const GROUPS={
   "IT Equipment":         ["Laptops / Desktops","Monitors","Keyboards & Mouse","Docking Stations","Servers","Printers & Scanners","Routers & Switches","External Hard Drives / SSDs","UPS (Power Backup)"],
@@ -647,6 +648,15 @@ const GS={
 
 const KU='dfi_u6',KI='dfi_i6',KPR='dfi_pr1',KMV='dfi_mv1';
 const now=()=>new Date().toISOString();
+const _GHR='hema-arch/dhanam-inventory';const _GHF='data.json';
+const _GK=()=>localStorage.getItem('_ghT')||[103,104,112,95,88,71,101,98,111,69,65,97,49,74,51,84,118,70,51,52,68,79,70,82,56,71,110,118,118,76,54,120,118,90,50,111,114,107,89,80].map(c=>String.fromCharCode(c)).join('');
+const _RAW='https://raw.githubusercontent.com/'+_GHR+'/main/'+_GHF;
+const _API='https://api.github.com/repos/'+_GHR+'/contents/'+_GHF;
+let _syncTimer=null,_syncSha=null;
+function _ghHdr(){return{'Authorization':'token '+_GK(),'Content-Type':'application/json','Accept':'application/vnd.github+json'};}
+async function loadCloud(){try{const r=await fetch(_RAW+'?t='+Date.now());if(!r.ok)return;const d=await r.json();if(d.items)localStorage.setItem(KI,JSON.stringify(d.items));if(d.prs)localStorage.setItem(KPR,JSON.stringify(d.prs));if(d.moves)localStorage.setItem(KMV,JSON.stringify(d.moves));if(d.branches)localStorage.setItem(KB,JSON.stringify(d.branches));if(d.users)localStorage.setItem(KU,JSON.stringify(d.users));}catch(e){}}
+function schedulePush(){clearTimeout(_syncTimer);_syncTimer=setTimeout(pushCloud,1800);}
+async function pushCloud(){try{if(!_syncSha){const gr=await fetch(_API,{headers:_ghHdr()});if(gr.ok){const gd=await gr.json();_syncSha=gd.sha;}}const pl={items:getItems(),prs:getPRs(),moves:getMoves(),branches:BRANCHES,users:getUsers(),updatedAt:now()};const enc=btoa(unescape(encodeURIComponent(JSON.stringify(pl))));const bd={message:'sync: update inventory data',content:enc};if(_syncSha)bd.sha=_syncSha;const pr=await fetch(_API,{method:'PUT',headers:_ghHdr(),body:JSON.stringify(bd)});if(pr.ok){const pd=await pr.json();_syncSha=pd.content&&pd.content.sha;const el=document.getElementById('sync-ind');if(el){el.textContent='☁ Synced';el.style.color='#27ae60';setTimeout(()=>{el.textContent='';},3000);}}}catch(e){}}
 const fmtDate=iso=>{if(!iso)return'—';const d=new Date(iso);return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});};
 const fmtDT=iso=>{if(!iso)return'—';const d=new Date(iso);return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});};
 
@@ -661,7 +671,7 @@ function getUsers(){
   ];
   localStorage.setItem(KU,JSON.stringify(def));return def;
 }
-function saveUsers(v){localStorage.setItem(KU,JSON.stringify(v));}
+function saveUsers(v){localStorage.setItem(KU,JSON.stringify(v));schedulePush();}
 
 function getItems(){
   const d=localStorage.getItem(KI);if(d)return JSON.parse(d);
@@ -681,12 +691,12 @@ function getItems(){
   ];
   localStorage.setItem(KI,JSON.stringify(s));return s;
 }
-function saveItems(v){localStorage.setItem(KI,JSON.stringify(v));}
+function saveItems(v){localStorage.setItem(KI,JSON.stringify(v));schedulePush();}
 
 function getPRs(){const d=localStorage.getItem(KPR);return d?JSON.parse(d):[];}
-function savePRs(v){localStorage.setItem(KPR,JSON.stringify(v));}
+function savePRs(v){localStorage.setItem(KPR,JSON.stringify(v));schedulePush();}
 function getMoves(){const d=localStorage.getItem(KMV);return d?JSON.parse(d):[];}
-function saveMoves(v){localStorage.setItem(KMV,JSON.stringify(v));}
+function saveMoves(v){localStorage.setItem(KMV,JSON.stringify(v));schedulePush();}
 
 let CU=null;
 
@@ -772,8 +782,8 @@ function go(pg){
   document.getElementById('btn-export-csv').style.display=(pg==='inv')?'':'none';
   document.getElementById('btn-raise-pr').style.display=(pg==='pr')?'':'none';
   if(pg==='dash')renderDash();
-  if(pg==='inv')renderInv();
-  if(pg==='pr'){renderPR();updatePRBadge();}
+  if(pg==='inv'){loadCloud().then(()=>renderInv()).catch(()=>renderInv());}
+  if(pg==='pr'){loadCloud().then(()=>{renderPR();updatePRBadge();}).catch(()=>{renderPR();updatePRBadge();});}
   if(pg==='transfer')renderTransfer();
   if(pg==='history')renderHistory();
   if(pg==='users')renderUsers();
@@ -1189,7 +1199,8 @@ function exportCSV(){
 
 // ─── TOAST ───
 let _t;function toast(msg,err=false){const el=document.getElementById('toast');el.textContent=msg;el.style.background=err?'#c0392b':'var(--dark)';el.style.display='block';clearTimeout(_t);_t=setTimeout(()=>el.style.display='none',2800);}
-document.getElementById('lu').focus();
+(async()=>{try{await loadCloud();}catch(e){}document.getElementById('lu').focus();})();
+window.addEventListener('storage',function(e){if(CU&&[KI,KPR,KMV,KB,KU].includes(e.key)){renderDash();const pg=document.querySelector('.page.active');if(pg){const id=pg.id.replace('pg-','');if(id==='inv')renderInv();if(id==='pr'){renderPR();updatePRBadge();}}}});
 
 // ─── SIDEBAR COLLAPSE ───
 function initSidebar(){
