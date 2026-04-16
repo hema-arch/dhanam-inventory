@@ -24,7 +24,7 @@
 .rt{display:inline-block;font-size:.61rem;padding:1px 7px;border-radius:20px;font-weight:700;margin-left:8px;margin-top:2px}
 .rt-a{background:var(--gold);color:#fff}.rt-u{background:rgba(255,255,255,.18);color:#fff}
 .sb-nav{flex:1;padding:6px 0;overflow-y:auto;min-height:0;scroll-behavior:smooth}
-.sb-drag{display:flex;align-items:center;justify-content:center;padding:4px 8px;cursor:ns-resize;user-select:none;flex-shrink:0;gap:6px}.sb-drag-bar{width:36px;height:5px;border-radius:3px;background:rgba(255,215,0,.55);transition:background .2s}.sb-drag:hover .sb-drag-bar{background:rgba(255,215,0,.9)}.sb-drag-label{font-size:9px;color:rgba(255,215,0,.55);letter-spacing:1px;text-transform:uppercase;font-weight:600}.sb-drag:hover .sb-drag-label{color:rgba(255,215,0,.9)}.sb-nav::-webkit-scrollbar{width:6px}
+.sb-drag{display:flex;align-items:center;justify-content:center;padding:4px 8px;cursor:ns-resize;user-select:none;flex-shrink:0;gap:6px}.sb-drag-bar{width:36px;height:5px;border-radius:3px;background:rgba(255,215,0,.55);transition:background .2s}.sb-drag:hover .sb-drag-bar{background:rgba(255,215,0,.9)}.sb-nav::-webkit-scrollbar{width:6px}
 .sb-nav::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:4px}
 .sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:4px;transition:.2s}
 .sb-nav::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.4)}
@@ -118,7 +118,7 @@ td{vertical-align:middle;padding:6px 9px!important}
       <div><div class="nm" id="sbNm"></div><div class="rl" id="sbRl"></div><div id="sbTag"></div></div>
     </div>
   </div>
-  <div class="sb-drag" id="sbDragHandle"><div class="sb-drag-bar"></div><span class="sb-drag-label">scroll</span></div><div class="sb-nav">
+  <div class="sb-drag" id="sbDragHandle"><div class="sb-drag-bar"></div></div><div class="sb-nav">
     <div class="ns">Main</div>
     <div class="ni active" id="nav-dash" onclick="go('dash')"><i class="fa-solid fa-gauge-high"></i>Dashboard</div>
     <div class="ni" id="nav-inv" onclick="go('inv');resetFilters()"><i class="fa-solid fa-table-list"></i>All Inventory</div>
@@ -247,7 +247,7 @@ td{vertical-align:middle;padding:6px 9px!important}
     <div class="ni" id="nav-branches" onclick="go('branches')"><i class="fa-solid fa-code-branch"></i>All Branches (49)</div>
   </div>
   <div class="sb-foot">
-    <button onclick="scrollSbTop()" style="width:100%;background:rgba(255,255,255,.04);border:none;color:rgba(255,255,255,.3);padding:5px;border-radius:5px;font-size:.72rem;cursor:pointer;margin-bottom:5px" title="Scroll to top"><i class="fa-solid fa-chevron-up me-1"></i>Scroll to top</button>
+    
     <button onclick="logout()"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</button>
   </div>
 </div>
