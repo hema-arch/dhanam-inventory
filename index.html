@@ -601,20 +601,21 @@ td{vertical-align:middle;padding:6px 9px!important}
 <div id="toast"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js">
 
+
+
 // ── BRANCH MANAGEMENT ──────────────────────────────────────────
-function renderBranches(){if(!CU)return;
-  const isA=CU&&CU.role==='admin';
+function renderBranches(){
+  if(!CU)return;
+  const isA=CU.role==='admin';
   const grid=document.getElementById('branch-grid');
   const countEl=document.getElementById('branch-count');
   if(countEl)countEl.textContent=BRANCHES.length;
   if(!grid)return;
   grid.innerHTML=BRANCHES.map((b,i)=>{
     const isHO=b==='Head Office';
-    const delBtn=isA&&!isHO
-      ? `<button class="btn-a btn-d ms-auto" onclick="deleteBranch(${i})" title="Delete"><i class="fa-solid fa-trash fa-xs"></i></button>`
-      : '';
-    const badge=isHO?`<span class="chip-a ms-1" style="font-size:.58rem">HO</span>`:'';
-    return `<div class="col-6 col-md-4 col-lg-3"><div style="background:#f4f7fc;border-radius:9px;padding:8px 10px;font-size:.78rem;font-weight:600;color:#1a3c6e;display:flex;align-items:center;gap:4px"><i class="fa-solid fa-location-dot text-warning" style="font-size:.7rem;flex-shrink:0"></i>${b}${badge}${delBtn}</div></div>`;
+    const delBtn=isA&&!isHO?'<button class="btn-a btn-d ms-auto" onclick="deleteBranch('+i+')" title="Delete"><i class="fa-solid fa-trash fa-xs"></i></button>':'';
+    const badge=isHO?'<span class="chip-a ms-1" style="font-size:.58rem">HO</span>':'';
+    return '<div class="col-6 col-md-4 col-lg-3"><div style="background:#f4f7fc;border-radius:9px;padding:8px 10px;font-size:.78rem;font-weight:600;color:#1a3c6e;display:flex;align-items:center;gap:4px"><i class="fa-solid fa-location-dot text-warning" style="font-size:.7rem;flex-shrink:0"></i>'+b+badge+delBtn+'</div></div>';
   }).join('');
 }
 function openAddBranch(){
@@ -627,7 +628,7 @@ function addBranch(){
   const nameEl=document.getElementById('new-branch-name');
   const errEl=document.getElementById('branch-err');
   const name=nameEl.value.trim();
-  if(!name){errEl.textContent='Please enter a branch name.';errEl.style.display='block';return;}
+  if(!name){errEl.textContent='Enter a branch name.';errEl.style.display='block';return;}
   if(BRANCHES.some(b=>b.toLowerCase()===name.toLowerCase())){errEl.textContent='Branch already exists.';errEl.style.display='block';return;}
   BRANCHES.push(name);
   BRANCHES.sort((a,b)=>a==='Head Office'?-1:b==='Head Office'?1:a.localeCompare(b));
