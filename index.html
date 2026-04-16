@@ -24,7 +24,7 @@
 .rt{display:inline-block;font-size:.61rem;padding:1px 7px;border-radius:20px;font-weight:700;margin-left:8px;margin-top:2px}
 .rt-a{background:var(--gold);color:#fff}.rt-u{background:rgba(255,255,255,.18);color:#fff}
 .sb-nav{flex:1;padding:6px 0;overflow-y:auto;min-height:0;scroll-behavior:smooth}
-.sb-nav::-webkit-scrollbar{width:4px}
+.sb-drag{display:flex;align-items:center;justify-content:center;padding:4px 8px;cursor:ns-resize;user-select:none;flex-shrink:0;gap:6px}.sb-drag-bar{width:36px;height:5px;border-radius:3px;background:rgba(255,215,0,.55);transition:background .2s}.sb-drag:hover .sb-drag-bar{background:rgba(255,215,0,.9)}.sb-drag-label{font-size:9px;color:rgba(255,215,0,.55);letter-spacing:1px;text-transform:uppercase;font-weight:600}.sb-drag:hover .sb-drag-label{color:rgba(255,215,0,.9)}.sb-nav::-webkit-scrollbar{width:6px}
 .sb-nav::-webkit-scrollbar-track{background:rgba(255,255,255,.04);border-radius:4px}
 .sb-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border-radius:4px;transition:.2s}
 .sb-nav::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.4)}
@@ -118,7 +118,7 @@ td{vertical-align:middle;padding:6px 9px!important}
       <div><div class="nm" id="sbNm"></div><div class="rl" id="sbRl"></div><div id="sbTag"></div></div>
     </div>
   </div>
-  <div class="sb-nav">
+  <div class="sb-drag" id="sbDragHandle"><div class="sb-drag-bar"></div><span class="sb-drag-label">scroll</span></div><div class="sb-nav">
     <div class="ns">Main</div>
     <div class="ni active" id="nav-dash" onclick="go('dash')"><i class="fa-solid fa-gauge-high"></i>Dashboard</div>
     <div class="ni" id="nav-inv" onclick="go('inv');resetFilters()"><i class="fa-solid fa-table-list"></i>All Inventory</div>
@@ -577,7 +577,43 @@ td{vertical-align:middle;padding:6px 9px!important}
 </div></div></div>
 
 <div id="toast"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js">
+// ── Sidebar drag-to-scroll ──────────────────────────────────────
+(function(){
+  const handle = document.getElementById('sbDragHandle');
+  const nav = document.querySelector('.sb-nav');
+  if(!handle || !nav) return;
+  let dragging=false, startY=0, startScroll=0;
+  handle.addEventListener('mousedown', e=>{
+    dragging=true; startY=e.clientY; startScroll=nav.scrollTop;
+    document.body.style.cursor='ns-resize';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e=>{
+    if(!dragging) return;
+    const dy = e.clientY - startY;
+    const ratio = nav.scrollHeight / nav.clientHeight;
+    nav.scrollTop = startScroll + dy * ratio;
+  });
+  document.addEventListener('mouseup', ()=>{
+    dragging=false; document.body.style.cursor='';
+  });
+  // Touch support
+  handle.addEventListener('touchstart', e=>{
+    dragging=true; startY=e.touches[0].clientY; startScroll=nav.scrollTop;
+    e.preventDefault();
+  },{passive:false});
+  handle.addEventListener('touchmove', e=>{
+    if(!dragging) return;
+    const dy = e.touches[0].clientY - startY;
+    const ratio = nav.scrollHeight / nav.clientHeight;
+    nav.scrollTop = startScroll + dy * ratio;
+    e.preventDefault();
+  },{passive:false});
+  handle.addEventListener('touchend', ()=>{ dragging=false; });
+})();
+
+</script>
 <script>
 const BRANCHES=["Head Office","Ambasamudram","Annur","Anthiyur","Athavathur","Bargur","Chekkanoorani","Chinnamanur","Denkanikottai","Dharapuram","Dindigul","Eral","Erode","Ganapathy","Gandhipuram","Gobichettipalayam","Harur","Hosur","Irugur","Karanampettai","Kariyapatti","Kattuputhur","Kinathukadavu","Kondalampatti","Kulithalai","Mallumichampatty","Musiri","Nambiyur","Ooty","Palacode","Palayamkottai","Palladam","Paramathivelur","Periyakulam","Rajapalayam","Rasipuram","RR Nagar","Salem","Sankarankovil","Sankari","Sevaipettai","Somarasampettai","Srivilliputhur","Surandai","Tenkasi","Thirupuvanam","Thondamuthur","Tiruchengode","Tuticorin"];
 
