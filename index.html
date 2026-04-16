@@ -777,7 +777,7 @@ function go(pg){
   if(pg==='history')renderHistory();
   if(pg==='users')renderUsers();
   if(pg==='branches')renderBranches();
-  const isA2=CU&&CU.role==='admin';
+  const isA2=CU&&CU.role.toLowerCase()==='admin';
   const btnAB=document.getElementById('btn-add-branch');if(btnAB)btnAB.style.display=(pg==='branches'&&isA2)?'':'none';
 }
 
@@ -1222,7 +1222,7 @@ function scrollSbTop(){
 // ── BRANCH MANAGEMENT ──────────────────────────────────────────
 function renderBranches(){
   if(!CU)return;
-  const isA=CU.role==='admin';
+  const isA=CU.role.toLowerCase()==='admin';
   const grid=document.getElementById('branch-grid');
   const countEl=document.getElementById('branch-count');
   if(countEl)countEl.textContent=BRANCHES.length;
