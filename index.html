@@ -655,8 +655,9 @@ function getUsers(){
   const def=[
     {id:1,name:'Administrator',username:'admin',password:'admin123',role:'Admin',branch:'Head Office'},
     {id:2,name:'Hema',username:'hema',password:'dhanam123',role:'Admin',branch:'Head Office'},
-    {id:3,name:'Suresh Kumar',username:'user1',password:'user123',role:'User',branch:'Erode'},
-    {id:4,name:'Priya Nair',username:'user2',password:'user123',role:'User',branch:'Salem'},
+    {id:3,name:'User',username:'user',password:'user123',role:'User',branch:'Head Office'},
+    {id:4,name:'Suresh Kumar',username:'user1',password:'user123',role:'User',branch:'Erode'},
+    {id:5,name:'Priya Nair',username:'user2',password:'user123',role:'User',branch:'Salem'},
   ];
   localStorage.setItem(KU,JSON.stringify(def));return def;
 }
