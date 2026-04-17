@@ -386,7 +386,7 @@ body{background:#f0f2f8}
 
 <div class="main">
   <div class="topbar">
-    <h5 id="pt"><i class="fa-solid fa-gauge-high me-2" style="color:#1a3c6e""></i>Dashboard</h5>
+    <h5 id="pt"><i class="fa-solid fa-gauge-high me-2" style="color:#1a3c6e"></i>Dashboard</h5>
     <div class="d-flex gap-2 align-items-center" id="ta">
       <span id="sync-ind" style="font-size:.72rem;font-weight:600;color:#27ae60"></span>
       <button class="btn btn-sm" id="btn-sync-now" style="background:#e8f0fc;color:#1a3c6e;border:1px solid #c5d4f0;border-radius:7px;font-size:.72rem;padding:3px 10px" onclick="syncNow()" title="Sync latest data from cloud"><i class="fa-solid fa-rotate me-1"></i>Sync</button>
@@ -418,7 +418,7 @@ body{background:#f0f2f8}
     </div>
     <div class="panel">
       <div class="ph">
-        <h6><i class="fa-solid fa-table-list me-2" style="color:#1a3c6e""></i>Asset Inventory</h6>
+        <h6><i class="fa-solid fa-table-list me-2" style="color:#1a3c6e"></i>Asset Inventory</h6>
         <div class="d-flex gap-2 flex-wrap">
           <div class="sw"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="search-q" placeholder="Search…" oninput="renderInv()"/></div>
           <select class="form-select form-select-sm" id="fil-branch" onchange="renderInv()" style="width:138px;font-size:.78rem;border-radius:7px"></select>
@@ -451,7 +451,7 @@ body{background:#f0f2f8}
     </div>
     <div class="panel">
       <div class="ph">
-        <h6><i class="fa-solid fa-cart-plus me-2" style="color:#1a3c6e""></i>Purchase Requests</h6>
+        <h6><i class="fa-solid fa-cart-plus me-2" style="color:#1a3c6e"></i>Purchase Requests</h6>
         <div class="d-flex gap-2 flex-wrap align-items-center">
           <select class="form-select form-select-sm" id="pr-fil-status" onchange="renderPR()" style="width:130px;font-size:.78rem;border-radius:7px">
             <option value="">All Status</option><option>Pending</option><option>Approved</option><option>Rejected</option>
@@ -478,7 +478,7 @@ body{background:#f0f2f8}
     <div class="row g-3 mb-3" id="ho-kpi-row"></div>
     <div class="panel">
       <div class="ph">
-        <h6><i class="fa-solid fa-right-left me-2" style="color:#1a3c6e""></i>Head Office Inventory — Transfer to Branch</h6>
+        <h6><i class="fa-solid fa-right-left me-2" style="color:#1a3c6e"></i>Head Office Inventory — Transfer to Branch</h6>
         <div class="sw"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="tr-search" placeholder="Search HO items…" oninput="renderTransfer()"/></div>
       </div>
       <div class="table-responsive">
@@ -499,7 +499,7 @@ body{background:#f0f2f8}
     </div>
     <div class="panel">
       <div class="ph">
-        <h6><i class="fa-solid fa-clock-rotate-left me-2" style="color:#1a3c6e""></i>Item Movement History</h6>
+        <h6><i class="fa-solid fa-clock-rotate-left me-2" style="color:#1a3c6e"></i>Item Movement History</h6>
         <div class="d-flex gap-2 flex-wrap">
           <select class="form-select form-select-sm" id="hist-fil-action" onchange="renderHistory()" style="width:160px;font-size:.78rem;border-radius:7px">
             <option value="">All Actions</option><option>Transfer</option><option>Purchase Receipt</option>
@@ -526,14 +526,14 @@ body{background:#f0f2f8}
     </div>
     <div class="row g-3">
       <div class="col-lg-7">
-        <div class="panel"><div class="ph"><h6><i class="fa-solid fa-users me-2" style="color:#1a3c6e""></i>All Users</h6></div>
+        <div class="panel"><div class="ph"><h6><i class="fa-solid fa-users me-2" style="color:#1a3c6e"></i>All Users</h6></div>
           <div class="table-responsive"><table class="table table-hover mb-0">
             <thead><tr><th>#</th><th>Name</th><th>Username</th><th>Role</th><th>Branch</th><th></th></tr></thead>
             <tbody id="usr-body"></tbody></table></div>
         </div>
       </div>
       <div class="col-lg-5">
-        <div class="panel"><div class="ph"><h6><i class="fa-solid fa-user-plus me-2" style="color:#1a3c6e""></i>Create User</h6></div>
+        <div class="panel"><div class="ph"><h6><i class="fa-solid fa-user-plus me-2" style="color:#1a3c6e"></i>Create User</h6></div>
           <div class="p-3">
             <div class="mb-2"><label class="form-label">Full Name</label><input type="text" id="u-name" class="form-control form-control-sm"/></div>
             <div class="mb-2"><label class="form-label">Username</label><input type="text" id="u-user" class="form-control form-control-sm"/></div>
@@ -560,7 +560,7 @@ body{background:#f0f2f8}
     </div>
     <div class="panel">
       <div class="ph">
-        <h6><i class="fa-solid fa-code-branch me-2" style="color:#1a3c6e""></i>All Branch Locations — <span id="branch-count">49</span> Branches</h6>
+        <h6><i class="fa-solid fa-code-branch me-2" style="color:#1a3c6e"></i>All Branch Locations — <span id="branch-count">49</span> Branches</h6>
         <button id="btn-add-branch" class="btn btn-sm text-white" style="background:var(--dark);border-radius:7px;display:none" onclick="openAddBranch()"><i class="fa-solid fa-plus me-1"></i>Add Branch</button>
       </div>
       <div class="p-3"><div class="row g-2" id="branch-grid"></div></div>
@@ -969,13 +969,13 @@ function buildPRTypeHTML(){
 }
 
 const PTITLES={
-  dash:'<i class="fa-solid fa-gauge-high me-2" style="color:#1a3c6e""></i>Dashboard',
-  inv:'<i class="fa-solid fa-table-list me-2" style="color:#1a3c6e""></i>Asset Inventory',
-  pr:'<i class="fa-solid fa-cart-plus me-2" style="color:#1a3c6e""></i>Purchase Requests',
-  transfer:'<i class="fa-solid fa-right-left me-2" style="color:#1a3c6e""></i>Transfer Items (Head Office)',
-  history:'<i class="fa-solid fa-clock-rotate-left me-2" style="color:#1a3c6e""></i>Movement History',
+  dash:'<i class="fa-solid fa-gauge-high me-2" style="color:#1a3c6e"></i>Dashboard',
+  inv:'<i class="fa-solid fa-table-list me-2" style="color:#1a3c6e"></i>Asset Inventory',
+  pr:'<i class="fa-solid fa-cart-plus me-2" style="color:#1a3c6e"></i>Purchase Requests',
+  transfer:'<i class="fa-solid fa-right-left me-2" style="color:#1a3c6e"></i>Transfer Items (Head Office)',
+  history:'<i class="fa-solid fa-clock-rotate-left me-2" style="color:#1a3c6e"></i>Movement History',
   users:'<i class="fa-solid fa-users-gear me-2" style="color:#1a3c6e"></i>Manage Users',
-  branches:'<i class="fa-solid fa-code-branch me-2" style="color:#1a3c6e""></i>Manage Branches'
+  branches:'<i class="fa-solid fa-code-branch me-2" style="color:#1a3c6e"></i>Manage Branches'
 };
 
 function go(pg){
