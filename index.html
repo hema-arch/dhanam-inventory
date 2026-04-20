@@ -181,10 +181,20 @@
   }
   .avatar{
     width:36px;height:36px;border-radius:50%;
-    background:var(--brand-50);color:var(--brand);
+    background:linear-gradient(135deg,#e7c268 0%, #8a6516 100%);
+    color:#fff;
     display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
-    border:1px solid var(--ink-200);
+    border:none;letter-spacing:.02em;
+    box-shadow:0 2px 6px rgba(138,101,22,.25), inset 0 1px 1px rgba(255,255,255,.3);
   }
+  /* Deterministic colour palette for user avatars (design-overview avatar pattern) */
+  .avatar.a-gold   {background:linear-gradient(135deg,#e7c268 0%, #8a6516 100%)}
+  .avatar.a-teal   {background:linear-gradient(135deg,#4fb3a3 0%, #0f766e 100%)}
+  .avatar.a-indigo {background:linear-gradient(135deg,#6b7ec4 0%, #3b447a 100%)}
+  .avatar.a-amber  {background:linear-gradient(135deg,#e0a653 0%, #a56608 100%)}
+  .avatar.a-slate  {background:linear-gradient(135deg,#7b8596 0%, #3b4554 100%)}
+  .avatar.a-rose   {background:linear-gradient(135deg,#d87a7a 0%, #9a1e13 100%)}
+  .avatar-sm{width:28px;height:28px;font-size:11px}
   .sb-user .who{font-size:13px;font-weight:600;color:var(--ink-900);line-height:1.1}
   .sb-user .role{font-size:11px;color:var(--ink-400);margin-top:2px}
   .role-pill{
@@ -358,16 +368,26 @@
     position:relative;padding:18px 20px;
     background:#ffffff;
     border:1px solid var(--ink-200);
-    border-radius:6px;
-    transition:border-color .15s ease;
+    border-radius:14px;
+    transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+    box-shadow:0 1px 2px rgba(16,24,40,.04);
+    overflow:hidden;
   }
-  .metric:hover{border-color:#c9cdd5}
+  .metric:hover{
+    border-color:#e0d1a0;
+    box-shadow:0 4px 14px rgba(184,137,43,.08), 0 1px 2px rgba(16,24,40,.04);
+    transform:translateY(-1px);
+  }
   /* Thin gold top rule — corporate signature */
   .metric::before{
     content:'';position:absolute;left:0;right:0;top:0;height:2px;
-    background:#b8892b;border-radius:6px 6px 0 0;
+    background:#b8892b;border-radius:14px 14px 0 0;
   }
   .metric.attention::before{background:#9a1e13}
+  .metric.attention:hover{
+    border-color:#e8b7b1;
+    box-shadow:0 4px 14px rgba(154,30,19,.08), 0 1px 2px rgba(16,24,40,.04);
+  }
   .metric .m-head{display:flex;align-items:center;gap:10px;margin-bottom:4px}
   .metric .m-icon{
     width:22px;height:22px;display:inline-flex;
@@ -410,11 +430,12 @@
   }
   .section-title a.link:hover{text-decoration:underline}
 
-  /* ---------- Quiet card (corporate) ---------- */
+  /* ---------- Quiet card (corporate, design-overview rounded-2xl) ---------- */
   .q-card{
     background:#ffffff;
     border:1px solid var(--ink-200);
-    border-radius:6px;padding:20px 22px;
+    border-radius:14px;padding:20px 22px;
+    box-shadow:0 1px 2px rgba(16,24,40,.04);
   }
 
   /* Category bars — solid corporate gold */
@@ -433,7 +454,7 @@
   /* ---------- Panels ---------- */
   .panel{
     background:var(--paper);border:1px solid var(--ink-200);
-    border-radius:var(--radius);box-shadow:var(--shadow-xs);
+    border-radius:14px;box-shadow:0 1px 2px rgba(16,24,40,.04);
     margin-bottom:22px;overflow:hidden;
   }
   .panel-head{
@@ -458,17 +479,31 @@
   .cat-row .bar > span{display:block;height:100%;background:var(--brand);border-radius:4px}
   .cat-row .val{text-align:right;font-weight:700;color:var(--ink-800)}
 
-  /* ---------- Recent activity ---------- */
+  /* ---------- Recent activity (design-overview diary-card pattern: coloured left-border) ---------- */
   .activity-item{
-    display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--ink-100);
+    position:relative;
+    display:flex;gap:12px;padding:11px 12px 11px 14px;
     font-size:13px;
+    background:#fff;
+    border:1px solid var(--ink-100);
+    border-left:3px solid #b8892b;
+    border-radius:10px;
+    margin-bottom:8px;
+    transition:border-color .15s ease, box-shadow .15s ease;
   }
-  .activity-item:last-child{border-bottom:none}
+  .activity-item:last-child{margin-bottom:0}
+  .activity-item:hover{border-color:var(--ink-200);box-shadow:0 2px 6px rgba(16,24,40,.04)}
+  .activity-item.a-transfer{border-left-color:#b8892b}
+  .activity-item.a-purchase{border-left-color:#0f7a4d}
+  .activity-item.a-alert{border-left-color:#9a1e13}
   .activity-icon{
     width:28px;height:28px;border-radius:8px;flex:0 0 28px;
     display:flex;align-items:center;justify-content:center;font-size:13px;
     background:var(--brand-50);color:var(--brand);
   }
+  .activity-item.a-transfer .activity-icon{background:#fbf4e6;color:#8a6516}
+  .activity-item.a-purchase .activity-icon{background:#e7f5ee;color:#0f7a4d}
+  .activity-item.a-alert .activity-icon{background:#fdecec;color:#9a1e13}
   .activity-text{flex:1;color:var(--ink-700);line-height:1.35}
   .activity-text .meta{font-size:11px;color:var(--ink-400);margin-top:2px}
 
@@ -479,19 +514,25 @@
   }
   .branch-card{
     position:relative;
-    padding:14px 16px;cursor:pointer;
+    padding:14px 16px 14px 20px;cursor:pointer;
     background:#ffffff;
     border:1px solid var(--ink-200);
-    border-radius:4px;
-    transition:border-color .15s ease;
+    border-radius:12px;
+    transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
     display:flex;flex-direction:column;gap:2px;
     min-height:86px;justify-content:center;
+    box-shadow:0 1px 2px rgba(16,24,40,.03);
+    overflow:hidden;
   }
   .branch-card::before{
-    content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+    content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
     background:#b8892b;
   }
-  .branch-card:hover{border-color:#8a6516}
+  .branch-card:hover{
+    border-color:#e0d1a0;
+    box-shadow:0 4px 12px rgba(184,137,43,.08);
+    transform:translateY(-1px);
+  }
   .branch-card .name{font-weight:600;color:var(--ink-800);font-size:12.5px;line-height:1.3}
   .branch-card .asset-count{
     font-size:22px;font-weight:700;color:var(--ink-900);margin-top:4px;letter-spacing:-.02em;
@@ -541,6 +582,241 @@
     font-size:11px;font-weight:600;
   }
 
+  /* ---------- Polished Asset Inventory cells ---------- */
+  table.data tbody tr{transition:background .12s ease}
+  table.data tbody tr:hover{background:#fcfaf4}
+
+  .inv-asset{display:flex;align-items:center;gap:11px;min-width:220px}
+  .inv-asset .ia-ico{
+    width:38px;height:38px;flex-shrink:0;border-radius:10px;
+    background:linear-gradient(135deg,#fff7e0 0%,#f3e3b4 100%);
+    color:#7a5a18;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:15px;
+  }
+  .inv-asset .ia-body{display:flex;flex-direction:column;gap:1px;min-width:0}
+  .inv-asset .ia-name{
+    font-size:13.5px;font-weight:600;color:var(--ink-900);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;
+  }
+  .inv-asset .ia-sub{
+    font-size:11.5px;color:var(--ink-400);font-weight:500;
+  }
+  .inv-asset .ia-sub .ia-cat{
+    color:#7a5a18;font-weight:600;
+  }
+
+  .inv-type{display:inline-flex;align-items:center;gap:7px;color:var(--ink-700);font-weight:500;font-size:12.5px}
+  .inv-type i{color:#a87d22;font-size:11.5px;opacity:.85}
+
+  .inv-serial{
+    display:inline-block;padding:3px 8px;border-radius:6px;
+    background:var(--ink-50);color:var(--ink-600);
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11.5px;
+    border:1px solid var(--ink-100);
+  }
+  .inv-serial.empty{background:transparent;border:none;color:var(--ink-300)}
+
+  .inv-assigned{display:inline-flex;align-items:center;gap:8px}
+  .inv-assigned .ia-av{
+    width:26px;height:26px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:10.5px;font-weight:700;color:#fff;flex-shrink:0;
+  }
+  .inv-assigned .ia-lbl{font-size:12.5px;color:var(--ink-800);font-weight:500}
+  .inv-assigned.unassigned{color:var(--ink-400);font-size:12.5px;font-weight:500}
+  .inv-assigned.unassigned i{margin-right:4px;font-size:10px}
+
+  .inv-qty{
+    display:inline-flex;align-items:baseline;gap:3px;
+    padding:3px 9px;border-radius:6px;background:var(--ink-50);
+    font-weight:700;color:var(--ink-900);font-size:12.5px;
+  }
+  .inv-qty.qty-high{background:#fef5dc;color:#6d4e0e}
+  .inv-qty .qu{font-size:10px;font-weight:500;color:var(--ink-400);text-transform:uppercase;letter-spacing:.04em}
+
+  .inv-n{color:var(--ink-400);font-size:12px;font-weight:600}
+
+  /* Category group header inside the inventory table */
+  table.data tbody tr.inv-group-head{
+    background:linear-gradient(90deg,#fff7e0 0%,#fdfaf0 50%,transparent 100%);
+  }
+  table.data tbody tr.inv-group-head:hover{
+    background:linear-gradient(90deg,#fff7e0 0%,#fdfaf0 50%,transparent 100%);
+  }
+  table.data tbody tr.inv-group-head td{
+    padding:10px 14px;border-bottom:1px solid #f0e0b0;
+  }
+  .igh{
+    display:flex;align-items:center;gap:10px;
+  }
+  .igh .igh-ico{
+    width:30px;height:30px;border-radius:8px;
+    background:#fff;border:1px solid #e8d89e;
+    color:#7a5a18;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:13px;flex-shrink:0;
+  }
+  .igh .igh-name{
+    font-size:12px;font-weight:700;color:#5c4210;
+    text-transform:uppercase;letter-spacing:.08em;
+  }
+  .igh .igh-count{
+    font-size:11px;font-weight:700;color:#7a5a18;
+    background:#fef5dc;border:1px solid #f0dca0;
+    padding:2px 9px;border-radius:999px;
+  }
+  .igh .igh-hint{
+    font-size:11.5px;color:var(--ink-500);font-weight:500;margin-left:4px;
+  }
+
+  /* ========== Modern Asset Card Grid ========== */
+  .asset-grid{display:flex;flex-direction:column;gap:26px}
+  .asset-section{display:flex;flex-direction:column;gap:14px}
+  .asset-section-head{
+    display:flex;align-items:center;gap:12px;
+    padding:12px 16px;
+    background:linear-gradient(90deg,#fff7e0 0%,#fdfaf0 55%,#fff 100%);
+    border:1px solid #f0dca0;
+    border-radius:12px;
+  }
+  .asset-section-head .ash-ico{
+    width:36px;height:36px;border-radius:10px;
+    background:#fff;border:1px solid #e8d89e;
+    color:#7a5a18;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:14px;flex-shrink:0;
+  }
+  .asset-section-head .ash-name{
+    font-size:13px;font-weight:800;color:#5c4210;
+    text-transform:uppercase;letter-spacing:.08em;
+  }
+  .asset-section-head .ash-count{
+    font-size:11.5px;font-weight:700;color:#7a5a18;
+    background:#fff;border:1px solid #f0dca0;
+    padding:3px 10px;border-radius:999px;
+  }
+  .asset-section-head .ash-hint{
+    margin-left:auto;
+    font-size:12px;color:var(--ink-500);font-weight:500;
+  }
+  .asset-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(290px, 1fr));
+    gap:14px;
+  }
+  .asset-card{
+    position:relative;
+    display:flex;flex-direction:column;
+    background:#fff;
+    border:1px solid var(--ink-200);
+    border-radius:14px;
+    padding:16px 16px 12px 16px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    overflow:hidden;
+  }
+  .asset-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,#b8892b 0%,#e7c268 100%);
+    opacity:0;transition:opacity .15s ease;
+  }
+  .asset-card:hover{
+    border-color:#e0d1a0;
+    box-shadow:0 8px 24px rgba(184,137,43,.10);
+    transform:translateY(-2px);
+  }
+  .asset-card:hover::before{opacity:1}
+
+  .asset-card .ac-status{
+    position:absolute;top:14px;right:14px;
+  }
+  .asset-card .ac-head{
+    display:flex;align-items:flex-start;gap:12px;padding-right:90px;
+  }
+  .asset-card .ac-ico{
+    width:46px;height:46px;flex-shrink:0;border-radius:12px;
+    background:linear-gradient(135deg,#fff7e0 0%,#f3e3b4 100%);
+    color:#7a5a18;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:18px;
+  }
+  .asset-card .ac-title{
+    font-size:14.5px;font-weight:700;color:var(--ink-900);line-height:1.3;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    margin-bottom:2px;
+  }
+  .asset-card .ac-sub{
+    font-size:11.5px;color:var(--ink-500);font-weight:500;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+
+  .asset-card .ac-meta{
+    display:grid;grid-template-columns:1fr;
+    gap:7px;margin-top:14px;padding-top:12px;
+    border-top:1px dashed var(--ink-100);
+  }
+  .asset-card .ac-row{
+    display:flex;align-items:center;gap:8px;font-size:12px;
+  }
+  .asset-card .ac-row .ac-k{
+    color:var(--ink-400);font-weight:600;
+    text-transform:uppercase;letter-spacing:.04em;font-size:10.5px;
+    width:62px;flex-shrink:0;
+  }
+  .asset-card .ac-row .ac-v{
+    color:var(--ink-800);font-weight:500;
+    display:inline-flex;align-items:center;gap:7px;min-width:0;
+  }
+  .asset-card .ac-row .ac-v .inv-serial{font-size:11.5px}
+  .asset-card .ac-row .ac-v .badge-branch{font-size:11px}
+  .asset-card .ac-row .ac-v .ia-av{
+    width:20px;height:20px;font-size:9.5px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;
+  }
+  .asset-card .ac-row .ac-v .ac-name-el{
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+
+  .asset-card .ac-foot{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:12px;padding-top:10px;border-top:1px solid var(--ink-100);
+  }
+  .asset-card .ac-qty{
+    display:inline-flex;align-items:baseline;gap:4px;
+    font-weight:800;color:var(--ink-900);font-size:15px;
+  }
+  .asset-card .ac-qty .ac-unit{
+    font-size:10.5px;font-weight:600;color:var(--ink-400);
+    text-transform:uppercase;letter-spacing:.04em;
+  }
+  .asset-card .ac-qty.high{
+    color:#7a5a18;
+    background:#fef5dc;padding:3px 10px;border-radius:8px;
+  }
+
+  /* View toggle */
+  .view-toggle{
+    display:inline-flex;border:1px solid var(--ink-200);border-radius:8px;
+    background:#fff;padding:2px;gap:2px;
+  }
+  .view-toggle button{
+    border:none;background:transparent;
+    padding:5px 10px;border-radius:6px;
+    color:var(--ink-500);font-size:11.5px;font-weight:600;
+    cursor:pointer;display:inline-flex;align-items:center;gap:5px;
+    transition:all .12s ease;
+  }
+  .view-toggle button:hover{color:var(--ink-800)}
+  .view-toggle button.active{
+    background:linear-gradient(135deg,#fff7e0 0%,#f3e3b4 100%);
+    color:#7a5a18;
+  }
+  .view-toggle button i{font-size:11px}
+
+  /* Hide one view at a time */
+  #invGrid.hidden, #invTableWrap.hidden{display:none}
+
   .row-actions{display:flex;gap:6px;flex-wrap:wrap}
   .icon-btn{
     width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;
@@ -550,6 +826,24 @@
   }
   .icon-btn:hover{background:var(--ink-50);color:var(--ink-900);border-color:var(--ink-300)}
   .icon-btn.danger:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+
+  /* ---------- Back arrow in topbar ---------- */
+  .back-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:36px;height:36px;
+    border-radius:10px;border:1px solid var(--ink-200);
+    background:#fff;color:var(--ink-700);
+    cursor:pointer;font-size:13.5px;
+    transition:all .15s ease;
+    flex-shrink:0;
+  }
+  .back-btn:hover{
+    background:linear-gradient(135deg,#fff7e0 0%,#f3e3b4 100%);
+    color:#7a5a18;border-color:#e0d1a0;
+    transform:translateX(-1px);
+    box-shadow:0 2px 6px rgba(184,137,43,.12);
+  }
+  .back-btn:active{transform:translateX(-2px)}
 
   /* ---------- Filters/search ---------- */
   .filter-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -672,6 +966,205 @@
     margin-left:6px;
   }
 
+  /* ---------- Notification bell (design-overview pattern) ---------- */
+  .bell{
+    position:relative;
+    width:38px;height:38px;border-radius:10px;
+    background:var(--paper);border:1px solid var(--ink-200);
+    color:var(--ink-600);
+    display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:all .14s ease;font-size:15px;
+  }
+  .bell:hover{background:var(--ink-50);color:var(--ink-900);border-color:var(--ink-300)}
+  .bell .bell-dot{
+    position:absolute;top:-2px;right:-2px;
+    min-width:16px;height:16px;padding:0 4px;
+    background:#9a1e13;color:#fff;
+    border:2px solid var(--paper);
+    border-radius:999px;
+    font-size:10px;font-weight:700;
+    display:none;align-items:center;justify-content:center;
+    line-height:1;
+  }
+  .bell.has-unread .bell-dot{display:inline-flex}
+  .bell-panel{
+    position:absolute;top:calc(100% + 8px);right:0;
+    width:340px;max-width:calc(100vw - 32px);
+    background:var(--paper);border:1px solid var(--ink-200);
+    border-radius:14px;box-shadow:var(--shadow-lg);
+    z-index:120;display:none;overflow:hidden;
+  }
+  .bell-panel.open{display:block}
+  .bell-panel .bph{
+    padding:12px 16px;border-bottom:1px solid var(--ink-100);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .bell-panel .bph h4{margin:0;font-size:13px;font-weight:700;color:var(--ink-900)}
+  .bell-panel .bpb{max-height:360px;overflow-y:auto;padding:6px 8px}
+  .bell-panel .b-item{
+    display:flex;gap:10px;padding:10px 10px;border-radius:8px;
+    font-size:12.5px;color:var(--ink-700);cursor:pointer;
+  }
+  .bell-panel .b-item:hover{background:var(--ink-50)}
+  .bell-panel .b-item i{
+    width:26px;height:26px;border-radius:7px;flex:0 0 26px;
+    display:flex;align-items:center;justify-content:center;font-size:12px;
+    background:var(--warn-50);color:var(--warn);
+  }
+  .bell-panel .b-item.urgent i{background:var(--danger-50);color:var(--danger)}
+  .bell-panel .b-item .meta{font-size:11px;color:var(--ink-400);margin-top:2px}
+  .bell-panel .bpf{
+    padding:8px 12px;border-top:1px solid var(--ink-100);text-align:center;
+    font-size:12px;color:var(--brand);font-weight:600;cursor:pointer;
+  }
+  .bell-panel .bpf:hover{background:var(--ink-50)}
+  .bell-empty{
+    padding:28px 16px;text-align:center;color:var(--ink-400);font-size:12.5px;
+  }
+  .bell-empty i{font-size:22px;color:var(--ink-300);display:block;margin-bottom:6px}
+
+  /* ---------- Stacked team avatars (design-overview top-nav pattern) ---------- */
+  .team-stack{
+    display:inline-flex;align-items:center;cursor:pointer;
+    padding:2px;border-radius:999px;
+  }
+  .team-stack .avatar{
+    width:28px;height:28px;font-size:10.5px;
+    border:2px solid var(--paper);margin-left:-6px;
+    transition:transform .14s ease;
+    box-shadow:0 1px 3px rgba(16,24,40,.08);
+  }
+  .team-stack .avatar:first-child{margin-left:0}
+  .team-stack:hover .avatar{transform:translateX(1px)}
+  .team-stack .more{
+    width:28px;height:28px;border-radius:50%;
+    background:var(--ink-100);color:var(--ink-600);
+    border:2px solid var(--paper);margin-left:-6px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:10px;font-weight:700;
+    box-shadow:0 1px 3px rgba(16,24,40,.08);
+  }
+  @media (max-width:640px){ .team-stack{display:none} }
+
+  /* ---------- Progress bar (design-overview completion track) ---------- */
+  .progress{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:11.5px;color:var(--ink-500);
+  }
+  .progress .track{
+    width:120px;height:6px;background:var(--ink-100);
+    border-radius:999px;overflow:hidden;
+  }
+  .progress .fill{
+    height:100%;background:linear-gradient(90deg,#e7c268 0%,#b8892b 100%);
+    border-radius:999px;transition:width .4s ease;
+  }
+  .progress .val{font-weight:700;color:var(--ink-700);font-variant-numeric:tabular-nums}
+
+  /* ---------- Bento-style filter toolbar (design-overview) ---------- */
+  .filter-bento{
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    background:#fff;border:1px solid var(--ink-200);
+    border-radius:14px;padding:10px 14px;margin-bottom:14px;
+    box-shadow:0 1px 2px rgba(16,24,40,.03);
+  }
+  .filter-bento .fb-label{
+    font-size:11px;color:var(--ink-400);font-weight:600;
+    letter-spacing:.04em;
+  }
+  .filter-bento .fb-sep{
+    width:1px;height:22px;background:var(--ink-200);flex-shrink:0;
+  }
+  .filter-bento .search input{padding:7px 10px 7px 30px;width:220px}
+  .filter-bento .search i{font-size:12.5px}
+  .filter-bento .select{padding:7px 10px}
+  .filter-bento .status-chip-group{display:flex;gap:6px;flex-wrap:wrap}
+  .filter-bento .status-chip-group .status-pill{cursor:default}
+
+  /* ---------- Catalogue list (clean, deletable) ---------- */
+  .catalogue-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+    gap:10px;
+  }
+  .catalogue-row{
+    display:flex;align-items:center;gap:12px;
+    padding:12px 14px;
+    background:#fff;
+    border:1px solid var(--ink-200);
+    border-radius:12px;
+    transition:border-color .15s ease, box-shadow .15s ease, transform .12s ease;
+  }
+  .catalogue-row:hover{
+    border-color:#e0d1a0;
+    box-shadow:0 4px 12px rgba(184,137,43,.08);
+  }
+  .catalogue-row .cat-ico{
+    width:38px;height:38px;flex-shrink:0;
+    border-radius:10px;
+    background:linear-gradient(135deg,#fff7e0 0%,#f3e3b4 100%);
+    color:#7a5a18;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:15px;
+  }
+  .catalogue-row .cat-body{
+    flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;
+  }
+  .catalogue-row .cat-name{
+    font-size:14px;font-weight:600;color:var(--ink-900);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .catalogue-row .cat-meta{
+    font-size:11.5px;color:var(--ink-400);font-weight:500;
+  }
+  .catalogue-row .cat-meta.in-use{color:#7a5a18}
+  .catalogue-row .cat-del{
+    width:32px;height:32px;flex-shrink:0;
+    border-radius:8px;border:1px solid var(--ink-200);
+    background:#fff;color:var(--ink-500);
+    cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+    font-size:13px;transition:all .12s ease;
+  }
+  .catalogue-row .cat-del:hover{
+    background:var(--danger);color:#fff;border-color:var(--danger);
+  }
+  .catalogue-row .cat-del:disabled{
+    opacity:.4;cursor:not-allowed;background:var(--ink-50);color:var(--ink-400);
+  }
+  .catalogue-row.locked{background:#fcfaf4}
+  .catalogue-empty{
+    grid-column:1/-1;
+    padding:48px 16px;text-align:center;color:var(--ink-400);font-size:13px;
+  }
+  .catalogue-empty i{
+    display:block;font-size:26px;margin-bottom:10px;color:var(--ink-300);
+  }
+  /* Section header spans all columns in the catalogue grid */
+  .cat-section-head{
+    grid-column:1/-1;
+    display:flex;align-items:center;gap:10px;
+    padding:10px 2px 4px 2px;
+    border-bottom:1px solid var(--ink-100);
+    margin-top:6px;
+  }
+  .cat-section-head:first-child{margin-top:0}
+  .cat-section-head .cs-ico{
+    width:28px;height:28px;border-radius:8px;
+    background:linear-gradient(135deg,#fff7e0 0%,#f3e3b4 100%);
+    color:#7a5a18;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:12px;flex-shrink:0;
+  }
+  .cat-section-head .cs-name{
+    font-size:12px;font-weight:700;
+    color:var(--ink-900);
+    text-transform:uppercase;letter-spacing:.06em;
+  }
+  .cat-section-head .cs-count{
+    font-size:11px;font-weight:600;color:var(--ink-400);
+    background:var(--ink-50);padding:2px 8px;border-radius:999px;
+  }
+
   /* ---------- Utility ---------- */
   .hstack{display:flex;align-items:center;gap:8px}
   .mt-2{margin-top:8px}.mt-3{margin-top:12px}.mt-4{margin-top:16px}
@@ -792,6 +1285,7 @@
     <div class="topbar">
       <div class="hstack">
         <button class="icon-btn menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa-solid fa-bars"></i></button>
+        <button class="back-btn" id="btnBack" onclick="goBack()" title="Back" style="display:none"><i class="fa-solid fa-arrow-left"></i></button>
         <div>
           <div class="page-title" id="pageTitle">Dashboard</div>
           <div class="page-sub" id="pageSub">Overview of inventory, activity and branches.</div>
@@ -802,6 +1296,22 @@
         <button class="btn btn-accent btn-sm" id="btnRaisePR" onclick="openPR()"><i class="fa-solid fa-cart-shopping"></i>Raise Request</button>
         <button class="btn btn-primary btn-sm" id="btnAddAsset" onclick="openAsset()"><i class="fa-solid fa-plus"></i>Add Asset</button>
         <button class="btn btn-ghost btn-sm" id="btnAdminOpen" onclick="openAdminDrawer()" style="display:none !important"><i class="fa-solid fa-sliders"></i>Admin</button>
+        <!-- Stacked team avatars (design-overview top-nav pattern) -->
+        <div class="team-stack" id="teamStack" title="Team" onclick="go('users')"></div>
+        <div style="position:relative">
+          <button class="bell" id="bellBtn" aria-label="Notifications" onclick="toggleBell(event)">
+            <i class="fa-regular fa-bell"></i>
+            <span class="bell-dot" id="bellDot">0</span>
+          </button>
+          <div class="bell-panel" id="bellPanel">
+            <div class="bph">
+              <h4>Notifications</h4>
+              <span class="muted" id="bellCount" style="font-size:11.5px">0 new</span>
+            </div>
+            <div class="bpb" id="bellBody"></div>
+            <div class="bpf" onclick="closeBell();go('pr')">View all requests →</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -814,9 +1324,16 @@
           <h2 id="greetingMsg">Inventory Dashboard</h2>
           <div class="date" id="greetingDate">—<span class="dot"></span>Live</div>
         </div>
-        <div class="actions">
-          <button class="btn btn-ghost btn-sm" onclick="exportCSV()"><i class="fa-solid fa-download"></i>Export CSV</button>
-          <button class="btn btn-primary btn-sm" onclick="openAsset()"><i class="fa-solid fa-plus"></i>Add Asset</button>
+        <div class="actions" style="flex-direction:column;align-items:flex-end;gap:10px">
+          <div class="progress" id="dashProgress" title="Share of total assets currently assigned to staff">
+            <span class="val" id="dashProgressVal">0%</span>
+            <span>assets assigned</span>
+            <span class="track"><span class="fill" id="dashProgressFill" style="width:0%"></span></span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="exportCSV()"><i class="fa-solid fa-download"></i>Export CSV</button>
+            <button class="btn btn-primary btn-sm" onclick="openAsset()"><i class="fa-solid fa-plus"></i>Add Asset</button>
+          </div>
         </div>
       </div>
 
@@ -851,22 +1368,32 @@
 
     <!-- ============ INVENTORY ============ -->
     <section class="page" id="pg-inv">
+      <!-- Bento filter toolbar (design-overview pattern) -->
+      <div class="filter-bento">
+        <span class="fb-label">Filter</span>
+        <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="invSearch" placeholder="Search name, brand, serial..." oninput="renderInv()" /></div>
+        <div class="fb-sep"></div>
+        <select class="select" id="invStatus" onchange="renderInv()">
+          <option value="">All statuses</option>
+          <option>Available</option><option>Assigned</option><option>Maintenance</option><option>Retired</option>
+        </select>
+        <select class="select" id="invBranch" onchange="renderInv()"><option value="">All branches</option></select>
+        <select class="select" id="invCategory" onchange="renderInv()"><option value="">All categories</option></select>
+        <div class="fb-sep"></div>
+        <div class="view-toggle" id="invViewToggle">
+          <button type="button" class="active" data-view="grid" onclick="setInvView('grid')"><i class="fa-solid fa-grip"></i>Grid</button>
+          <button type="button" data-view="table" onclick="setInvView('table')"><i class="fa-solid fa-table-list"></i>Table</button>
+        </div>
+      </div>
       <div class="panel">
         <div class="panel-head">
           <div>
             <h3>Asset Inventory</h3>
             <div class="sub">Search, filter and manage all assets</div>
           </div>
-          <div class="filter-row">
-            <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="invSearch" placeholder="Search name, brand, serial..." oninput="renderInv()" /></div>
-            <select class="select" id="invStatus" onchange="renderInv()">
-              <option value="">All statuses</option>
-              <option>Available</option><option>Assigned</option><option>Maintenance</option><option>Retired</option>
-            </select>
-            <select class="select" id="invBranch" onchange="renderInv()"><option value="">All branches</option></select>
-          </div>
         </div>
-        <div class="table-wrap">
+        <div class="panel-body" id="invGrid"></div>
+        <div class="table-wrap hidden" id="invTableWrap">
           <table class="data">
             <thead><tr>
               <th>#</th><th>Asset</th><th>Branch</th><th>Type</th><th>Serial</th><th>Assigned to</th><th>Qty</th><th>Status</th><th></th>
@@ -879,17 +1406,26 @@
 
     <!-- ============ PURCHASE REQUESTS ============ -->
     <section class="page" id="pg-pr">
+      <!-- Bento filter toolbar -->
+      <div class="filter-bento">
+        <span class="fb-label">Status</span>
+        <select class="select" id="prStatus" onchange="renderPR()">
+          <option value="">All statuses</option>
+          <option>Pending</option><option>Approved</option><option>Rejected</option>
+        </select>
+        <div class="fb-sep"></div>
+        <div class="status-chip-group">
+          <span class="status-pill s-pending">Pending</span>
+          <span class="status-pill s-approved">Approved</span>
+          <span class="status-pill s-rejected">Rejected</span>
+        </div>
+        <button class="btn btn-accent btn-sm" style="margin-left:auto" onclick="openPR()"><i class="fa-solid fa-plus"></i>New Request</button>
+      </div>
       <div class="panel">
         <div class="panel-head">
           <div>
             <h3>Purchase Requests</h3>
             <div class="sub">Raise and approve procurement across branches</div>
-          </div>
-          <div class="filter-row">
-            <select class="select" id="prStatus" onchange="renderPR()">
-              <option value="">All statuses</option>
-              <option>Pending</option><option>Approved</option><option>Rejected</option>
-            </select>
           </div>
         </div>
         <div class="table-wrap">
@@ -913,6 +1449,22 @@
           </div>
         </div>
         <div class="admin-grid">
+          <div class="admin-tile" onclick="go('items')">
+            <div class="admin-tile-icon"><i class="fa-solid fa-tags"></i></div>
+            <div class="admin-tile-body">
+              <div class="admin-tile-title">Item Catalogue</div>
+              <div class="admin-tile-desc"><span id="adItemCount">0</span> item names — add or remove</div>
+            </div>
+            <i class="fa-solid fa-chevron-right admin-tile-chev"></i>
+          </div>
+          <div class="admin-tile" onclick="go('categories')">
+            <div class="admin-tile-icon"><i class="fa-solid fa-layer-group"></i></div>
+            <div class="admin-tile-body">
+              <div class="admin-tile-title">Category Catalogue</div>
+              <div class="admin-tile-desc"><span id="adCatCount">0</span> categories — add or remove</div>
+            </div>
+            <i class="fa-solid fa-chevron-right admin-tile-chev"></i>
+          </div>
           <div class="admin-tile" onclick="go('transfer')">
             <div class="admin-tile-icon"><i class="fa-solid fa-right-left"></i></div>
             <div class="admin-tile-body">
@@ -969,16 +1521,18 @@
 
     <!-- ============ HISTORY ============ -->
     <section class="page" id="pg-history">
+      <!-- Bento filter toolbar -->
+      <div class="filter-bento">
+        <span class="fb-label">Action</span>
+        <select class="select" id="hAction" onchange="renderHistory()">
+          <option value="">All actions</option><option>Transfer</option><option>Purchase Receipt</option>
+        </select>
+      </div>
       <div class="panel">
         <div class="panel-head">
           <div>
             <h3>Movement History</h3>
             <div class="sub">Full audit trail of every transfer &amp; purchase</div>
-          </div>
-          <div class="filter-row">
-            <select class="select" id="hAction" onchange="renderHistory()">
-              <option value="">All actions</option><option>Transfer</option><option>Purchase Receipt</option>
-            </select>
           </div>
         </div>
         <div class="table-wrap">
@@ -1027,15 +1581,63 @@
       </div>
     </section>
 
+    <!-- ============ ITEM CATALOGUE ============ -->
+    <section class="page" id="pg-items">
+      <div class="filter-bento">
+        <span class="fb-label">Add new item</span>
+        <input id="newItemName" class="select" style="min-width:240px" placeholder="e.g. Document Scanner" onkeydown="if(event.key==='Enter')addItemType()" />
+        <span class="fb-label">Category</span>
+        <select id="newItemCategory" class="select" style="min-width:150px"></select>
+        <button class="btn btn-primary btn-sm" onclick="addItemType()"><i class="fa-solid fa-plus"></i>Add to catalogue</button>
+        <div class="fb-sep"></div>
+        <span class="fb-label" style="margin-left:auto"><span id="itemsTotal">0</span> item names</span>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Item Catalogue</h3>
+            <div class="sub">Master list of item names used when adding assets or raising requests. Items in use by existing records cannot be deleted.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div id="itemChips" class="catalogue-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CATEGORY CATALOGUE ============ -->
+    <section class="page" id="pg-categories">
+      <div class="filter-bento">
+        <span class="fb-label">Add new category</span>
+        <input id="newCatName" class="select" style="min-width:260px" placeholder="e.g. Technology" onkeydown="if(event.key==='Enter')addCategory()" />
+        <button class="btn btn-primary btn-sm" onclick="addCategory()"><i class="fa-solid fa-plus"></i>Add to catalogue</button>
+        <div class="fb-sep"></div>
+        <span class="fb-label" style="margin-left:auto"><span id="catsTotal">0</span> categories</span>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>Category Catalogue</h3>
+            <div class="sub">Broad groupings shown on the Add Asset form. Keep the list short — categories should cover many items at once.</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div id="catChips" class="catalogue-list"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ BRANCHES ============ -->
     <section class="page" id="pg-branches">
+      <!-- Bento filter toolbar -->
+      <div class="filter-bento">
+        <span class="fb-label">Search</span>
+        <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="brSearch" placeholder="Search branch..." oninput="renderBranches()" /></div>
+        <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="openAddBranch()"><i class="fa-solid fa-plus"></i>Add branch</button>
+      </div>
       <div class="panel">
         <div class="panel-head">
           <div><h3>All Branches</h3><div class="sub"><span id="branchCount2">49</span> locations</div></div>
-          <div class="filter-row">
-            <div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="brSearch" placeholder="Search branch..." oninput="renderBranches()" /></div>
-            <button class="btn btn-primary btn-sm" onclick="openAddBranch()"><i class="fa-solid fa-plus"></i>Add branch</button>
-          </div>
         </div>
         <div class="panel-body">
           <div class="branch-grid standalone" id="branchList"></div>
@@ -1054,6 +1656,7 @@
         <div class="field"><label>Asset name *</label><input id="aName" placeholder="e.g. Dell Latitude 5430"/></div>
         <div class="field"><label>Branch *</label><select id="aBranch" class="select" style="width:100%"></select></div>
         <div class="field"><label>Type *</label><select id="aType" class="select" style="width:100%"></select></div>
+        <div class="field"><label>Category</label><select id="aCategory" class="select" style="width:100%"></select></div>
         <div class="field"><label>Quantity *</label><input id="aQty" type="number" min="1" value="1"/></div>
         <div class="field"><label>Brand / model</label><input id="aBrand" placeholder="Dell / HP / ..."/></div>
         <div class="field"><label>Serial / code</label><input id="aSerial" placeholder="Serial or batch #"/></div>
@@ -1127,6 +1730,22 @@
     <button class="icon-btn" onclick="closeAdminDrawer()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <div class="drawer-body">
+    <div class="admin-item" data-page="items" onclick="adminGo('items')">
+      <div class="icon-wrap"><i class="fa-solid fa-tags"></i></div>
+      <div>
+        <div class="t">Item Catalogue</div>
+        <div class="d">Add or remove item names (types)</div>
+      </div>
+      <i class="fa-solid fa-chevron-right chev"></i>
+    </div>
+    <div class="admin-item" data-page="categories" onclick="adminGo('categories')">
+      <div class="icon-wrap"><i class="fa-solid fa-layer-group"></i></div>
+      <div>
+        <div class="t">Category Catalogue</div>
+        <div class="d">Add or remove asset categories</div>
+      </div>
+      <i class="fa-solid fa-chevron-right chev"></i>
+    </div>
     <div class="admin-item" data-page="transfer" onclick="adminGo('transfer')">
       <div class="icon-wrap"><i class="fa-solid fa-right-left"></i></div>
       <div>
@@ -1175,12 +1794,31 @@ const DEFAULT_BRANCHES = [
   'Nagapattinam','Mayiladuthurai','Theni','Ranipet','Tenkasi','Kallakurichi','Chengalpattu','Tirupur','Avadi',
   'Kanyakumari','Thiruvallur','Thoothukudi'
 ];
-const TYPES = [
+const DEFAULT_TYPES = [
   'Laptop / Desktop','Monitor','Keyboard & Mouse','Docking Station','Server','Printer & Scanner','Router & Switch',
   'External HDD/SSD','UPS','Projector / TV','Headset','Mobile Phone','SIM Card','ID Card','Access Card','CCTV Camera',
   'Laptop Bag','Extension Board','Battery','A4 Paper','Notebook / Register','File / Folder','Stapler','Ink Cartridge',
   'Toner Cartridge','Network Cable','Pen','Other'
 ];
+
+const DEFAULT_CATEGORIES = [
+  'Technology','Networking','Furniture','Stationery','Electrical','Security','Other'
+];
+
+// Maps each default item name to its category so the Item Catalogue is organised.
+const DEFAULT_ITEM_CATEGORY = {
+  'Laptop / Desktop':'Technology','Monitor':'Technology','Keyboard & Mouse':'Technology',
+  'Docking Station':'Technology','Server':'Technology','Printer & Scanner':'Technology',
+  'External HDD/SSD':'Technology','Projector / TV':'Technology','Headset':'Technology',
+  'Mobile Phone':'Technology','SIM Card':'Technology','Laptop Bag':'Technology',
+  'Ink Cartridge':'Technology','Toner Cartridge':'Technology',
+  'Router & Switch':'Networking','Network Cable':'Networking',
+  'UPS':'Electrical','Battery':'Electrical','Extension Board':'Electrical',
+  'CCTV Camera':'Security','ID Card':'Security','Access Card':'Security',
+  'A4 Paper':'Stationery','Notebook / Register':'Stationery','File / Folder':'Stationery',
+  'Stapler':'Stationery','Pen':'Stationery',
+  'Other':'Other'
+};
 
 const DB_KEY = 'dhanam_inv_v2';
 let state = load();
@@ -1188,7 +1826,34 @@ let state = load();
 function load(){
   try{
     const raw = localStorage.getItem(DB_KEY);
-    if(raw) return JSON.parse(raw);
+    if(raw){
+      const s = JSON.parse(raw);
+      // Migrate: existing sessions won't have itemTypes / categories — seed from defaults
+      if(!Array.isArray(s.itemTypes) || !s.itemTypes.length){
+        s.itemTypes = [...DEFAULT_TYPES];
+      }
+      if(!Array.isArray(s.categories) || !s.categories.length){
+        s.categories = [...DEFAULT_CATEGORIES];
+      }
+      // Migrate: force-reset existing sessions that still hold the old 9-item category list
+      // (old list used overlapping names like 'IT Hardware' / 'Peripherals' / 'Mobile & Telecom')
+      const OLD_CATEGORIES = ['IT Hardware','Networking','Peripherals','Stationery','Consumables','Furniture','Security','Mobile & Telecom','Other'];
+      if(Array.isArray(s.categories) && s.categories.length===OLD_CATEGORIES.length &&
+         s.categories.every(c=>OLD_CATEGORIES.includes(c))){
+        s.categories = [...DEFAULT_CATEGORIES];
+      }
+      // Migrate: seed per-item category mapping so the Item Catalogue can be grouped
+      if(!s.itemCategoryMap || typeof s.itemCategoryMap !== 'object'){
+        s.itemCategoryMap = {...DEFAULT_ITEM_CATEGORY};
+      }
+      // Backfill any existing items that aren't in the map yet
+      (s.itemTypes||[]).forEach(n=>{
+        if(!s.itemCategoryMap[n]){
+          s.itemCategoryMap[n] = DEFAULT_ITEM_CATEGORY[n] || 'Other';
+        }
+      });
+      return s;
+    }
   }catch(e){}
   return seed();
 }
@@ -1217,7 +1882,7 @@ function seed(){
     {id:1001,branch:'Chennai - T. Nagar',items:[{type:'A4 Paper',brand:'JK',qty:20,reason:'Monthly stock'}],by:'user',date:Date.now()-86400000,status:'Pending',prio:'Normal'},
     {id:1002,branch:'Salem',items:[{type:'Ink Cartridge',brand:'HP 682',qty:4,reason:'Printer dry'}],by:'user',date:Date.now()-172800000,status:'Approved',prio:'Urgent'}
   ];
-  return {branches,users,assets:sample,prs,history,session:null};
+  return {branches,users,assets:sample,prs,history,itemTypes:[...DEFAULT_TYPES],categories:[...DEFAULT_CATEGORIES],itemCategoryMap:{...DEFAULT_ITEM_CATEGORY},session:null};
 }
 
 /* ================= AUTH ================= */
@@ -1237,7 +1902,9 @@ function enterApp(){
   document.getElementById('app').style.display='block';
   const s=state.session;
   document.getElementById('uName').textContent=s.name;
-  document.getElementById('uAvatar').textContent=(s.name||'U')[0].toUpperCase();
+  const av = document.getElementById('uAvatar');
+  av.textContent = initialsOf(s.name);
+  av.className = 'avatar ' + avatarColor(s.name);
   document.getElementById('uBranch').textContent=s.branch;
   const badge=document.getElementById('uRole');
   badge.textContent=s.role==='admin'?'Admin':'User';
@@ -1251,8 +1918,19 @@ function enterApp(){
   if(sbAdminSec) sbAdminSec.style.display = s.role==='admin' ? 'block' : 'none';
   if(sbAdminItem) sbAdminItem.style.display = s.role==='admin' ? 'flex' : 'none';
   populateSelects();
+  renderTeamStack();
   renderAll();
   go('dash');
+}
+
+function renderTeamStack(){
+  const el = document.getElementById('teamStack');
+  if(!el) return;
+  const users = state.users.slice(0, 4);
+  const extra = Math.max(0, state.users.length - 4);
+  el.innerHTML = users.map(u=>`
+    <div class="avatar ${avatarColor(u.name)}" title="${u.name} · ${u.branch}">${initialsOf(u.name)}</div>
+  `).join('') + (extra ? `<div class="more" title="${extra} more">+${extra}</div>` : '');
 }
 
 /* ================= NAV ================= */
@@ -1264,14 +1942,27 @@ const PAGE_TITLES={
   transfer:['Transfers','Move stock from head office to branches.'],
   history:['Movement History','Full audit trail of every transfer &amp; purchase.'],
   users:['Manage Users','Create accounts and assign roles.'],
-  branches:['Manage Branches','All 49 branch locations.']
+  branches:['Manage Branches','All 49 branch locations.'],
+  items:['Item Catalogue','Master list of item names — add or remove.'],
+  categories:['Category Catalogue','Group assets into categories — add or remove.']
 };
+/* Navigation history stack so the back arrow can return to the previous page */
+let navHistory = [];
+let currentPage = null;
+let navSilent = false; // when true, don't push to history (used by goBack)
 function go(page){
+  // Only push to history if we're actually changing pages and not going backwards
+  if(!navSilent && currentPage && currentPage !== page){
+    navHistory.push(currentPage);
+    // Cap stack to avoid memory growth
+    if(navHistory.length > 20) navHistory.shift();
+  }
+  currentPage = page;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('pg-'+page).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.page===page));
   // Highlight the sidebar Administration item when on admin hub or any admin sub-page
-  const adminPages = ['admin','transfer','history','users','branches'];
+  const adminPages = ['admin','transfer','history','users','branches','items','categories'];
   const sbAdminItem = document.getElementById('sbAdminItem');
   if(sbAdminItem) sbAdminItem.classList.toggle('active', adminPages.includes(page));
   const t=PAGE_TITLES[page]||['Dashboard',''];
@@ -1284,8 +1975,20 @@ function go(page){
   // Admin topbar button is replaced by sidebar Administration — keep hidden
   const adminBtn = document.getElementById('btnAdminOpen');
   if(adminBtn) adminBtn.style.display = 'none';
+  // Show back arrow whenever we can go back (history has entries AND we're not on dashboard)
+  const backBtn = document.getElementById('btnBack');
+  if(backBtn){
+    backBtn.style.display = (navHistory.length > 0 && page !== 'dash') ? 'inline-flex' : 'none';
+  }
   if(window.innerWidth<900) document.getElementById('sidebar').classList.remove('open');
   renderAll();
+}
+function goBack(){
+  if(!navHistory.length){ go('dash'); return; }
+  const prev = navHistory.pop();
+  navSilent = true;
+  go(prev);
+  navSilent = false;
 }
 
 /* ---- Legacy drawer stubs (kept for backwards compatibility) ---- */
@@ -1302,12 +2005,25 @@ function populateSelects(){
     const first = id==='invBranch' ? '<option value="">All branches</option>' : '';
     el.innerHTML = first + brs;
   });
-  const typ = TYPES.map(t=>`<option>${t}</option>`).join('');
+  const typ = (state.itemTypes||[]).map(t=>`<option>${t}</option>`).join('');
   ['aType','pType'].forEach(id=>{document.getElementById(id).innerHTML=typ;});
+  const catSel = document.getElementById('aCategory');
+  if(catSel){
+    const cats = (state.categories||[]).map(c=>`<option>${c}</option>`).join('');
+    catSel.innerHTML = `<option value="">— none —</option>` + cats;
+  }
+  // Category filter on the inventory page
+  const invCatSel = document.getElementById('invCategory');
+  if(invCatSel){
+    const prev = invCatSel.value;
+    const cats = (state.categories||[]).map(c=>`<option>${c}</option>`).join('');
+    invCatSel.innerHTML = `<option value="">All categories</option>` + cats;
+    if(prev) invCatSel.value = prev;
+  }
 }
 
 /* ================= RENDER ================= */
-function renderAll(){ renderDashboard(); renderInv(); renderPR(); renderTransfer(); renderHistory(); renderUsers(); renderBranches(); updateCounts(); }
+function renderAll(){ renderDashboard(); renderInv(); renderPR(); renderTransfer(); renderHistory(); renderUsers(); renderBranches(); renderItemTypes(); renderCategories(); updateCounts(); renderBell(); }
 
 function updateCounts(){
   document.getElementById('invCount').textContent = state.assets.length;
@@ -1317,6 +2033,10 @@ function updateCounts(){
   prc.classList.toggle('pr-pending', pending>0);
   document.getElementById('branchCount').textContent = state.branches.length;
   document.getElementById('branchCount2').textContent = state.branches.length;
+  const adItem = document.getElementById('adItemCount');
+  if(adItem) adItem.textContent = (state.itemTypes||[]).length;
+  const adCat = document.getElementById('adCatCount');
+  if(adCat) adCat.textContent = (state.categories||[]).length;
 }
 
 function renderDashboard(){
@@ -1345,6 +2065,14 @@ function renderDashboard(){
     metric({icon:'fa-solid fa-clock',          label:'Pending Requests', value:pending,             hint:pending?`<strong>${approved}</strong> approved, awaiting ${pending} review${pending===1?'':'s'}`:'All requests resolved', attention:pending>0})
   ].join('');
 
+  // ---- Progress bar — share of assets currently assigned ----
+  const total = state.assets.length;
+  const pct = total ? Math.round((assigned/total)*100) : 0;
+  const pf = document.getElementById('dashProgressFill');
+  const pv = document.getElementById('dashProgressVal');
+  if(pf) pf.style.width = pct + '%';
+  if(pv) pv.textContent = pct + '%';
+
   // ---- Category chart ----
   const byCat={};
   state.assets.forEach(a=>{byCat[a.type]=(byCat[a.type]||0)+Number(a.qty||0)});
@@ -1363,17 +2091,20 @@ function renderDashboard(){
         </div>`).join('')
     : emptyBlock('No assets yet','Add your first asset to see the distribution.','fa-solid fa-box-open');
 
-  // ---- Recent activity ----
+  // ---- Recent activity (design-overview coloured left-border cards) ----
   const recent = [...state.history].sort((a,b)=>b.date-a.date).slice(0,6);
   document.getElementById('recentList').innerHTML = recent.length
-    ? recent.map(h=>`
-        <div class="activity-item">
-          <div class="activity-icon"><i class="${h.action==='Transfer'?'fa-solid fa-arrow-right':'fa-solid fa-bag-shopping'}"></i></div>
+    ? recent.map(h=>{
+        const kind = h.action==='Transfer' ? 'a-transfer' : 'a-purchase';
+        const icon = h.action==='Transfer' ? 'fa-solid fa-arrow-right' : 'fa-solid fa-bag-shopping';
+        return `
+        <div class="activity-item ${kind}">
+          <div class="activity-icon"><i class="${icon}"></i></div>
           <div class="activity-text">
             <strong>${h.action}</strong> — ${h.item} <span class="muted">×${h.qty}</span>
             <div class="meta">${h.from!=='—'?h.from+' → ':''}${h.to} · ${fmtDate(h.date)}</div>
           </div>
-        </div>`).join('')
+        </div>`}).join('')
     : emptyBlock('No activity yet','Transfers and purchases will appear here.','fa-solid fa-clock-rotate-left');
 
   // ---- Branch grid preview ----
@@ -1403,33 +2134,200 @@ function metric(o){
 
 function emptyBlock(h,p,icon){return `<div class="empty"><i class="${icon}"></i><h4>${h}</h4><p>${p}</p></div>`}
 
+// Pick a Font Awesome icon for an asset based on its type / item category
+const TYPE_ICONS = {
+  'Laptop / Desktop':'fa-laptop','Monitor':'fa-display','Keyboard & Mouse':'fa-keyboard',
+  'Docking Station':'fa-plug-circle-bolt','Server':'fa-server','Printer & Scanner':'fa-print',
+  'External HDD/SSD':'fa-hard-drive','Projector / TV':'fa-tv','Headset':'fa-headset',
+  'Mobile Phone':'fa-mobile-screen','SIM Card':'fa-sim-card','Laptop Bag':'fa-briefcase',
+  'Ink Cartridge':'fa-fill-drip','Toner Cartridge':'fa-fill',
+  'Router & Switch':'fa-network-wired','Network Cable':'fa-ethernet',
+  'UPS':'fa-battery-three-quarters','Battery':'fa-car-battery','Extension Board':'fa-plug',
+  'CCTV Camera':'fa-video','ID Card':'fa-id-card','Access Card':'fa-id-badge',
+  'A4 Paper':'fa-file-lines','Notebook / Register':'fa-book','File / Folder':'fa-folder',
+  'Stapler':'fa-paperclip','Pen':'fa-pen',
+  'Other':'fa-cube'
+};
+function iconForType(type){
+  if(TYPE_ICONS[type]) return TYPE_ICONS[type];
+  const cat = (state.itemCategoryMap||{})[type];
+  return CATEGORY_ICONS[cat] || 'fa-cube';
+}
+// Resolve an asset's category: use a.category if set, else map from its type, else 'Other'
+function assetCategory(a){
+  if(a.category) return a.category;
+  const map = state.itemCategoryMap || {};
+  return map[a.type] || DEFAULT_ITEM_CATEGORY[a.type] || 'Other';
+}
+let invView = 'grid'; // 'grid' | 'table'
+function setInvView(v){
+  invView = v;
+  document.querySelectorAll('#invViewToggle button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.view===v);
+  });
+  document.getElementById('invGrid').classList.toggle('hidden', v!=='grid');
+  document.getElementById('invTableWrap').classList.toggle('hidden', v!=='table');
+  renderInv();
+}
 function renderInv(){
   const q=(document.getElementById('invSearch')?.value||'').toLowerCase();
   const st=document.getElementById('invStatus')?.value||'';
   const br=document.getElementById('invBranch')?.value||'';
+  const cat=document.getElementById('invCategory')?.value||'';
   const rows = state.assets.filter(a=>{
     if(q && !(a.name+a.brand+a.serial).toLowerCase().includes(q)) return false;
     if(st && a.status!==st) return false;
     if(br && a.branch!==br) return false;
+    if(cat && assetCategory(a)!==cat) return false;
     return true;
   });
+
   const body=document.getElementById('invBody');
-  if(!rows.length){ body.innerHTML=`<tr><td colspan="9">${emptyBlock('No assets found','Try adjusting filters or add a new asset.','fa-solid fa-magnifying-glass')}</td></tr>`; return; }
-  body.innerHTML = rows.map((a,i)=>`
-    <tr>
-      <td class="muted">${i+1}</td>
-      <td><div class="bold" style="color:var(--ink-900)">${a.name}</div><div class="muted" style="font-size:11.5px">${a.brand||''}</div></td>
-      <td><span class="badge-branch">${a.branch}</span></td>
-      <td>${a.type}</td>
-      <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-500)">${a.serial||'—'}</span></td>
-      <td>${a.assigned||'<span class="muted">—</span>'}</td>
-      <td class="bold">${a.qty}</td>
-      <td>${statusPill(a.status)}</td>
-      <td><div class="row-actions">
-        <button class="icon-btn" title="Edit" onclick="editAsset(${a.id})"><i class="fa-solid fa-pen-to-square"></i></button>
-        ${state.session.role==='admin'?`<button class="icon-btn danger" title="Delete" onclick="delAsset(${a.id})"><i class="fa-solid fa-trash"></i></button>`:''}
-      </div></td>
-    </tr>`).join('');
+  const grid=document.getElementById('invGrid');
+  const isAdmin = state.session?.role === 'admin';
+  const CATEGORY_HINTS_LOCAL = (typeof CATEGORY_HINTS !== 'undefined') ? CATEGORY_HINTS : {};
+
+  if(!rows.length){
+    if(body) body.innerHTML = `<tr><td colspan="9">${emptyBlock('No assets found','Try adjusting filters or add a new asset.','fa-solid fa-magnifying-glass')}</td></tr>`;
+    if(grid) grid.innerHTML = emptyBlock('No assets found','Try adjusting filters or add a new asset.','fa-solid fa-magnifying-glass');
+    return;
+  }
+
+  // Group by category in the order of state.categories (so sections match catalogue order)
+  const grouped = {};
+  rows.forEach(a=>{
+    const c = assetCategory(a);
+    (grouped[c] = grouped[c] || []).push(a);
+  });
+  const orderedCats = [...(state.categories||[])];
+  Object.keys(grouped).forEach(c=>{ if(!orderedCats.includes(c)) orderedCats.push(c); });
+  orderedCats.sort((a,b)=>{ if(a==='Other') return 1; if(b==='Other') return -1; return 0; });
+
+  // ---- TABLE rows (used when invView === 'table') ----
+  const tableParts = [];
+  let rowIdx = 0;
+  orderedCats.forEach(catName=>{
+    const group = grouped[catName];
+    if(!group || !group.length) return;
+    const gIcon = CATEGORY_ICONS[catName] || 'fa-folder';
+    const gHint = CATEGORY_HINTS_LOCAL[catName] || '';
+    tableParts.push(`
+      <tr class="inv-group-head">
+        <td colspan="9">
+          <div class="igh">
+            <span class="igh-ico"><i class="fa-solid ${gIcon}"></i></span>
+            <span class="igh-name">${catName}</span>
+            <span class="igh-count">${group.length} ${group.length===1?'asset':'assets'}</span>
+            ${gHint?`<span class="igh-hint">${gHint}</span>`:''}
+          </div>
+        </td>
+      </tr>`);
+    group.forEach(a=>{
+      rowIdx++;
+      const icon = iconForType(a.type);
+      const brandLine = a.brand || '';
+      const catLine = a.category ? `<span class="ia-cat">${a.category}</span>` : '';
+      const sub = [brandLine, catLine].filter(Boolean).join(' · ');
+      const assignedCell = a.assigned
+        ? `<div class="inv-assigned"><span class="avatar ${avatarColor(a.assigned)} ia-av">${initialsOf(a.assigned)}</span><span class="ia-lbl">${a.assigned}</span></div>`
+        : `<span class="inv-assigned unassigned"><i class="fa-regular fa-circle-user"></i>Unassigned</span>`;
+      const qtyCell = a.qty > 10
+        ? `<span class="inv-qty qty-high">${a.qty}<span class="qu">pcs</span></span>`
+        : `<span class="inv-qty">${a.qty}</span>`;
+      const serialCell = a.serial
+        ? `<span class="inv-serial">${a.serial}</span>`
+        : `<span class="inv-serial empty">—</span>`;
+      tableParts.push(`
+      <tr>
+        <td class="inv-n">${String(rowIdx).padStart(2,'0')}</td>
+        <td>
+          <div class="inv-asset">
+            <span class="ia-ico"><i class="fa-solid ${icon}"></i></span>
+            <div class="ia-body">
+              <div class="ia-name">${a.name}</div>
+              ${sub?`<div class="ia-sub">${sub}</div>`:''}
+            </div>
+          </div>
+        </td>
+        <td><span class="badge-branch">${a.branch}</span></td>
+        <td><span class="inv-type"><i class="fa-solid ${icon}"></i>${a.type}</span></td>
+        <td>${serialCell}</td>
+        <td>${assignedCell}</td>
+        <td>${qtyCell}</td>
+        <td>${statusPill(a.status)}</td>
+        <td><div class="row-actions">
+          <button class="icon-btn" title="Edit" onclick="editAsset(${a.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+          ${isAdmin?`<button class="icon-btn danger" title="Delete" onclick="delAsset(${a.id})"><i class="fa-solid fa-trash"></i></button>`:''}
+        </div></td>
+      </tr>`);
+    });
+  });
+  if(body) body.innerHTML = tableParts.join('');
+
+  // ---- GRID cards ----
+  const gridParts = [];
+  orderedCats.forEach(catName=>{
+    const group = grouped[catName];
+    if(!group || !group.length) return;
+    const gIcon = CATEGORY_ICONS[catName] || 'fa-folder';
+    const gHint = CATEGORY_HINTS_LOCAL[catName] || '';
+    const cardHtml = group.map(a=>{
+      const icon = iconForType(a.type);
+      const brandLine = a.brand || '';
+      const assignedCell = a.assigned
+        ? `<span class="avatar ${avatarColor(a.assigned)} ia-av">${initialsOf(a.assigned)}</span><span class="ac-name-el">${a.assigned}</span>`
+        : `<span style="color:var(--ink-400)"><i class="fa-regular fa-circle-user" style="margin-right:4px"></i>Unassigned</span>`;
+      const qtyHtml = a.qty > 10
+        ? `<span class="ac-qty high">${a.qty}<span class="ac-unit">pcs</span></span>`
+        : `<span class="ac-qty">${a.qty}<span class="ac-unit">${a.qty===1?'unit':'units'}</span></span>`;
+      const serialHtml = a.serial
+        ? `<span class="inv-serial">${a.serial}</span>`
+        : `<span style="color:var(--ink-300)">—</span>`;
+      return `
+      <div class="asset-card">
+        <div class="ac-status">${statusPill(a.status)}</div>
+        <div class="ac-head">
+          <span class="ac-ico"><i class="fa-solid ${icon}"></i></span>
+          <div style="min-width:0;flex:1">
+            <div class="ac-title">${a.name}</div>
+            <div class="ac-sub">${[brandLine, a.type].filter(Boolean).join(' · ')}</div>
+          </div>
+        </div>
+        <div class="ac-meta">
+          <div class="ac-row">
+            <span class="ac-k">Branch</span>
+            <span class="ac-v"><span class="badge-branch">${a.branch}</span></span>
+          </div>
+          <div class="ac-row">
+            <span class="ac-k">Serial</span>
+            <span class="ac-v">${serialHtml}</span>
+          </div>
+          <div class="ac-row">
+            <span class="ac-k">Assigned</span>
+            <span class="ac-v">${assignedCell}</span>
+          </div>
+        </div>
+        <div class="ac-foot">
+          ${qtyHtml}
+          <div class="row-actions">
+            <button class="icon-btn" title="Edit" onclick="editAsset(${a.id})"><i class="fa-solid fa-pen-to-square"></i></button>
+            ${isAdmin?`<button class="icon-btn danger" title="Delete" onclick="delAsset(${a.id})"><i class="fa-solid fa-trash"></i></button>`:''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    gridParts.push(`
+      <div class="asset-section">
+        <div class="asset-section-head">
+          <span class="ash-ico"><i class="fa-solid ${gIcon}"></i></span>
+          <span class="ash-name">${catName}</span>
+          <span class="ash-count">${group.length} ${group.length===1?'asset':'assets'}</span>
+          ${gHint?`<span class="ash-hint">${gHint}</span>`:''}
+        </div>
+        <div class="asset-cards">${cardHtml}</div>
+      </div>`);
+  });
+  if(grid) grid.innerHTML = `<div class="asset-grid">${gridParts.join('')}</div>`;
 }
 
 function statusPill(s){
@@ -1495,7 +2393,12 @@ function renderUsers(){
   const body=document.getElementById('userBody');
   body.innerHTML = state.users.map(u=>`
     <tr>
-      <td class="bold" style="color:var(--ink-900)">${u.name}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="avatar avatar-sm ${avatarColor(u.name)}">${initialsOf(u.name)}</div>
+          <div class="bold" style="color:var(--ink-900)">${u.name}</div>
+        </div>
+      </td>
       <td style="font-family:'JetBrains Mono',monospace;color:var(--ink-500)">${u.username}</td>
       <td>${u.role==='admin'?'<span class="status-pill s-assigned">Admin</span>':'<span class="status-pill s-available">User</span>'}</td>
       <td><span class="badge-branch">${u.branch}</span></td>
@@ -1518,12 +2421,202 @@ function renderBranches(){
 
 function filterBranch(name){ document.getElementById('invBranch').value=name; go('inv'); }
 
+/* ================= ITEM CATALOGUE ================= */
+function itemUsageCount(name){
+  const inAssets = state.assets.filter(a=>a.type===name).length;
+  const inPRs = state.prs.filter(p => (p.items||[]).some(i=>i.type===name)).length;
+  return inAssets + inPRs;
+}
+function populateNewItemCategoryDropdown(){
+  const sel = document.getElementById('newItemCategory');
+  if(!sel) return;
+  const cats = state.categories || [];
+  const prev = sel.value;
+  sel.innerHTML = cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+  if(prev && cats.includes(prev)) sel.value = prev;
+}
+function itemCategoryOf(name){
+  const map = state.itemCategoryMap || {};
+  return map[name] || DEFAULT_ITEM_CATEGORY[name] || 'Other';
+}
+function renderItemTypes(){
+  const grid = document.getElementById('itemChips');
+  const total = document.getElementById('itemsTotal');
+  if(!grid) return;
+  populateNewItemCategoryDropdown();
+  const list = state.itemTypes || [];
+  total.textContent = list.length;
+  if(!list.length){
+    grid.innerHTML = `<div class="catalogue-empty"><i class="fa-solid fa-tags"></i>No item names yet — add the first one above.</div>`;
+    return;
+  }
+  const isAdmin = state.session?.role === 'admin';
+  // Group items by category in the order of state.categories (so display matches catalogue order)
+  const cats = state.categories || [];
+  const grouped = {};
+  cats.forEach(c=>grouped[c]=[]);
+  list.forEach(name=>{
+    let cat = itemCategoryOf(name);
+    if(!grouped[cat]){ cat = 'Other'; if(!grouped[cat]) grouped[cat]=[]; }
+    grouped[cat].push(name);
+  });
+  // Render: each non-empty group shows a header row + sorted items
+  const parts = [];
+  const orderedCats = [...cats];
+  // Ensure 'Other' appears last
+  orderedCats.sort((a,b)=>{
+    if(a==='Other') return 1;
+    if(b==='Other') return -1;
+    return 0;
+  });
+  orderedCats.forEach(cat=>{
+    const items = (grouped[cat]||[]).slice().sort((a,b)=>a.localeCompare(b));
+    if(!items.length) return;
+    const icon = CATEGORY_ICONS[cat] || 'fa-folder';
+    parts.push(`
+      <div class="cat-section-head">
+        <span class="cs-ico"><i class="fa-solid ${icon}"></i></span>
+        <span class="cs-name">${cat}</span>
+        <span class="cs-count">${items.length}</span>
+      </div>`);
+    items.forEach(name=>{
+      const used = itemUsageCount(name);
+      const locked = used > 0;
+      const metaText = used>0
+        ? `${used} record${used===1?'':'s'} using this`
+        : 'Not yet used';
+      const delBtn = isAdmin
+        ? `<button class="cat-del" title="${locked?('In use by '+used+' record'+(used===1?'':'s')+' — cannot delete'):'Remove from catalogue'}" ${locked?'disabled':''} onclick="delItemType('${escapeAttr(name)}')"><i class="fa-solid fa-trash-can"></i></button>`
+        : '';
+      parts.push(`
+        <div class="catalogue-row ${locked?'locked':''}">
+          <span class="cat-ico"><i class="fa-solid fa-tag"></i></span>
+          <div class="cat-body">
+            <div class="cat-name">${name}</div>
+            <div class="cat-meta ${used>0?'in-use':''}">${metaText}</div>
+          </div>
+          ${delBtn}
+        </div>`);
+    });
+  });
+  grid.innerHTML = parts.join('');
+}
+function addItemType(){
+  const input = document.getElementById('newItemName');
+  const catSel = document.getElementById('newItemCategory');
+  const name = (input?.value||'').trim();
+  if(!name) return toast('Enter an item name','warn');
+  const list = state.itemTypes || (state.itemTypes=[]);
+  if(list.some(t=>t.toLowerCase()===name.toLowerCase())) return toast('"'+name+'" already exists','warn');
+  list.push(name);
+  // Remember which category this item belongs to
+  if(!state.itemCategoryMap) state.itemCategoryMap = {};
+  state.itemCategoryMap[name] = (catSel && catSel.value) || 'Other';
+  save(); populateSelects(); renderItemTypes(); updateCounts();
+  input.value='';
+  toast('"'+name+'" added to '+state.itemCategoryMap[name]);
+}
+function delItemType(name){
+  const used = itemUsageCount(name);
+  if(used > 0){
+    toast('"'+name+'" is used by '+used+' record'+(used===1?'':'s')+' — cannot delete','warn');
+    return;
+  }
+  if(!confirm('Remove "'+name+'" from the item catalogue?')) return;
+  state.itemTypes = (state.itemTypes||[]).filter(t=>t!==name);
+  if(state.itemCategoryMap) delete state.itemCategoryMap[name];
+  save(); populateSelects(); renderItemTypes(); updateCounts();
+  toast('"'+name+'" removed','warn');
+}
+
+/* ================= CATEGORY CATALOGUE ================= */
+function categoryUsageCount(name){
+  return state.assets.filter(a=>a.category===name).length;
+}
+const CATEGORY_ICONS = {
+  'Technology':'fa-laptop',
+  'Networking':'fa-network-wired',
+  'Furniture':'fa-chair',
+  'Stationery':'fa-pen-to-square',
+  'Electrical':'fa-plug',
+  'Security':'fa-shield-halved',
+  'Other':'fa-layer-group'
+};
+const CATEGORY_HINTS = {
+  'Technology':'Laptops, desktops, monitors, printers',
+  'Networking':'Routers, switches, cables, access points',
+  'Furniture':'Chairs, desks, cabinets, storage',
+  'Stationery':'Paper, pens, files, registers',
+  'Electrical':'UPS, batteries, extension boards',
+  'Security':'CCTV, access cards, alarms',
+  'Other':'Anything that doesn\'t fit above'
+};
+function renderCategories(){
+  const grid = document.getElementById('catChips');
+  const total = document.getElementById('catsTotal');
+  if(!grid) return;
+  const list = state.categories || [];
+  total.textContent = list.length;
+  if(!list.length){
+    grid.innerHTML = `<div class="catalogue-empty"><i class="fa-solid fa-layer-group"></i>No categories yet — add the first one above.</div>`;
+    return;
+  }
+  const isAdmin = state.session?.role === 'admin';
+  grid.innerHTML = list
+    .slice()
+    .sort((a,b)=>a.localeCompare(b))
+    .map(name=>{
+      const used = categoryUsageCount(name);
+      const locked = used > 0;
+      const icon = CATEGORY_ICONS[name] || 'fa-folder';
+      const hint = CATEGORY_HINTS[name] || '';
+      const metaText = used>0
+        ? `${used} asset${used===1?'':'s'} in this category`
+        : (hint || 'Not yet used');
+      const delBtn = isAdmin
+        ? `<button class="cat-del" title="${locked?('In use by '+used+' asset'+(used===1?'':'s')+' — cannot delete'):'Remove from catalogue'}" ${locked?'disabled':''} onclick="delCategory('${escapeAttr(name)}')"><i class="fa-solid fa-trash-can"></i></button>`
+        : '';
+      return `
+        <div class="catalogue-row ${locked?'locked':''}">
+          <span class="cat-ico"><i class="fa-solid ${icon}"></i></span>
+          <div class="cat-body">
+            <div class="cat-name">${name}</div>
+            <div class="cat-meta ${used>0?'in-use':''}">${metaText}</div>
+          </div>
+          ${delBtn}
+        </div>`;
+    }).join('');
+}
+function addCategory(){
+  const input = document.getElementById('newCatName');
+  const name = (input?.value||'').trim();
+  if(!name) return toast('Enter a category name','warn');
+  const list = state.categories || (state.categories=[]);
+  if(list.some(c=>c.toLowerCase()===name.toLowerCase())) return toast('"'+name+'" already exists','warn');
+  list.push(name);
+  save(); populateSelects(); renderCategories(); updateCounts();
+  input.value='';
+  toast('"'+name+'" added to catalogue');
+}
+function delCategory(name){
+  const used = categoryUsageCount(name);
+  if(used > 0){
+    toast('"'+name+'" is used by '+used+' asset'+(used===1?'':'s')+' — cannot delete','warn');
+    return;
+  }
+  if(!confirm('Remove "'+name+'" from the category catalogue?')) return;
+  state.categories = (state.categories||[]).filter(c=>c!==name);
+  save(); populateSelects(); renderCategories(); updateCounts();
+  toast('"'+name+'" removed','warn');
+}
+
 /* ================= CRUD ================= */
 let editingAssetId=null;
 function openAsset(){ editingAssetId=null; ['aName','aBrand','aSerial','aAssigned','aDept','aNotes'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('aQty').value=1;
   document.getElementById('aBranch').value=state.session.branch||state.branches[0].name;
-  document.getElementById('aType').value=TYPES[0];
+  document.getElementById('aType').value=(state.itemTypes&&state.itemTypes[0])||'Other';
+  const cSel=document.getElementById('aCategory'); if(cSel) cSel.value='';
   document.getElementById('aCond').value='New';
   document.getElementById('aStatus').value='Available';
   openModal('mdAsset');
@@ -1534,6 +2627,7 @@ function editAsset(id){
   document.getElementById('aName').value=a.name;
   document.getElementById('aBranch').value=a.branch;
   document.getElementById('aType').value=a.type;
+  const cSel=document.getElementById('aCategory'); if(cSel) cSel.value=a.category||'';
   document.getElementById('aQty').value=a.qty;
   document.getElementById('aBrand').value=a.brand||'';
   document.getElementById('aSerial').value=a.serial||'';
@@ -1546,7 +2640,7 @@ function editAsset(id){
 }
 function saveAsset(){
   const a={
-    name:v('aName'),branch:v('aBranch'),type:v('aType'),qty:Number(v('aQty'))||1,
+    name:v('aName'),branch:v('aBranch'),type:v('aType'),category:v('aCategory'),qty:Number(v('aQty'))||1,
     brand:v('aBrand'),serial:v('aSerial'),assigned:v('aAssigned'),dept:v('aDept'),
     cond:v('aCond'),status:v('aStatus'),notes:v('aNotes')
   };
@@ -1612,12 +2706,12 @@ function createUser(){
   if(!name||!u||!p) return toast('All fields required','warn');
   if(state.users.some(x=>x.username===u)) return toast('Username already exists','warn');
   state.users.push({id:Date.now(),name,username:u,password:p,role:r,branch:b});
-  save(); renderAll(); toast('User created');
+  save(); renderAll(); renderTeamStack(); toast('User created');
   ['nuName','nuUser','nuPass'].forEach(id=>document.getElementById(id).value='');
 }
 function delUser(id){
   if(!confirm('Delete this user?')) return;
-  state.users=state.users.filter(u=>u.id!==id); save(); renderAll(); toast('User deleted','warn');
+  state.users=state.users.filter(u=>u.id!==id); save(); renderAll(); renderTeamStack(); toast('User deleted','warn');
 }
 
 function openAddBranch(){ document.getElementById('brName').value=''; openModal('mdBranch'); }
@@ -1629,8 +2723,8 @@ function addBranch(){
 
 /* ================= CSV ================= */
 function exportCSV(){
-  const hdr=['Name','Branch','Type','Brand','Serial','Assigned','Dept','Qty','Condition','Status'];
-  const rows=state.assets.map(a=>[a.name,a.branch,a.type,a.brand,a.serial,a.assigned,a.dept,a.qty,a.cond,a.status]);
+  const hdr=['Name','Branch','Type','Category','Brand','Serial','Assigned','Dept','Qty','Condition','Status'];
+  const rows=state.assets.map(a=>[a.name,a.branch,a.type,a.category||'',a.brand,a.serial,a.assigned,a.dept,a.qty,a.cond,a.status]);
   const csv=[hdr,...rows].map(r=>r.map(c=>`"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const blob=new Blob([csv],{type:'text/csv'});
   const a=document.createElement('a');
@@ -1646,6 +2740,88 @@ function openModal(id){document.getElementById(id).classList.add('open')}
 function closeModal(id){document.getElementById(id).classList.remove('open')}
 function fmtDate(d){const x=new Date(d);return x.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}
 function escapeAttr(s){return String(s).replace(/'/g,"\\'")}
+
+/* Deterministic avatar colour from name (design-overview TEAM pattern) */
+function avatarColor(name){
+  const palette=['a-gold','a-teal','a-indigo','a-amber','a-slate','a-rose'];
+  let h=0; const s=String(name||'');
+  for(let i=0;i<s.length;i++){ h=(h*31 + s.charCodeAt(i))>>>0; }
+  return palette[h % palette.length];
+}
+function initialsOf(name){
+  const parts=String(name||'U').trim().split(/\s+/).filter(Boolean);
+  if(!parts.length) return 'U';
+  if(parts.length===1) return parts[0][0].toUpperCase();
+  return (parts[0][0]+parts[parts.length-1][0]).toUpperCase();
+}
+function fmtRel(ts){
+  const d=Date.now()-ts; const m=Math.floor(d/60000);
+  if(m<1) return 'just now';
+  if(m<60) return m+'m ago';
+  const h=Math.floor(m/60); if(h<24) return h+'h ago';
+  const days=Math.floor(h/24); if(days<7) return days+'d ago';
+  return fmtDate(ts);
+}
+
+/* ================= NOTIFICATION BELL ================= */
+function renderBell(){
+  const dot = document.getElementById('bellDot');
+  const btn = document.getElementById('bellBtn');
+  const body = document.getElementById('bellBody');
+  const count = document.getElementById('bellCount');
+  if(!body) return;
+  const pending = state.prs.filter(p=>p.status==='Pending');
+  const maint = state.assets.filter(a=>a.status==='Maintenance');
+  const items = [];
+  pending.forEach(p=>items.push({
+    urgent:p.prio==='Urgent',
+    icon:'fa-solid fa-cart-shopping',
+    title:`PR #${p.id} pending approval`,
+    meta:`${p.branch} · by ${p.by} · ${fmtRel(p.date)}`,
+    action:()=>{closeBell();go('pr');}
+  }));
+  maint.slice(0,3).forEach(a=>items.push({
+    urgent:false,
+    icon:'fa-solid fa-screwdriver-wrench',
+    title:`${a.name} is in maintenance`,
+    meta:`${a.branch}`,
+    action:()=>{closeBell();go('inv');}
+  }));
+  const n = items.length;
+  dot.textContent = n>9 ? '9+' : String(n);
+  btn.classList.toggle('has-unread', n>0);
+  count.textContent = n + (n===1?' new':' new');
+  body.innerHTML = n
+    ? items.map((it,i)=>`
+        <div class="b-item ${it.urgent?'urgent':''}" onclick="__bellAct(${i})">
+          <i class="${it.icon}"></i>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;color:var(--ink-800);font-size:12.5px">${it.title}</div>
+            <div class="meta">${it.meta}</div>
+          </div>
+        </div>`).join('')
+    : `<div class="bell-empty"><i class="fa-solid fa-bell-slash"></i>You're all caught up.</div>`;
+  window.__bellItems = items;
+}
+function __bellAct(i){ const it=(window.__bellItems||[])[i]; if(it && it.action) it.action(); }
+function toggleBell(e){
+  if(e){ e.stopPropagation(); }
+  const p = document.getElementById('bellPanel');
+  p.classList.toggle('open');
+  if(p.classList.contains('open')){
+    renderBell();
+    document.addEventListener('click', closeBellOutside);
+  }
+}
+function closeBell(){
+  document.getElementById('bellPanel').classList.remove('open');
+  document.removeEventListener('click', closeBellOutside);
+}
+function closeBellOutside(e){
+  const p = document.getElementById('bellPanel');
+  const b = document.getElementById('bellBtn');
+  if(!p.contains(e.target) && !b.contains(e.target)) closeBell();
+}
 function toast(msg,kind){
   const t=document.getElementById('toast');
   t.textContent=msg;
